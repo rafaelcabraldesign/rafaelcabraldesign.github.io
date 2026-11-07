@@ -1,4 +1,4 @@
-# Rafael Cabral Design — Portfólio v1.4.3
+# Rafael Cabral Design — Portfólio v1.4.4
 
 Site estático em HTML, CSS e JavaScript, compatível com GitHub Pages. Esta revisão **integra a Nexa pelo Adobe Fonts**, sem instalar ou hospedar arquivos `.otf` no GitHub.
 
@@ -39,13 +39,13 @@ Os dados de contato e redes sociais são configuráveis no início de `assets/js
 
 Enquanto as imagens não forem fornecidas, os cards exibem placeholders neutros. Não são utilizados projetos fictícios nem fotos de outros profissionais.
 
-## Publicar atualização sobre v1.4.2 no GitHub
+## Publicar atualização sobre v1.4.3 no GitHub
 
 1. Faça backup do repositório atual (Code → Download ZIP).
-2. Extraia `portfolio-rafael-cabral-v1.4.3-atualizacao.zip` no computador.
+2. Extraia `portfolio-rafael-cabral-v1.4.4-atualizacao.zip` no computador.
 3. Na página principal do repositório `rafaelcabraldesign.github.io`, selecione **Add file → Upload files**.
 4. Envie os **arquivos extraídos**, preservando as pastas e sem adicionar uma pasta intermediária.
-5. Confirme a substituição dos arquivos e faça o commit, por exemplo `Integração Nexa Adobe Fonts v1.4.3`.
+5. Confirme a substituição dos arquivos e faça o commit, por exemplo `Ajuste de tipografia e cards v1.4.4`.
 6. Abra `https://rafaelcabraldesign.github.io` e atualize sem cache (`Ctrl + Shift + R`).
 
 Se ainda não houver GitHub Pages configurado, use Settings → Pages → Deploy from a branch → `main` → `/(root)`.
@@ -58,3 +58,12 @@ Se ainda não houver GitHub Pages configurado, use Settings → Pages → Deploy
 - As páginas individuais ainda contêm placeholders e estão sinalizadas para não indexação enquanto não estiverem concluídas.
 - A seção Sobre permanece em primeira pessoa; a comunicação de estúdio continua no plural nas demais seções.
 - Repositório público e GitHub Pages não exigem hospedagem paga. A fonte, entretanto, é carregada via serviço Adobe Fonts associado à sua conta.
+
+## Atualização v1.4.4 — elementos de interface e capas
+
+- Ajustado `--type-ui` para 18–20 px conforme a largura: menu, botões, tags de seção, links de navegação, link de contato e textos de Serviços usam a mesma escala.
+- Em smartphones, os botões e links se reorganizam sem ultrapassar a largura da tela.
+- A camada de degradê sobre os cards foi suavizada e alterada para preto translúcido, com quatro pontos de interpolação. O foco é preservar as imagens futuras, mantendo os nomes legíveis ao passar o mouse ou navegar com teclado. Em dispositivos touch, o nome continua sempre visível.
+- O CSS passa a usar `styles.css?v=144` nas três páginas para evitar cache da versão anterior.
+
+**A atualização inclui apenas os arquivos HTML, CSS e este guia; não contém fontes nem altera o conteúdo dos projetos.**
