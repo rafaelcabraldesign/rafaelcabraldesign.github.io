@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.4
+ * RAFAEL CABRAL | Portfolio v1.4.5
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -125,9 +125,12 @@ p { line-height: 1.55; }
 .section-top { margin-bottom: 22px; }
 .section-label { color: var(--text); font-size: var(--type-ui); font-weight: 400; line-height: 1.4; letter-spacing: -.015em; }
 h2.section-label { margin: 0; }
-.text-link { display: inline-flex; align-items: center; gap: 6px; font-size: var(--type-ui); font-weight: 400; letter-spacing: -.012em; border-bottom: 1px solid transparent; transition: color .25s ease, border-color .25s ease; }
+/* Links editoriais: a linha se desenha da esquerda para a direita SOMENTE no hover/focus. */
+.text-link { position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: var(--type-ui); font-weight: 400; letter-spacing: -.012em; transition: color .3s ease; }
+.text-link::after { content: ''; position: absolute; height: 1px; left: 0; right: 0; bottom: -4px; background: currentColor; transform: scaleX(0); transform-origin: left center; transition: transform .55s var(--ease); pointer-events: none; }
 .text-link > span { display: inline-block; transition: transform .4s var(--ease); }
-.text-link:hover, .text-link:focus-visible { color: var(--accent); border-color: currentColor; }
+.text-link:hover, .text-link:focus-visible { color: var(--accent); }
+.text-link:hover::after, .text-link:focus-visible::after { transform: scaleX(1); }
 .text-link:hover > span, .text-link:focus-visible > span { transform: translate(3px,-3px); }
 .projects-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
 .project-card { min-width: 0; }
@@ -216,10 +219,7 @@ h2.section-label { margin: 0; }
 .contact-section > .section-label { margin-bottom: 21px; }
 .contact-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 50px; }
 .contact-row h2 { max-width: none; margin: 0; font-size: clamp(2rem, 3.6vw, 4.75rem); font-weight: 400; line-height: 1.16; letter-spacing: -.035em; }
-.contact-link { flex: 0 0 auto; white-space: nowrap; padding-bottom: 7px; font-weight: 400; font-size: var(--type-ui); border-bottom: 1px solid currentColor; transition: color .25s ease; }
-.contact-link span { display: inline-block; margin-left: 8px; transition: transform .25s var(--ease); }
-.contact-link:hover { color: var(--accent); }
-.contact-link:hover span { transform: translate(3px,-3px); }
+.contact-row > .pill { flex: 0 0 auto; align-self: flex-end; }
 .site-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 22px; padding-bottom: 35px; font-size: var(--type-ui); font-weight: 400; letter-spacing: -.01em; color: var(--ink); }
 .site-footer p { margin: 0; }
 /* Mesmo sublinhado animado do menu nos links do rodape. */
@@ -270,6 +270,7 @@ h2.section-label { margin: 0; }
   :root { --gutter: 28px; }
   .services-aside { min-height: 440px; }
   .contact-row { align-items: start; flex-direction: column; }
+  .contact-row > .pill { align-self: flex-start; }
   .about-photo { min-height: 430px; }
 }
 @media (min-width: 761px) and (max-width: 1100px) {

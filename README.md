@@ -1,4 +1,4 @@
-# Rafael Cabral Design — Portfólio v1.4.4
+# Rafael Cabral Design — Portfólio v1.4.5
 
 Site estático em HTML, CSS e JavaScript, compatível com GitHub Pages. Esta revisão **integra a Nexa pelo Adobe Fonts**, sem instalar ou hospedar arquivos `.otf` no GitHub.
 
@@ -39,10 +39,10 @@ Os dados de contato e redes sociais são configuráveis no início de `assets/js
 
 Enquanto as imagens não forem fornecidas, os cards exibem placeholders neutros. Não são utilizados projetos fictícios nem fotos de outros profissionais.
 
-## Publicar atualização sobre v1.4.3 no GitHub
+## Publicar atualização sobre v1.4.4 no GitHub
 
 1. Faça backup do repositório atual (Code → Download ZIP).
-2. Extraia `portfolio-rafael-cabral-v1.4.4-atualizacao.zip` no computador.
+2. Extraia `portfolio-rafael-cabral-v1.4.5-atualizacao.zip` no computador.
 3. Na página principal do repositório `rafaelcabraldesign.github.io`, selecione **Add file → Upload files**.
 4. Envie os **arquivos extraídos**, preservando as pastas e sem adicionar uma pasta intermediária.
 5. Confirme a substituição dos arquivos e faça o commit, por exemplo `Ajuste de tipografia e cards v1.4.4`.
@@ -67,3 +67,12 @@ Se ainda não houver GitHub Pages configurado, use Settings → Pages → Deploy
 - O CSS passa a usar `styles.css?v=144` nas três páginas para evitar cache da versão anterior.
 
 **A atualização inclui apenas os arquivos HTML, CSS e este guia; não contém fontes nem altera o conteúdo dos projetos.**
+
+## Atualização v1.4.5 — hover dos links e CTA da seção Contato
+
+- O link **Ver todos os projetos** usa um sublinhado animado que cresce da esquerda para a direita, oculto no estado inicial e exibido apenas em hover ou foco pelo teclado. A mesma regra se aplica aos demais links com classe `.text-link`.
+- O antigo link textual **Entre em contato** no final da página foi substituído por um botão cinza arredondado idêntico ao botão da abertura, com animação vertical de preenchimento e texto. O destino continua sendo o WhatsApp configurado no script.
+- Atualizado o parâmetro de cache `styles.css?v=145` nas três páginas.
+- Não foram modificados textos, projetos, fonte Adobe, páginas individuais ou destinos de contato.
+
+Para atualizar a v1.4.4 no GitHub: descompacte o ZIP de atualização e substitua `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css` e `LEIA-ME.md`.
