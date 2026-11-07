@@ -1,0 +1,11 @@
+Nexa - instrucoes para esta pasta
+
+Adicione aqui os TRES arquivos originais que voce enviou:
+- Nexa Light.otf
+- Nexa Regular.otf
+- Nexa Bold.otf
+
+Os nomes e espacos devem ser mantidos exatamente assim.
+A aparencia correta so sera exibida apos esses arquivos estarem no GitHub.
+Antes de publica-los na internet, confirme sua permissao/licenca de auto-hospedagem na web.
+Os arquivos de fonte nao acompanham este ZIP.

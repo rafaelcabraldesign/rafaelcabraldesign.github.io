@@ -1,4 +1,4 @@
-# Portfólio Rafael Cabral — versão 1.3
+# Portfólio Rafael Cabral — versão 1.4.1
 
 Site estático e responsivo, construído com HTML, CSS e JavaScript, preparado para GitHub Pages. Não precisa de hospedagem paga, React, npm, build ou assinatura.
 
@@ -120,6 +120,36 @@ A publicação costuma acontecer após o processamento do GitHub Pages. Alteraç
 - A prévia utiliza somente **placeholders neutros**. Nenhuma imagem de um projeto real foi inventada.
 - Os casos ainda estão em preparação e por isso `projeto.html` foi marcado como `noindex`. Remova a meta tag `robots` quando as páginas individuais estiverem concluídas.
 - A seção **Sobre** está em primeira pessoa do singular, como definido. Serviços e apresentação institucional permanecem no plural.
-- Foi utilizada uma família de fontes de sistema (Helvetica/Arial) para evitar licenciamento pendente. O uso de Nexa no site precisa de confirmação da licença web.
+- A fonte visual padrao agora e **Nexa**, configurada em tres pesos no CSS. Os arquivos de fonte devem ser adicionados separadamente em `assets/fonts/`. Sem eles, o navegador usa Helvetica/Arial como fallback. Confirme a permissao de hospedagem web na licenca original antes do upload publico.
 - O monograma é o original do arquivo vetorial fornecido, com cor normal `#000014` e hover `#D60B52`.
 - Na hospedagem GitHub Pages gratuita, o repositório deve ser público.
+
+
+## Ajustes na versao 1.4
+- Botões de abertura: animação de roleta vertical com máscara; botão escuro revela rosa, botão cinza revela cinza mais escuro.
+- Serviços: imagem ocupa exatamente a metade esquerda da grade no desktop, lista na metade direita; número à esquerda, nome e descrição à direita.
+- Todas as capas das galerias principal e completa possuem proporções uniformes em duas colunas no desktop.
+- Link Projetos no menu da página inicial abre `projetos.html`.
+- Transições de entrada ampliadas, com deslocamento vertical visível e duração aproximada de 1,4 a 1,6 segundo; desativadas quando o usuário prefere movimento reduzido.
+- Tipografia de navegação, rodapé e lista de serviços ampliada e harmonizada, com pesos diferentes para título/descrição.
+
+### Importante para atualizações via GitHub
+Se usar o ZIP de atualização, **extraia** seu conteúdo e carregue `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css` e `assets/js/site.js`, mantendo a árvore de pastas. No commit, confira se a pasta `assets` não foi colocada dentro de uma pasta adicional e se o site recebe CSS/JS `?v=14` (controle de cache).
+
+
+## Tipografia Nexa (ajuste v1.4.1)
+
+A v1.4.1 aplica a Nexa a todas as paginas sem alterar os textos nem a estrutura dos projetos.
+O CSS define **Nexa Light** para peso 300, **Nexa Regular** para peso 400 e **Nexa Bold** para peso 700. Os textos auxiliares da abertura usam Nexa Light; os titulos editoriais usam Regular e o menu e rodape usam Bold, seguindo os pesos configurados.
+
+**Os arquivos de fonte nao estao no ZIP.** Para ativar a Nexa no GitHub Pages:
+
+1. Confira a permissao/licenca de uso web e auto-hospedagem dos arquivos Nexa.
+2. No repositorio, abra `assets` e crie uma pasta chamada `fonts`, caso ela ainda nao exista. O pacote inclui `assets/fonts/LEIA-ME.txt` para facilitar.
+3. Entre em `assets/fonts/` no GitHub, clique em **Add file → Upload files** e envie separadamente os arquivos **Nexa Light.otf**, **Nexa Regular.otf** e **Nexa Bold.otf** que voce forneceu.
+4. Conclua com **Commit changes**. Os nomes devem ficar exatamente assim, com os espacos.
+5. Envie o ZIP de atualizacao (HTML, CSS, instrucao) para o repositorio; confirme o commit.
+6. Atualize o site com Ctrl + Shift + R. Se os arquivos nao forem encontrados, o CSS cai em Helvetica/Arial.
+
+Para performance, posteriormente podemos usar arquivos WOFF2 devidamente licenciados para web.
+O CSS da v1.4.1 tem `?v=141` nos links HTML para evitar que o cache carregue a tipografia antiga.
