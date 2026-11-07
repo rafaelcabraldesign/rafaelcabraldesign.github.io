@@ -19,27 +19,34 @@
   const projectLink = project => `projeto.html?projeto=${encodeURIComponent(project.slug)}`;
   const names = { instagram: 'Instagram', behance: 'Behance', linkedin: 'LinkedIn' };
 
-  function cover(project, index, className = 'project-cover') {
-    const link = el('a', className);
+  function cover(project, index) {
+    const link = el('a', 'project-cover');
     link.href = projectLink(project);
     link.setAttribute('aria-label', `Ver projeto ${project.nome}`);
 
     if (project.imagem) {
+      link.classList.add('has-image');
       const img = el('img');
       img.src = project.imagem;
-      img.alt = `Imagem de apresentação do projeto ${project.nome}`;
+      img.alt = ''; // O nome do projeto ja esta no texto do proprio link.
       img.loading = 'lazy';
       img.decoding = 'async';
       img.addEventListener('error', () => {
         img.remove();
-        const note = el('span', 'placeholder-center', 'Imagem em breve');
-        link.append(note);
+        link.classList.remove('has-image');
+        link.append(el('span', 'placeholder-center', 'Imagem em breve'));
       }, { once: true });
       link.append(img);
     } else {
       link.append(el('span', 'placeholder-center', 'Imagem em breve'));
-      link.append(el('span', 'cover-count', String(index + 1).padStart(2, '0')));
     }
+
+    link.append(el('span', 'cover-count', String(index + 1).padStart(2, '0')));
+    const caption = el('div', 'cover-meta');
+    caption.append(el('h3', 'project-title', project.nome));
+    if (project.categoria) caption.append(el('p', 'project-category', project.categoria));
+    link.append(caption);
+    if (project.ano) link.append(el('span', 'cover-year', project.ano));
 
     const arrow = el('span', 'cover-arrow', '↗');
     arrow.setAttribute('aria-hidden', 'true');
@@ -53,19 +60,6 @@
       const index = projects.indexOf(project);
       const card = el('article', 'project-card');
       card.append(cover(project, index));
-
-      const info = el('div', 'project-info');
-      const titleGroup = el('div');
-      const title = el('h3', 'project-title');
-      const titleLink = el('a', '', project.nome);
-      titleLink.href = projectLink(project);
-      title.append(titleLink);
-      titleGroup.append(title);
-
-      if (project.categoria) titleGroup.append(el('p', 'project-category', project.categoria));
-      info.append(titleGroup);
-      if (project.ano) info.append(el('span', 'project-year', project.ano));
-      card.append(info);
       fragment.append(card);
     });
     container.replaceChildren(fragment);
@@ -183,7 +177,7 @@
 
     document.querySelectorAll('[data-social-links]').forEach(container => {
       if (email) {
-        const emailLink = el('a', '', email);
+        const emailLink = el('a', '', 'E-mail');
         emailLink.href = `mailto:${email}`;
         emailLink.setAttribute('aria-label', `Enviar e-mail para ${email}`);
         container.append(emailLink);
@@ -240,8 +234,56 @@
     });
   }
 
+  function setupStickyHeader() {
+    const header = document.querySelector('[data-header]');
+    if (!header) return;
+    let scheduled = false;
+    const update = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 12);
+      scheduled = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  }
+
   function setupReveal() {
-    const nodes = document.querySelectorAll('[data-reveal]');
+    const selectors = [
+      '.hero-content > *',
+      '.section-top',
+      '.projects-grid .project-card',
+      '.services-section > .section-label',
+      '.services-section > .statement',
+      '.services-aside',
+      '.service-row',
+      '.about-copy > *',
+      '.about-photo',
+      '.contact-section > .section-label',
+      '.contact-row > *',
+      '.listing-intro > *',
+      '.listing-tools > *',
+      '.project-breadcrumb',
+      '.detail-intro > *',
+      '.detail-cover',
+      '.detail-overview > *',
+      '.detail-detail-block > *',
+      '.detail-gallery > *',
+      '.next-project > *',
+      '.site-footer > *'
+    ];
+    const nodes = [...new Set(selectors.flatMap(selector => [...document.querySelectorAll(selector)]))];
+    nodes.forEach(node => {
+      node.setAttribute('data-reveal', '');
+      if (node.matches('.project-card, .service-row')) {
+        const siblings = [...node.parentElement.children];
+        const index = siblings.indexOf(node);
+        node.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 85}ms`);
+      }
+    });
+
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       nodes.forEach(node => node.classList.add('is-visible'));
       return;
@@ -252,7 +294,7 @@
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
-    }, { threshold: .04, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: .06, rootMargin: '0px 0px -28px 0px' });
     nodes.forEach(node => observer.observe(node));
   }
 
@@ -269,5 +311,6 @@
   document.querySelectorAll('[data-year]').forEach(node => node.textContent = new Date().getFullYear());
   configureContact();
   setupMenu();
+  setupStickyHeader();
   setupReveal();
 })();

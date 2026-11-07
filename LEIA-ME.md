@@ -1,6 +1,18 @@
-# Portfólio Rafael Cabral — versão 1.1
+# Portfólio Rafael Cabral — versão 1.2
 
 Site estático e responsivo, construído com HTML, CSS e JavaScript, preparado para GitHub Pages. Não precisa de hospedagem paga, React, npm, build ou assinatura.
+
+## Mudanças na versão 1.2
+
+- Largura adaptável a monitores ultrawide: o conteúdo e os grids usam a largura útil com margens laterais pequenas, sem limitar a 1540 px.
+- Header `sticky`, sempre visível no topo da tela durante a rolagem, com efeito discreto ao rolar.
+- "Vamos conversar" substitui "Contato" no menu, sem sublinhado permanente (o destaque aparece apenas ao interagir).
+- Removida a linha "RAFAEL CABRAL / DESIGN GRÁFICO" acima do título inicial.
+- Animações de entrada por rolagem em textos, cards, serviços e rodapé, além de transições de hover mais elaboradas. Respeitam a preferência de reduzir movimento do sistema.
+- Favicon rosa `#D60B52` em todas as páginas; o monograma do header permanece Black Russian e fica rosa no hover.
+- Nome do projeto dentro da capa (não abaixo), com contraste específico para placeholders claros e imagens reais.
+- Rodapé simplificado: "Rafael Cabral Design", "Topo" (sem seta) e "E-mail" (link clicável).
+- Conteúdos, contato do WhatsApp e lista dos 14 projetos mantidos.
 
 ## O que está incluído
 
@@ -21,7 +33,7 @@ O link **"Entre em contato"** na abertura e na secao Contato abre o WhatsApp **+
 
 O WhatsApp abre a conversa com o texto preenchido; o visitante precisa tocar em **enviar** para encaminhar a mensagem.
 
-O e-mail **rafaelcdesign@outlook.com** aparece no rodape das tres paginas e abre o aplicativo de e-mail ao clicar. O link "Contato" do menu continua rolando para a secao Contato, enquanto o botao "Entre em contato" abre o WhatsApp.
+O link **"E-mail"** aparece no rodapé das três páginas; ao clicar, abre `mailto:rafaelcdesign@outlook.com`. O link **"Vamos conversar"** do menu continua rolando para a seção Contato, enquanto o botão **"Entre em contato"** abre o WhatsApp.
 
 Se quiser alterar os dados, abra `assets/js/conteudo.js` e edite os campos:
 
