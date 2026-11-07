@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.11
+ * RAFAEL CABRAL | Portfolio v1.4.12
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -220,7 +220,11 @@ h2.section-label { margin: 0; }
 .contact-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 50px; }
 .contact-row h2 { max-width: none; margin: 0; font-size: clamp(2rem, 3.6vw, 4.75rem); font-weight: 400; line-height: 1.16; letter-spacing: -.035em; }
 .contact-row > .pill { flex: 0 0 auto; align-self: flex-end; }
-.site-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 22px; padding-bottom: 35px; font-size: var(--type-ui); font-weight: 400; letter-spacing: -.01em; color: var(--ink); }
+/* Os filhos entram com translateY(90px). Sem clipping, o deslocamento
+   aumenta o scrollHeight e provoca um salto no limite final da pagina.
+   overflow: clip limita apenas a pintura; mantem a animacao e nao cria
+   uma nova area de rolagem. O footer (nao seus filhos) aciona a entrada. */
+.site-footer { overflow: clip; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 22px; padding-bottom: 35px; font-size: var(--type-ui); font-weight: 400; letter-spacing: -.01em; color: var(--ink); }
 .site-footer p { margin: 0; }
 /* Mesmo sublinhado animado do menu nos links do rodape. */
 .site-footer > a, .social-links a { position: relative; display: inline-block; padding-block: 8px; transition: color .3s ease; }

@@ -272,8 +272,7 @@
       '.detail-overview > *',
       '.detail-detail-block > *',
       '.detail-gallery > *',
-      '.related-header > *',
-      '.site-footer > *:not(.footer-signature)'
+      '.related-header > *'
     ];
     const nodes = [...new Set(selectors.flatMap(selector => [...document.querySelectorAll(selector)]))];
 
@@ -302,6 +301,48 @@
       });
       observer.observe(element);
     }
+    // O rodape precisa de um unico gatilho de entrada para nao gerar
+    // rolagem adicional: filhos transformados nao sao observados separados.
+    // Preservamos os mesmos tempos, distancias, atrasos e keyframes.
+    const footer = document.querySelector('.site-footer');
+    const footerItems = footer
+      ? [...footer.children].filter(node => !node.matches('.footer-signature'))
+      : [];
+    let footerObserver = null;
+    if (footer && footerItems.length) {
+      footer.dataset.entrance = 'pending';
+      let remaining = footerItems.length;
+      const finishFooter = () => {
+        if (footer.dataset.entrance === 'complete') return;
+        footer.dataset.entrance = 'complete';
+        footer.dispatchEvent(new Event('footer-entrance-complete'));
+      };
+
+      for (const item of footerItems) {
+        const position = [...footer.children].indexOf(item);
+        item.style.setProperty('--reveal-delay', `${(position % 3) * 130}ms`);
+        item.style.setProperty('--reveal-distance', '90px');
+        item.style.setProperty('--reveal-duration', '1420ms');
+        item.dataset.entrance = 'pending';
+        item.addEventListener('animationend', event => {
+          if (event.target !== item || event.animationName !== 'reveal-enter') return;
+          item.dataset.entrance = 'complete';
+          if (--remaining === 0) finishFooter();
+        });
+      }
+
+      footerObserver = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        footerObserver.disconnect();
+        footer.dataset.entrance = 'playing';
+        footerItems.forEach(item => {
+          item.dataset.entrance = 'playing';
+          item.classList.add('is-revealed');
+        });
+      }, { threshold: .02, rootMargin: '0px 0px -16px 0px' });
+      footerObserver.observe(footer);
+    }
+
     root.classList.add('motion-initialized');
 
     // Se a pessoa ativar 'reduzir movimento' durante a sessao, revelar tudo.
@@ -309,6 +350,11 @@
     const onChange = event => {
       if (event.matches) {
         observer.disconnect();
+        if (footerObserver) footerObserver.disconnect();
+        if (footer) {
+          footer.dataset.entrance = 'complete';
+          footer.dispatchEvent(new Event('footer-entrance-complete'));
+        }
         root.classList.remove('motion-ready');
       }
     };
@@ -390,15 +436,26 @@
       link.classList.remove('is-writing', 'is-prepared');
       link.classList.add('is-complete');
     };
-    const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting)) return;
-      if (started) return;
+    // A assinatura depende de DOIS estados: estar visivel e os textos/links
+    // do rodape terem concluido exatamente sua animacao de entrada.
+    // O hover continua alterando somente a cor, nunca reinicia a escrita.
+    const footer = link.closest('.site-footer');
+    let signatureInView = false;
+    const canStart = () => !document.documentElement.classList.contains('motion-ready')
+      || !footer || footer.dataset.entrance === 'complete';
+    const startWhenReady = () => {
+      if (started || !signatureInView || !canStart()) return;
       started = true;
       observer.disconnect();
       link.classList.add('is-writing');
       // Fallback para nunca deixar a assinatura invisivel se a animacao nao disparar.
       window.setTimeout(complete, Math.ceil(elapsed) + 120);
+    };
+    const observer = new IntersectionObserver(entries => {
+      signatureInView = entries.some(entry => entry.isIntersecting);
+      startWhenReady();
     }, { threshold: .25, rootMargin: '0px 0px -20px 0px' });
+    if (footer) footer.addEventListener('footer-entrance-complete', startWhenReady);
 
     // Espera carregamento, fontes e dois frames: evita observar o rodape
     // antes da pagina de projetos receber os cards e antes da restauracao do scroll.
