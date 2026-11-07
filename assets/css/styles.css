@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.10
+ * RAFAEL CABRAL | Portfolio v1.4.11
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -245,6 +245,16 @@ h2.section-label { margin: 0; }
   transition: color .32s ease;
 }
 .site-footer > .footer-signature::after { display: none; }
+/* Evita o flash da assinatura durante refresh, transicoes e restauracao de scroll:
+   o SVG so fica visivel depois que o observador inicia o desenho no rodape.
+   O estado .js-enabled e definido no head, antes de o HTML do rodape existir. */
+html.js-enabled .site-footer > .footer-signature { visibility: hidden; }
+html.js-enabled .site-footer > .footer-signature.is-writing,
+html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visible; }
+@media (prefers-reduced-motion: reduce) {
+  html.js-enabled .site-footer > .footer-signature { visibility: visible; }
+}
+
 .site-footer > .footer-signature:hover,
 .site-footer > .footer-signature:focus-visible { color: var(--accent); }
 .footer-signature__svg { width: 100%; height: auto; display: block; overflow: visible; }

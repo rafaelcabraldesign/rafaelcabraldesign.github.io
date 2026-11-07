@@ -343,52 +343,78 @@
     });
   }
 
-  /* Assinatura em SVG: desenha os tracos de cada letra uma unica vez.
-   Hover e foco alteram apenas a cor, nunca reiniciam a escrita.
-   A mascara usa linhas centrais reconstruidas dos contornos originais.
-   Se JS falhar ou houver movimento reduzido, a assinatura fica visivel.
+  /* Assinatura SVG: inicia visivel apenas quando o rodape esta estabilizado
+   * e a assinatura entra no viewport. Evita o flash de layout ao recarregar,
+   * navegar ou restaurar a posicao de rolagem. Hover apenas muda de cor.
    */
   function setupFooterSignature() {
     const link = document.querySelector('[data-signature]');
     if (!link) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || !('IntersectionObserver' in window)) return;
-    const traces = [...link.querySelectorAll('[data-sig-trace]')];
-    if (!traces.length) return;
+    const finishStatic = () => {
+      link.classList.remove('is-prepared', 'is-writing');
+      link.classList.add('is-complete');
+    };
 
-    // Cada letra tem seu proprio percurso e ritmo de escrita.
-    const lengths = traces.map(trace => trace.getTotalLength());
-    const totalLength = lengths.reduce((sum, length) => sum + length, 0);
-    const totalDuration = 1850;
-    const pauseBetweenLetters = 18;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      finishStatic();
+      return;
+    }
+    const traces = [...link.querySelectorAll('[data-sig-trace]')];
+    if (!traces.length) { finishStatic(); return; }
+
+    // Distribui os 1.100 ms entre os doze tracos, preservando o ritmo de caneta.
+    // O calculo ocorre ANTES de exibir o SVG, para impedir um frame sem mascara.
+    let lengths;
+    try { lengths = traces.map(trace => trace.getTotalLength()); }
+    catch (_) { finishStatic(); return; }
+    const weights = lengths.map(length => Math.sqrt(Math.max(1, length)));
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    const totalDuration = 1100;
+    const pauseBetweenLetters = 6;
     const drawableTime = totalDuration - pauseBetweenLetters * (traces.length - 1);
     let elapsed = 0;
-    traces.forEach((trace, i) => {
-      const length = lengths[i] + 2;
-      const duration = Math.max(85, drawableTime * (lengths[i] / totalLength));
-      trace.style.setProperty('--signature-path-length', `${length}px`);
-      trace.style.setProperty('--signature-duration', `${duration.toFixed(1)}ms`);
-      trace.style.setProperty('--signature-delay', `${elapsed.toFixed(1)}ms`);
+    traces.forEach((trace, index) => {
+      const duration = drawableTime * (weights[index] / totalWeight);
+      trace.style.setProperty('--signature-path-length', `${lengths[index] + 2}px`);
+      trace.style.setProperty('--signature-duration', `${duration.toFixed(2)}ms`);
+      trace.style.setProperty('--signature-delay', `${elapsed.toFixed(2)}ms`);
       elapsed += duration + pauseBetweenLetters;
     });
     link.classList.add('is-prepared');
 
     let started = false;
+    let completed = false;
+    const complete = () => {
+      if (completed) return;
+      completed = true;
+      link.classList.remove('is-writing', 'is-prepared');
+      link.classList.add('is-complete');
+    };
     const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting) || started) return;
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      if (started) return;
       started = true;
       observer.disconnect();
       link.classList.add('is-writing');
-    }, { threshold: .35 });
-    observer.observe(link);
+      // Fallback para nunca deixar a assinatura invisivel se a animacao nao disparar.
+      window.setTimeout(complete, Math.ceil(elapsed) + 120);
+    }, { threshold: .25, rootMargin: '0px 0px -20px 0px' });
 
-    // Depois da ultima pincelada, remove todas as mascaras sem reiniciar.
-    const finalTrace = traces[traces.length - 1];
-    finalTrace.addEventListener('animationend', event => {
-      if (event.animationName !== 'signature-stroke-draw') return;
-      link.classList.remove('is-writing', 'is-prepared');
-      link.classList.add('is-complete');
+    // Espera carregamento, fontes e dois frames: evita observar o rodape
+    // antes da pagina de projetos receber os cards e antes da restauracao do scroll.
+    const observeWhenReady = () => {
+      const observe = () => requestAnimationFrame(() => requestAnimationFrame(() => observer.observe(link)));
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(observe, observe);
+      } else observe();
+    };
+    if (document.readyState === 'complete') observeWhenReady();
+    else window.addEventListener('load', observeWhenReady, { once: true });
+
+    traces[traces.length - 1].addEventListener('animationend', event => {
+      if (event.animationName === 'signature-stroke-draw') complete();
     }, { once: true });
+    window.addEventListener('pagehide', () => { if (started) complete(); });
   }
 
   const featured = document.getElementById('featured-projects');
