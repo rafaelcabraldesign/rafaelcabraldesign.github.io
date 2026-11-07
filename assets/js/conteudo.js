@@ -38,6 +38,7 @@ window.PORTFOLIO_CONTEUDO = {
     { nome: "Ita Corretora de Seguros", slug: "ita-corretora-de-seguros", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Eagle Investment", slug: "eagle-investment", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Agrofixa", slug: "agrofixa", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
-    { nome: "Down Five", slug: "down-five", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] }
+    { nome: "Down Five", slug: "down-five", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
+    { nome: "Lara Land", slug: "lara-land", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] }
   ]
 };

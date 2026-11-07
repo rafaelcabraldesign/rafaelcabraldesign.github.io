@@ -330,13 +330,13 @@
     // Cada letra tem seu proprio percurso e ritmo de escrita.
     const lengths = traces.map(trace => trace.getTotalLength());
     const totalLength = lengths.reduce((sum, length) => sum + length, 0);
-    const totalDuration = 4200;
-    const pauseBetweenLetters = 55;
+    const totalDuration = 1850;
+    const pauseBetweenLetters = 18;
     const drawableTime = totalDuration - pauseBetweenLetters * (traces.length - 1);
     let elapsed = 0;
     traces.forEach((trace, i) => {
       const length = lengths[i] + 2;
-      const duration = Math.max(155, drawableTime * (lengths[i] / totalLength));
+      const duration = Math.max(85, drawableTime * (lengths[i] / totalLength));
       trace.style.setProperty('--signature-path-length', `${length}px`);
       trace.style.setProperty('--signature-duration', `${duration.toFixed(1)}ms`);
       trace.style.setProperty('--signature-delay', `${elapsed.toFixed(1)}ms`);
