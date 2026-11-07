@@ -1,4 +1,4 @@
-# Rafael Cabral Design — Portfólio v1.4.5
+# Rafael Cabral Design — Portfólio v1.4.6
 
 Site estático em HTML, CSS e JavaScript, compatível com GitHub Pages. Esta revisão **integra a Nexa pelo Adobe Fonts**, sem instalar ou hospedar arquivos `.otf` no GitHub.
 
@@ -76,3 +76,18 @@ Se ainda não houver GitHub Pages configurado, use Settings → Pages → Deploy
 - Não foram modificados textos, projetos, fonte Adobe, páginas individuais ou destinos de contato.
 
 Para atualizar a v1.4.4 no GitHub: descompacte o ZIP de atualização e substitua `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css` e `LEIA-ME.md`.
+
+
+## Atualização v1.4.6 — título da abertura e página de todos os projetos
+
+- Página inicial (`index.html`): quebra de linha intencional imediatamente após “Na arte do design,”, antes de “os detalhes são tudo.”. Em telas muito estreitas, o navegador ainda pode fazer quebras adicionais para preservar a responsividade.
+- Galeria completa (`projetos.html`): removido o link “Voltar ao início ↗” acima dos projetos. O contador de projetos permanece visível e os links do cabeçalho continuam funcionando normalmente.
+- **Nenhuma alteração** em CSS, JavaScript, Adobe Fonts, WhatsApp ou no cadastro dos 14 projetos. Não é necessário reenviar essas pastas ao aplicar a atualização sobre a v1.4.5.
+
+### Como publicar sobre a v1.4.5
+
+1. Faça backup do repositório.
+2. Extraia `portfolio-rafael-cabral-v1.4.6-atualizacao.zip`.
+3. Envie para a raiz do repositório GitHub Pages o conteúdo extraído, substituindo `index.html`, `projetos.html` e, opcionalmente, `LEIA-ME.md`.
+4. Faça o commit com a mensagem `Ajustes de titulo e navegacao v1.4.6`.
+5. Abra o site e pressione `Ctrl + Shift + R` para atualizar.
