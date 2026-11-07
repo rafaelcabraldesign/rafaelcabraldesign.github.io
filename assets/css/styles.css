@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.7
+ * RAFAEL CABRAL | Portfolio v1.4.8
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -229,56 +229,32 @@ h2.section-label { margin: 0; }
 .site-footer > a:hover::after, .site-footer > a:focus-visible::after, .social-links a:hover::after, .social-links a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .social-links { justify-self: end; display: flex; flex-wrap: wrap; gap: 20px; }
 
-/* Assinatura editorial do rodape: texto na Bestia Small, entregue via Adobe Fonts.
-   A revelacao e feita por palavras para preservar os ligamentos internos da caligrafia.
-   Com JS desligado ou reducao de movimento ativa, a assinatura e sempre visivel. */
+/* Assinatura vetorial original de Rafael Cabral.
+   Cada letra e desenhada pela mascara de seu proprio traco central.
+   Nenhuma fonte adicional e carregada para esta assinatura. */
 .site-footer > .footer-signature {
   justify-self: center;
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 0;
+  width: clamp(160px, 13vw, 202px);
+  padding: 7px 0;
+  line-height: 0;
   color: var(--ink);
   text-decoration: none;
-  line-height: 1;
-  transition: color .36s ease;
+  transition: color .32s ease;
 }
 .site-footer > .footer-signature::after { display: none; }
 .site-footer > .footer-signature:hover,
 .site-footer > .footer-signature:focus-visible { color: var(--accent); }
-.footer-signature__text {
-  display: inline-flex;
-  align-items: baseline;
-  gap: .13em;
-  font-family: "bestia-small", "Segoe Script", "Brush Script MT", cursive;
-  font-size: clamp(32px, 3vw, 55px);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  white-space: nowrap;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+.footer-signature__svg { width: 100%; height: auto; display: block; overflow: visible; }
+/* Sem JS, sem IntersectionObserver e em movimento reduzido: assinatura integral. */
+.footer-signature:not(.is-prepared) .signature-glyph { mask: none; }
+.signature-trace { stroke-dasharray: var(--signature-path-length, 2000); stroke-dashoffset: var(--signature-path-length, 2000); }
+.footer-signature.is-writing .signature-trace {
+  animation: signature-stroke-draw var(--signature-duration, .3s) cubic-bezier(.38,0,.55,1) var(--signature-delay, 0s) forwards;
 }
-.footer-signature__word { display: inline-block; }
-.footer-signature.is-writing .footer-signature__word--first {
-  animation: signature-ink-write 1.7s linear both;
-}
-.footer-signature.is-writing .footer-signature__word--last {
-  animation: signature-ink-write 1.7s linear 1.47s both;
-}
-/* Pequenas variacoes de velocidade evocam pausas de uma caneta entre tracos. */
-@keyframes signature-ink-write {
-  0%   { clip-path: inset(-.16em 100% -.16em 0); }
-  13%  { clip-path: inset(-.16em 89% -.16em 0); }
-  25%  { clip-path: inset(-.16em 71% -.16em 0); }
-  33%  { clip-path: inset(-.16em 66% -.16em 0); }
-  44%  { clip-path: inset(-.16em 51% -.16em 0); }
-  52%  { clip-path: inset(-.16em 46% -.16em 0); }
-  67%  { clip-path: inset(-.16em 27% -.16em 0); }
-  76%  { clip-path: inset(-.16em 20% -.16em 0); }
-  100% { clip-path: inset(-.16em 0% -.16em 0); }
-}
+@keyframes signature-stroke-draw { to { stroke-dashoffset: 0; } }
 
 .toast { position: fixed; z-index: 100; bottom: 26px; left: 50%; transform: translateX(-50%); width: max-content; max-width: min(90vw, 420px); padding: 14px 18px; border-radius: 10px; background: var(--ink); color: #fff; text-align: center; font-size: 13px; box-shadow: 0 12px 35px rgba(0,0,20,.14); }
 
@@ -366,7 +342,7 @@ h2.section-label { margin: 0; }
   /* Rodape empilhado para preservar a assinatura em telas estreitas. */
   .site-footer { grid-template-columns: 1fr; gap: 13px; justify-items: center; text-align: center; padding-bottom: 34px; }
   .site-footer > .footer-signature { grid-column: 1; justify-self: center; }
-  .footer-signature__text { font-size: clamp(30px, 7vw, 38px); }
+  .site-footer > .footer-signature { width: clamp(160px, 48vw, 185px); }
   .social-links { grid-column: 1; justify-self: center; justify-content: center; }
   .inner-main { padding-top: 85px; }
   .detail-intro { flex-direction: column; align-items: start; }

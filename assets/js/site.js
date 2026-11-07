@@ -314,50 +314,52 @@
     nodes.forEach(node => observer.observe(node));
   }
 
-  /* Escreve "Rafael Cabral" no rodape, em duas sequencias.
-   * O texto e carregado via Adobe Fonts e permanece legivel sem JS.
-   * Acionar no scroll evita animacoes fora da area visivel;
-   * hover/foco permitem repetir depois de concluida a primeira escrita.
+  /* Assinatura em SVG: desenha os tracos de cada letra uma unica vez.
+   Hover e foco alteram apenas a cor, nunca reiniciam a escrita.
+   A mascara usa linhas centrais reconstruidas dos contornos originais.
+   Se JS falhar ou houver movimento reduzido, a assinatura fica visivel.
    */
   function setupFooterSignature() {
     const link = document.querySelector('[data-signature]');
     if (!link) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reduced.matches || !('IntersectionObserver' in window)) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) return;
+    const traces = [...link.querySelectorAll('[data-sig-trace]')];
+    if (!traces.length) return;
 
-    let playing = false;
-    let written = false;
-    const play = () => {
-      if (playing || reduced.matches) return;
-      playing = true;
-      link.classList.remove('is-writing');
-      void link.offsetWidth; // Reinicia as duas sequencias, inclusive no replay de hover.
-      link.classList.add('is-writing');
-    };
-    const last = link.querySelector('.footer-signature__word--last');
-    if (last) last.addEventListener('animationend', event => {
-      if (event.animationName !== 'signature-ink-write') return;
-      link.classList.remove('is-writing');
-      playing = false;
-      written = true;
+    // Cada letra tem seu proprio percurso e ritmo de escrita.
+    const lengths = traces.map(trace => trace.getTotalLength());
+    const totalLength = lengths.reduce((sum, length) => sum + length, 0);
+    const totalDuration = 4200;
+    const pauseBetweenLetters = 55;
+    const drawableTime = totalDuration - pauseBetweenLetters * (traces.length - 1);
+    let elapsed = 0;
+    traces.forEach((trace, i) => {
+      const length = lengths[i] + 2;
+      const duration = Math.max(155, drawableTime * (lengths[i] / totalLength));
+      trace.style.setProperty('--signature-path-length', `${length}px`);
+      trace.style.setProperty('--signature-duration', `${duration.toFixed(1)}ms`);
+      trace.style.setProperty('--signature-delay', `${elapsed.toFixed(1)}ms`);
+      elapsed += duration + pauseBetweenLetters;
     });
+    link.classList.add('is-prepared');
+
+    let started = false;
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        observer.unobserve(entry.target);
-        // Espera o Adobe Fonts quando possivel, sem exigir download de fontes.
-        const fontPromise = document.fonts && document.fonts.load
-          ? document.fonts.load('400 42px "bestia-small"', 'Rafael Cabral').catch(() => [])
-          : Promise.resolve([]);
-        Promise.race([fontPromise, new Promise(resolve => setTimeout(resolve, 2000))])
-          .then(() => { if (link.isConnected) play(); });
-      });
-    }, { threshold: .5 });
+      if (!entries.some(entry => entry.isIntersecting) || started) return;
+      started = true;
+      observer.disconnect();
+      link.classList.add('is-writing');
+    }, { threshold: .35 });
     observer.observe(link);
-    link.addEventListener('pointerenter', event => {
-      if (event.pointerType === 'mouse' && written) play();
-    });
-    link.addEventListener('focus', () => { if (written) play(); });
+
+    // Depois da ultima pincelada, remove todas as mascaras sem reiniciar.
+    const finalTrace = traces[traces.length - 1];
+    finalTrace.addEventListener('animationend', event => {
+      if (event.animationName !== 'signature-stroke-draw') return;
+      link.classList.remove('is-writing', 'is-prepared');
+      link.classList.add('is-complete');
+    }, { once: true });
   }
 
   const featured = document.getElementById('featured-projects');
