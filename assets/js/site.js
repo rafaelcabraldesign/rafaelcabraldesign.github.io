@@ -243,12 +243,16 @@
   }
 
   /**
-   * Entrada visivel na primeira aparicao. Nao depende de CSS adicionando
-   * opacity:0 no mesmo frame que .is-visible (problema comum que apagava
-   * as transicoes da versao anterior). Dispara WAAPI apos intersecao.
-   * Com JS desativado, todo o conteudo continua visivel.
+   * Elementos com entrada sao ocultados pelo CSS desde o primeiro frame.
+   * Aqui somente ativamos a animacao ao cruzar o viewport. Nao usamos
+   * WAAPI + cancel(), que gerava um frame visivel antes de reiniciar.
    */
   function setupReveal() {
+    const root = document.documentElement;
+    if (!root.classList.contains('motion-ready') || !('IntersectionObserver' in window)) {
+      root.classList.remove('motion-ready');
+      return;
+    }
     const selectors = [
       '.hero-content > *',
       '.section-top > *',
@@ -272,46 +276,71 @@
       '.site-footer > *:not(.footer-signature)'
     ];
     const nodes = [...new Set(selectors.flatMap(selector => [...document.querySelectorAll(selector)]))];
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion || !('IntersectionObserver' in window) || typeof Element.prototype.animate !== 'function') {
-      return; // Conteudo natural, sem ocultar nada.
-    }
-
-    const play = element => {
-      const children = [...element.parentElement.children];
-      const siblingPosition = Math.max(children.indexOf(element), 0);
-      const isTile = element.classList.contains('project-card') || element.classList.contains('detail-cover');
-      const inHero = element.closest('.hero-content');
-      const distance = isTile ? 128 : inHero ? 118 : 96;
-      // Entradas mais presentes e cadenciadas para grupos de elementos.
-      const delay = isTile ? (siblingPosition % 2) * 260 : (siblingPosition % 3) * 205;
-      const frames = [
-        { opacity: 0, transform: `translate3d(0,${distance}px,0)` },
-        { opacity: 1, transform: 'translate3d(0,0,0)' }
-      ];
-      const animation = element.animate(frames, {
-        duration: isTile ? 1800 : inHero ? 1850 : 1650,
-        delay,
-        easing: 'cubic-bezier(.35,.3,.25,1)',
-        fill: 'both'
-      });
-      element.dataset.entrance = 'playing';
-      animation.finished.then(() => {
-        // Ao terminar, o elemento volta a seus estilos naturais (sem flash).
-        animation.cancel();
-        element.dataset.entrance = 'complete';
-      }).catch(() => {});
-    };
 
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        observer.unobserve(entry.target);
-        play(entry.target);
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        observer.unobserve(target);
+        target.dataset.entrance = 'playing';
+        target.classList.add('is-revealed');
       });
-    }, { threshold: .12, rootMargin: '0px 0px -42px 0px' });
+    }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
 
-    nodes.forEach(node => observer.observe(node));
+    for (const element of nodes) {
+      const siblings = [...element.parentElement.children];
+      const position = Math.max(siblings.indexOf(element), 0);
+      const isCard = element.classList.contains('project-card');
+      const isHero = !!element.closest('.hero-content');
+      const delay = isCard ? (position % 2) * 155 : (position % 3) * 130;
+      const distance = isCard ? 120 : isHero ? 105 : 90;
+      element.style.setProperty('--reveal-delay', `${delay}ms`);
+      element.style.setProperty('--reveal-distance', `${distance}px`);
+      element.style.setProperty('--reveal-duration', `${isCard ? 1550 : isHero ? 1580 : 1420}ms`);
+      element.dataset.entrance = 'pending';
+      element.addEventListener('animationend', event => {
+        if (event.animationName === 'reveal-enter') element.dataset.entrance = 'complete';
+      });
+      observer.observe(element);
+    }
+    root.classList.add('motion-initialized');
+
+    // Se a pessoa ativar 'reduzir movimento' durante a sessao, revelar tudo.
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = event => {
+      if (event.matches) {
+        observer.disconnect();
+        root.classList.remove('motion-ready');
+      }
+    };
+    if (preference.addEventListener) preference.addEventListener('change', onChange);
+  }
+
+  /**
+   * Funde a pagina inteira antes de sair, sem afetar links externos,
+   * WhatsApp, e-mail, downloads, nova aba ou navegacao por âncoras.
+   */
+  function setupPageTransitions() {
+    let navigating = false;
+    window.addEventListener('pageshow', () => {
+      navigating = false;
+      document.body.classList.remove('is-page-leaving');
+    });
+    document.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const anchor = event.target.closest('a[href]');
+      if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
+      let url;
+      try { url = new URL(anchor.href, window.location.href); } catch (_) { return; }
+      if (!['http:', 'https:', 'file:'].includes(url.protocol)) return;
+      if (url.origin !== location.origin) return;
+      const current = new URL(location.href);
+      if (url.pathname === current.pathname && url.search === current.search) return; // hash / scroll
+      if (navigating || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      navigating = true;
+      event.preventDefault();
+      document.body.classList.add('is-page-leaving');
+      window.setTimeout(() => window.location.assign(url.href), 465);
+    });
   }
 
   /* Assinatura em SVG: desenha os tracos de cada letra uma unica vez.
@@ -377,5 +406,6 @@
   setupMenu();
   setupStickyHeader();
   setupReveal();
+  setupPageTransitions();
   setupFooterSignature();
 })();

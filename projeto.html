@@ -10,9 +10,24 @@
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="preconnect" href="https://p.typekit.net" crossorigin>
   <link rel="stylesheet" href="https://use.typekit.net/pwt1xky.css">
-  <link rel="stylesheet" href="assets/css/styles.css?v=148">
+  <!-- Prepara a entrada antes do primeiro frame; sem JS, conteudo permanece visivel. -->
+  <script>
+    (() => {
+      try {
+        if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('motion-ready');
+          window.addEventListener('load', () => {
+            if (!document.documentElement.classList.contains('motion-initialized')) {
+              document.documentElement.classList.remove('motion-ready');
+            }
+          }, { once: true });
+        }
+      } catch (_) { /* Fallback: elementos visiveis. */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=1410">
   <script defer src="assets/js/conteudo.js?v=149"></script>
-  <script defer src="assets/js/site.js?v=149"></script>
+  <script defer src="assets/js/site.js?v=1410"></script>
 </head>
 <body id="topo">
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
