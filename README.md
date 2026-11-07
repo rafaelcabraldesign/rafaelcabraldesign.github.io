@@ -1,93 +1,57 @@
-# Rafael Cabral Design — Portfólio v1.4.6
+# Rafael Cabral Design — Portfólio v1.4.7
 
-Site estático em HTML, CSS e JavaScript, compatível com GitHub Pages. Esta revisão **integra a Nexa pelo Adobe Fonts**, sem instalar ou hospedar arquivos `.otf` no GitHub.
+Site estático para GitHub Pages (HTML, CSS e JavaScript). Usa Nexa e Bestia Small pelo projeto oficial Adobe Fonts `https://use.typekit.net/pwt1xky.css`.
 
-## Atualização v1.4.3 — Nexa via Adobe Fonts
+## O que mudou na v1.4.7
 
-Projeto web Adobe Fonts confirmado: `https://use.typekit.net/pwt1xky.css`.
+- O link **Topo** do rodapé foi substituído pela assinatura **Rafael Cabral** usando `font-family: "bestia-small"` em todas as três páginas.
+- A assinatura é revelada em duas etapas, primeiro **Rafael**, depois **Cabral**, com ritmo levemente irregular para sugerir escrita com caneta.
+- A animação começa quando a assinatura entra na tela. Em desktop, pode ser repetida ao passar o mouse; também se repete quando o link recebe foco pelo teclado.
+- A assinatura continua sendo um link que **leva ao topo da própria página**. Seu rótulo acessível identifica essa função.
+- Em smartphones, o rodapé é empilhado para evitar colisão com o copyright e o e-mail.
+- Com JavaScript indisponível ou preferências de movimento reduzido, a assinatura aparece completa, sem depender de animação.
+- Não foram alterados os 14 projetos, a estrutura das páginas, os textos e os links de contato.
 
-O código CSS publicado pela Adobe inclui as famílias `nexa` e `nexa-text`, com pesos normais **400 (Regular)** e **700 (Bold)**, além de suas versões itálicas. A interface utiliza `nexa` em peso **400**, preservando a hierarquia leve e editorial aprovada na v1.4.2. `Helvetica Neue`/Arial ficam como alternativas caso a fonte online não carregue.
+**Precisão do efeito:** esta v1.4.7 faz uma *revelação caligráfica* da fonte. Ela não traça cada movimento real da ponta da caneta. Para essa fidelidade, envie um SVG com os caminhos de escrita individualizados (idealmente traçados centrais por letra/gesto). Um SVG que contenha somente contornos preenchidos ainda precisará ter os caminhos de escrita preparados.
 
-O `<head>` das três páginas agora contém o link oficial da Adobe; as declarações locais `@font-face` foram removidas de `assets/css/styles.css`, assim como os preloads de `.otf`. **Nenhum arquivo de fonte é distribuído.** A publicação via Adobe Fonts depende de assinatura elegível ativa e projeto web publicado na Adobe.
+## Arquivos modificados na v1.4.7
 
-Importante: os arquivos `Trial` enviados anteriormente tinham licença "Personal Use Only". Não faça upload desses `.otf` ao repositório. Caso já os tenha enviado, recomendamos excluí-los da pasta `assets/fonts/`; o site não precisa mais deles.
+- `index.html`, `projetos.html`, `projeto.html`: assinatura no lugar do link Topo, cache atualizado.
+- `assets/css/styles.css`: tipografia Bestia, animação caligráfica e layout responsivo do rodapé.
+- `assets/js/site.js`: acionamento quando o rodapé entra em cena, replay no hover/foco e respeito à preferência de movimento reduzido.
+- `LEIA-ME.md`: este guia.
 
-## Conteúdo do site
+Nenhum arquivo de fonte foi incluído. O link do Adobe Fonts já está no `<head>` das três páginas.
 
-- `index.html`: página inicial com projetos em destaque, Serviços, Sobre e Contato.
-- `projetos.html`: galeria completa com 14 projetos.
-- `projeto.html`: página individual por endereço `?projeto=slug` com grade de outros trabalhos.
-- `assets/css/styles.css`: cores, tipografia, layout e interações.
-- `assets/js/conteudo.js`: projetos, imagens e dados de contato editáveis.
-- `assets/js/site.js`: renderização de cards, animações e navegação.
-- `assets/img/icone.svg`: monograma original; `assets/img/favicon.svg`: favicon rosa.
+## Como atualizar no GitHub Pages
 
-## Contato
+1. Faça backup do repositório atual com **Code → Download ZIP**.
+2. Extraia `portfolio-rafael-cabral-v1.4.7-atualizacao.zip`.
+3. Em `rafaelcabraldesign.github.io`, acesse **Add file → Upload files**.
+4. Arraste **os arquivos extraídos**, mantendo a hierarquia `assets/css` e `assets/js`; não envie a pasta externa do ZIP.
+5. Substitua as versões anteriores e confirme com **Commit changes**. Sugestão de mensagem: `Assinatura animada no rodapé v1.4.7`.
+6. Abra `https://rafaelcabraldesign.github.io/`, role até o rodapé e teste a animação. Se aparecer a versão antiga, faça `Ctrl + Shift + R`.
 
-- WhatsApp: +55 (34) 99716-7187, com a mensagem inicial “Olá, Rafael! Gostaria de conversar sobre um projeto.” O visitante confirma o envio.
-- E-mail: `rafaelcdesign@outlook.com`, link no rodapé.
-- Menu “Vamos conversar” rola até a seção Contato; botões “Entre em contato” abrem o WhatsApp.
+## Fonte e licença
 
-Os dados de contato e redes sociais são configuráveis no início de `assets/js/conteudo.js`.
+O seu kit Adobe Fonts `pwt1xky` inclui `nexa`, `nexa-text` e `bestia-small` (peso 400, estilo normal). A assinatura usa a Bestia; as demais seções continuam usando a Nexa.
 
-## Atualizar imagens de projetos
+É necessário manter a licença/assinatura elegível e o projeto web publicado no Adobe Fonts. Não envie fontes locais `.otf` ou `.woff` para o GitHub.
 
-1. Coloque sua imagem (de preferência `.webp`) em `assets/img/projetos/`.
-2. Em `assets/js/conteudo.js`, localize o projeto e altere o campo `imagem` para um caminho como `assets/img/projetos/crisfit.webp`.
-3. Para incluir imagens na página do case, preencha o array `galeria` com os caminhos correspondentes.
-4. Envie ao GitHub **a imagem e o arquivo `conteudo.js` alterado** no mesmo repositório.
+## Ajustes futuros da assinatura
 
-Enquanto as imagens não forem fornecidas, os cards exibem placeholders neutros. Não são utilizados projetos fictícios nem fotos de outros profissionais.
+Em `assets/css/styles.css`:
 
-## Publicar atualização sobre v1.4.4 no GitHub
+- `.footer-signature__text`: controla o tamanho (`font-size`), a família e o espaçamento entre palavras (`gap`).
+- `.footer-signature.is-writing .footer-signature__word--first/--last`: controlam a duração e o intervalo de cada palavra.
+- `@keyframes signature-ink-write`: controla a forma de revelação horizontal.
 
-1. Faça backup do repositório atual (Code → Download ZIP).
-2. Extraia `portfolio-rafael-cabral-v1.4.5-atualizacao.zip` no computador.
-3. Na página principal do repositório `rafaelcabraldesign.github.io`, selecione **Add file → Upload files**.
-4. Envie os **arquivos extraídos**, preservando as pastas e sem adicionar uma pasta intermediária.
-5. Confirme a substituição dos arquivos e faça o commit, por exemplo `Ajuste de tipografia e cards v1.4.4`.
-6. Abra `https://rafaelcabraldesign.github.io` e atualize sem cache (`Ctrl + Shift + R`).
+Em `assets/js/site.js`, `setupFooterSignature()` controla o acionamento da animação e o replay no hover/foco. Preserve a verificação de movimento reduzido.
 
-Se ainda não houver GitHub Pages configurado, use Settings → Pages → Deploy from a branch → `main` → `/(root)`.
+## Outras edições do portfólio
 
-**Esta versão não requer upload de arquivos de fonte.** Se o navegador exibir uma fonte alternativa, confirme que o projeto `pwt1xky` continua publicado na sua conta Adobe Fonts e que a assinatura está ativa.
+- `assets/js/conteudo.js`: edite os 14 projetos, capas, galerias, e-mail e WhatsApp.
+- `assets/img/projetos/`: salve as capas e galerias dos trabalhos.
+- `index.html`: textos das seções Serviços, Sobre e Contato.
 
-## Observações
-
-- Mantidas as decisões das versões anteriores: header sticky, responsividade, 14 projetos, animação de entrada, cards arredondados, hover de projetos e botões com efeito de roleta.
-- As páginas individuais ainda contêm placeholders e estão sinalizadas para não indexação enquanto não estiverem concluídas.
-- A seção Sobre permanece em primeira pessoa; a comunicação de estúdio continua no plural nas demais seções.
-- Repositório público e GitHub Pages não exigem hospedagem paga. A fonte, entretanto, é carregada via serviço Adobe Fonts associado à sua conta.
-
-## Atualização v1.4.4 — elementos de interface e capas
-
-- Ajustado `--type-ui` para 18–20 px conforme a largura: menu, botões, tags de seção, links de navegação, link de contato e textos de Serviços usam a mesma escala.
-- Em smartphones, os botões e links se reorganizam sem ultrapassar a largura da tela.
-- A camada de degradê sobre os cards foi suavizada e alterada para preto translúcido, com quatro pontos de interpolação. O foco é preservar as imagens futuras, mantendo os nomes legíveis ao passar o mouse ou navegar com teclado. Em dispositivos touch, o nome continua sempre visível.
-- O CSS passa a usar `styles.css?v=144` nas três páginas para evitar cache da versão anterior.
-
-**A atualização inclui apenas os arquivos HTML, CSS e este guia; não contém fontes nem altera o conteúdo dos projetos.**
-
-## Atualização v1.4.5 — hover dos links e CTA da seção Contato
-
-- O link **Ver todos os projetos** usa um sublinhado animado que cresce da esquerda para a direita, oculto no estado inicial e exibido apenas em hover ou foco pelo teclado. A mesma regra se aplica aos demais links com classe `.text-link`.
-- O antigo link textual **Entre em contato** no final da página foi substituído por um botão cinza arredondado idêntico ao botão da abertura, com animação vertical de preenchimento e texto. O destino continua sendo o WhatsApp configurado no script.
-- Atualizado o parâmetro de cache `styles.css?v=145` nas três páginas.
-- Não foram modificados textos, projetos, fonte Adobe, páginas individuais ou destinos de contato.
-
-Para atualizar a v1.4.4 no GitHub: descompacte o ZIP de atualização e substitua `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css` e `LEIA-ME.md`.
-
-
-## Atualização v1.4.6 — título da abertura e página de todos os projetos
-
-- Página inicial (`index.html`): quebra de linha intencional imediatamente após “Na arte do design,”, antes de “os detalhes são tudo.”. Em telas muito estreitas, o navegador ainda pode fazer quebras adicionais para preservar a responsividade.
-- Galeria completa (`projetos.html`): removido o link “Voltar ao início ↗” acima dos projetos. O contador de projetos permanece visível e os links do cabeçalho continuam funcionando normalmente.
-- **Nenhuma alteração** em CSS, JavaScript, Adobe Fonts, WhatsApp ou no cadastro dos 14 projetos. Não é necessário reenviar essas pastas ao aplicar a atualização sobre a v1.4.5.
-
-### Como publicar sobre a v1.4.5
-
-1. Faça backup do repositório.
-2. Extraia `portfolio-rafael-cabral-v1.4.6-atualizacao.zip`.
-3. Envie para a raiz do repositório GitHub Pages o conteúdo extraído, substituindo `index.html`, `projetos.html` e, opcionalmente, `LEIA-ME.md`.
-4. Faça o commit com a mensagem `Ajustes de titulo e navegacao v1.4.6`.
-5. Abra o site e pressione `Ctrl + Shift + R` para atualizar.
+As páginas de projetos continuam com placeholders até o envio das imagens definitivas.

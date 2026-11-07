@@ -269,7 +269,7 @@
       '.detail-detail-block > *',
       '.detail-gallery > *',
       '.related-header > *',
-      '.site-footer > *'
+      '.site-footer > *:not(.footer-signature)'
     ];
     const nodes = [...new Set(selectors.flatMap(selector => [...document.querySelectorAll(selector)]))];
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -281,17 +281,18 @@
       const children = [...element.parentElement.children];
       const siblingPosition = Math.max(children.indexOf(element), 0);
       const isTile = element.classList.contains('project-card') || element.classList.contains('detail-cover');
-      const distance = isTile ? 42 : 29;
-      // A sequencia aparece, mas com limite para evitar espera em listas longas.
-      const delay = (siblingPosition % 3) * 90;
+      const inHero = element.closest('.hero-content');
+      const distance = isTile ? 128 : inHero ? 118 : 96;
+      // Entradas mais presentes e cadenciadas para grupos de elementos.
+      const delay = isTile ? (siblingPosition % 2) * 260 : (siblingPosition % 3) * 205;
       const frames = [
         { opacity: 0, transform: `translate3d(0,${distance}px,0)` },
         { opacity: 1, transform: 'translate3d(0,0,0)' }
       ];
       const animation = element.animate(frames, {
-        duration: isTile ? 1000 : 880,
+        duration: isTile ? 1800 : inHero ? 1850 : 1650,
         delay,
-        easing: 'cubic-bezier(.22,1,.36,1)',
+        easing: 'cubic-bezier(.35,.3,.25,1)',
         fill: 'both'
       });
       element.dataset.entrance = 'playing';
@@ -308,9 +309,55 @@
         observer.unobserve(entry.target);
         play(entry.target);
       });
-    }, { threshold: .08, rootMargin: '0px 0px -28px 0px' });
+    }, { threshold: .12, rootMargin: '0px 0px -42px 0px' });
 
     nodes.forEach(node => observer.observe(node));
+  }
+
+  /* Escreve "Rafael Cabral" no rodape, em duas sequencias.
+   * O texto e carregado via Adobe Fonts e permanece legivel sem JS.
+   * Acionar no scroll evita animacoes fora da area visivel;
+   * hover/foco permitem repetir depois de concluida a primeira escrita.
+   */
+  function setupFooterSignature() {
+    const link = document.querySelector('[data-signature]');
+    if (!link) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduced.matches || !('IntersectionObserver' in window)) return;
+
+    let playing = false;
+    let written = false;
+    const play = () => {
+      if (playing || reduced.matches) return;
+      playing = true;
+      link.classList.remove('is-writing');
+      void link.offsetWidth; // Reinicia as duas sequencias, inclusive no replay de hover.
+      link.classList.add('is-writing');
+    };
+    const last = link.querySelector('.footer-signature__word--last');
+    if (last) last.addEventListener('animationend', event => {
+      if (event.animationName !== 'signature-ink-write') return;
+      link.classList.remove('is-writing');
+      playing = false;
+      written = true;
+    });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        // Espera o Adobe Fonts quando possivel, sem exigir download de fontes.
+        const fontPromise = document.fonts && document.fonts.load
+          ? document.fonts.load('400 42px "bestia-small"', 'Rafael Cabral').catch(() => [])
+          : Promise.resolve([]);
+        Promise.race([fontPromise, new Promise(resolve => setTimeout(resolve, 2000))])
+          .then(() => { if (link.isConnected) play(); });
+      });
+    }, { threshold: .5 });
+    observer.observe(link);
+    link.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'mouse' && written) play();
+    });
+    link.addEventListener('focus', () => { if (written) play(); });
   }
 
   const featured = document.getElementById('featured-projects');
@@ -328,4 +375,5 @@
   setupMenu();
   setupStickyHeader();
   setupReveal();
+  setupFooterSignature();
 })();
