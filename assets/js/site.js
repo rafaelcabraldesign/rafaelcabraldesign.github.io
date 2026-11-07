@@ -41,16 +41,10 @@
       link.append(el('span', 'placeholder-center', 'Imagem em breve'));
     }
 
-    link.append(el('span', 'cover-count', String(index + 1).padStart(2, '0')));
     const caption = el('div', 'cover-meta');
     caption.append(el('h3', 'project-title', project.nome));
     if (project.categoria) caption.append(el('p', 'project-category', project.categoria));
     link.append(caption);
-    if (project.ano) link.append(el('span', 'cover-year', project.ano));
-
-    const arrow = el('span', 'cover-arrow', '↗');
-    arrow.setAttribute('aria-hidden', 'true');
-    link.append(arrow);
     return link;
   }
 
@@ -88,19 +82,8 @@
 
     const project = projects[index];
     document.title = `${project.nome} — Rafael Cabral`;
-    const next = projects[(index + 1) % projects.length];
-    const prev = projects[(index - 1 + projects.length) % projects.length];
-
-    const breadcrumb = el('div', 'project-breadcrumb');
-    const all = el('a', '', '← Todos os projetos');
-    all.href = 'projetos.html';
-    const nextBreadcrumb = el('a', '', `Próximo projeto ↗`);
-    nextBreadcrumb.href = projectLink(next);
-    breadcrumb.append(all, nextBreadcrumb);
-
     const intro = el('div', 'detail-intro');
     const headingGroup = el('div');
-    headingGroup.append(el('p', 'section-label', '(Projeto)'));
     headingGroup.append(el('h1', '', project.nome));
     intro.append(headingGroup);
     if (project.categoria || project.ano) intro.append(el('span', 'detail-badge', [project.categoria, project.ano].filter(Boolean).join(' · ')));
@@ -124,7 +107,7 @@
     overview.append(el('h2', '', 'O projeto'));
     overview.append(el('p', '', project.resumo || 'Este case está em preparação. Em breve, este espaço reunirá a apresentação do projeto, suas imagens e os detalhes do processo criativo.'));
 
-    container.append(breadcrumb, intro, hero, overview);
+    container.append(intro, hero, overview);
     const context = makeDetailBlock('Contexto', project.contexto);
     const solution = makeDetailBlock('Solução', project.solucao);
     if (context) container.append(context);
@@ -144,12 +127,21 @@
       if (gallery.children.length) container.append(gallery);
     }
 
-    const nextWrap = el('div', 'next-project');
-    const label = el('span', '', 'Próximo projeto');
-    const link = el('a', '', `${next.nome} ↗`);
-    link.href = projectLink(next);
-    nextWrap.append(label, link);
-    container.append(nextWrap);
+    // Relacionados: todos os demais projetos, sem botoes de anterior/proximo.
+    const others = projects.filter(item => item.slug !== project.slug);
+    if (others.length) {
+      const related = el('section', 'related-projects');
+      related.setAttribute('aria-labelledby', 'related-title');
+      const relatedHeader = el('div', 'related-header');
+      const relatedTitle = el('h2', '', 'Outros projetos');
+      relatedTitle.id = 'related-title';
+      relatedHeader.append(relatedTitle, el('span', 'related-counter', `01 — ${String(others.length).padStart(2,'0')}`));
+      const relatedGrid = el('div', 'projects-grid projects-grid--related');
+      renderCards(relatedGrid, others);
+      related.append(relatedHeader, relatedGrid);
+      container.append(related);
+    }
+
   }
 
   function configureContact() {
@@ -250,10 +242,16 @@
     update();
   }
 
+  /**
+   * Entrada visivel na primeira aparicao. Nao depende de CSS adicionando
+   * opacity:0 no mesmo frame que .is-visible (problema comum que apagava
+   * as transicoes da versao anterior). Dispara WAAPI apos intersecao.
+   * Com JS desativado, todo o conteudo continua visivel.
+   */
   function setupReveal() {
     const selectors = [
       '.hero-content > *',
-      '.section-top',
+      '.section-top > *',
       '.projects-grid .project-card',
       '.services-section > .section-label',
       '.services-section > .statement',
@@ -265,36 +263,53 @@
       '.contact-row > *',
       '.listing-intro > *',
       '.listing-tools > *',
-      '.project-breadcrumb',
       '.detail-intro > *',
       '.detail-cover',
       '.detail-overview > *',
       '.detail-detail-block > *',
       '.detail-gallery > *',
-      '.next-project > *',
+      '.related-header > *',
       '.site-footer > *'
     ];
     const nodes = [...new Set(selectors.flatMap(selector => [...document.querySelectorAll(selector)]))];
-    nodes.forEach(node => {
-      node.setAttribute('data-reveal', '');
-      if (node.matches('.project-card, .service-row')) {
-        const siblings = [...node.parentElement.children];
-        const index = siblings.indexOf(node);
-        node.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 85}ms`);
-      }
-    });
-
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      nodes.forEach(node => node.classList.add('is-visible'));
-      return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window) || typeof Element.prototype.animate !== 'function') {
+      return; // Conteudo natural, sem ocultar nada.
     }
+
+    const play = element => {
+      const children = [...element.parentElement.children];
+      const siblingPosition = Math.max(children.indexOf(element), 0);
+      const isTile = element.classList.contains('project-card') || element.classList.contains('detail-cover');
+      const distance = isTile ? 42 : 29;
+      // A sequencia aparece, mas com limite para evitar espera em listas longas.
+      const delay = (siblingPosition % 3) * 90;
+      const frames = [
+        { opacity: 0, transform: `translate3d(0,${distance}px,0)` },
+        { opacity: 1, transform: 'translate3d(0,0,0)' }
+      ];
+      const animation = element.animate(frames, {
+        duration: isTile ? 1000 : 880,
+        delay,
+        easing: 'cubic-bezier(.22,1,.36,1)',
+        fill: 'both'
+      });
+      element.dataset.entrance = 'playing';
+      animation.finished.then(() => {
+        // Ao terminar, o elemento volta a seus estilos naturais (sem flash).
+        animation.cancel();
+        element.dataset.entrance = 'complete';
+      }).catch(() => {});
+    };
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
+        play(entry.target);
       });
-    }, { threshold: .06, rootMargin: '0px 0px -28px 0px' });
+    }, { threshold: .08, rootMargin: '0px 0px -28px 0px' });
+
     nodes.forEach(node => observer.observe(node));
   }
 

@@ -1,18 +1,18 @@
-# Portfólio Rafael Cabral — versão 1.2
+# Portfólio Rafael Cabral — versão 1.3
 
 Site estático e responsivo, construído com HTML, CSS e JavaScript, preparado para GitHub Pages. Não precisa de hospedagem paga, React, npm, build ou assinatura.
 
-## Mudanças na versão 1.2
+## Mudanças na versão 1.3
 
-- Largura adaptável a monitores ultrawide: o conteúdo e os grids usam a largura útil com margens laterais pequenas, sem limitar a 1540 px.
-- Header `sticky`, sempre visível no topo da tela durante a rolagem, com efeito discreto ao rolar.
-- "Vamos conversar" substitui "Contato" no menu, sem sublinhado permanente (o destaque aparece apenas ao interagir).
-- Removida a linha "RAFAEL CABRAL / DESIGN GRÁFICO" acima do título inicial.
-- Animações de entrada por rolagem em textos, cards, serviços e rodapé, além de transições de hover mais elaboradas. Respeitam a preferência de reduzir movimento do sistema.
-- Favicon rosa `#D60B52` em todas as páginas; o monograma do header permanece Black Russian e fica rosa no hover.
-- Nome do projeto dentro da capa (não abaixo), com contraste específico para placeholders claros e imagens reais.
-- Rodapé simplificado: "Rafael Cabral Design", "Topo" (sem seta) e "E-mail" (link clicável).
-- Conteúdos, contato do WhatsApp e lista dos 14 projetos mantidos.
+- Aumentadas as escalas do título principal, descrição de abertura, textos de navegação e serviços, com peso editorial regular e espaçamento revisado para se aproximar da proporção da referência BerrielBrands.
+- Menus em tamanho equivalente ao texto comum, também em mobile.
+- Entradas realmente animadas por `IntersectionObserver` + `Element.animate()` (Web Animations API), com deslocamento vertical, opacidade e sequência; respeito a `prefers-reduced-motion` e conteúdo sempre visível sem JavaScript.
+- Removidas as setas dentro de botões preenchidos e capas de projetos.
+- Nome do projeto revelado **somente no hover/foco** com fade e deslocamento; em celulares, fica visível porque não há hover.
+- Links do rodapé com o mesmo sublinhado animado do menu.
+- Nos cases individuais, removidos: navegação anterior/próximo, tag `(Projeto)` e link `Todos os projetos`.
+- Cases agora encerram com a galeria **Outros projetos**, listando todos os demais trabalhos em cards com 3 colunas no desktop e responsividade em telas menores.
+- Mantidos os 14 projetos, os placeholders, os textos aprovados, os links de WhatsApp/e-mail, o header sticky, a largura ultrawide e o favicon rosa.
 
 ## O que está incluído
 
