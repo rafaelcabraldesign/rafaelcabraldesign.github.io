@@ -339,6 +339,8 @@
           item.dataset.entrance = 'playing';
           item.classList.add('is-revealed');
         });
+        // Mesmo gatilho para textos, links e escrita SVG: sem esperar o animationend.
+        footer.dispatchEvent(new Event('footer-entrance-start'));
       }, { threshold: .02, rootMargin: '0px 0px -16px 0px' });
       footerObserver.observe(footer);
     }
@@ -436,37 +438,26 @@
       link.classList.remove('is-writing', 'is-prepared');
       link.classList.add('is-complete');
     };
-    // A assinatura depende de DOIS estados: estar visivel e os textos/links
-    // do rodape terem concluido exatamente sua animacao de entrada.
-    // O hover continua alterando somente a cor, nunca reinicia a escrita.
+    // O SVG comeca no mesmo instante em que o observador aciona a entrada
+    // dos outros itens do rodape. Nao alteramos os keyframes nem os tempos.
+    // Usar o mesmo evento evita diferenca de sincronismo entre observadores.
     const footer = link.closest('.site-footer');
-    let signatureInView = false;
-    const canStart = () => !document.documentElement.classList.contains('motion-ready')
-      || !footer || footer.dataset.entrance === 'complete';
-    const startWhenReady = () => {
-      if (started || !signatureInView || !canStart()) return;
+    const startWithFooter = () => {
+      if (started) return;
       started = true;
-      observer.disconnect();
       link.classList.add('is-writing');
-      // Fallback para nunca deixar a assinatura invisivel se a animacao nao disparar.
+      // Fallback para manter a assinatura completa mesmo sem animationend.
       window.setTimeout(complete, Math.ceil(elapsed) + 120);
     };
-    const observer = new IntersectionObserver(entries => {
-      signatureInView = entries.some(entry => entry.isIntersecting);
-      startWhenReady();
-    }, { threshold: .25, rootMargin: '0px 0px -20px 0px' });
-    if (footer) footer.addEventListener('footer-entrance-complete', startWhenReady);
-
-    // Espera carregamento, fontes e dois frames: evita observar o rodape
-    // antes da pagina de projetos receber os cards e antes da restauracao do scroll.
-    const observeWhenReady = () => {
-      const observe = () => requestAnimationFrame(() => requestAnimationFrame(() => observer.observe(link)));
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(observe, observe);
-      } else observe();
-    };
-    if (document.readyState === 'complete') observeWhenReady();
-    else window.addEventListener('load', observeWhenReady, { once: true });
+    if (footer) {
+      footer.addEventListener('footer-entrance-start', startWithFooter, { once: true });
+      // Garante o comportamento ao restaurar pagina/scroll do historico.
+      if (footer.dataset.entrance === 'playing' || footer.dataset.entrance === 'complete') {
+        startWithFooter();
+      }
+    } else {
+      startWithFooter();
+    }
 
     traces[traces.length - 1].addEventListener('animationend', event => {
       if (event.animationName === 'signature-stroke-draw') complete();

@@ -46,3 +46,13 @@ Site estático para GitHub Pages, em HTML, CSS e JavaScript. Nexa é carregada d
 - A escrita SVG so comeca **depois** que a entrada dos textos e links termina e a assinatura esta na area visivel.
 - Hover da assinatura apenas altera sua cor, sem reiniciar a escrita.
 - Arquivos alterados: `assets/css/styles.css`, `assets/js/site.js`, `index.html`, `projetos.html` e `projeto.html`; o guia tambem foi atualizado.
+
+
+## Ajuste v1.4.13 — Sincronismo do rodape
+
+- A assinatura SVG comeca no **mesmo evento** em que os textos e links do rodape iniciam suas entradas, nao no fim delas.
+- Permanecem identicos: a escrita de 1,1 segundo, a animacao vertical dos textos, o hover rosa e o clique para o topo.
+- Mantido `overflow: clip` do rodape da v1.4.12 para impedir salto no limite da pagina.
+- Na restauracao do historico, a escrita pode comecar imediatamente se a entrada do rodape ja tiver sido acionada.
+- O JS recebe `?v=1413` nos tres arquivos HTML, evitando o cache da versao anterior.
+- Arquivos modificados: `assets/js/site.js`, `index.html`, `projetos.html`, `projeto.html` e `LEIA-ME.md`.
