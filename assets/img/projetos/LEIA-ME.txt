@@ -1,0 +1,7 @@
+Pasta de imagens dos projetos.
+
+Adicione aqui suas imagens (.webp, .jpg, .png).
+Depois, no arquivo assets/js/conteudo.js, preencha o campo imagem
+com, por exemplo: "assets/img/projetos/crisfit.webp"
+
+Lembre-se: somente utilize imagens que voce tenha direito de publicar.
