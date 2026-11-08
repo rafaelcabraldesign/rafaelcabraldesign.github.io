@@ -1,6 +1,16 @@
-# Rafael Cabral Design — Portfólio v1.4.20
+# Rafael Cabral Design — Portfólio v1.4.21
 
 Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
+
+## Novo na v1.4.21 — Vamos conversar abre o WhatsApp
+
+O link **Vamos conversar** do header (desktop e menu mobile) abre agora diretamente o mesmo WhatsApp dos botoes **Entre em contato**, com a mensagem predefinida: "Olá, Rafael! Gostaria de conversar sobre um projeto.". O visitante confirma o envio da mensagem no WhatsApp.
+
+- A cor, tipografia, hover e comportamento do menu não foram modificados.
+- A configuração central de contato continua em `assets/js/conteudo.js`; os quatro links do header e os botoes da pagina inicial usam `data-contact-whatsapp` e sao atualizados pelo mesmo JavaScript.
+- O HTML tambem contem o link completo como fallback caso o JavaScript não carregue.
+- A conversa abre em nova aba; nao aciona a animacao de saida entre paginas.
+- Para atualizar da **v1.4.20**, envie somente `index.html`, `projetos.html` e `projeto.html`. Nao e necessario alterar imagens, CSS ou JS.
 
 ## Novo na v1.4.20 — Menu sem verde durante a navegacao
 
