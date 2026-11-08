@@ -1,14 +1,24 @@
-# Rafael Cabral Design — Portfólio v1.4.18
+# Rafael Cabral Design — Portfólio v1.4.19
 
 Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
 
-## Novo na v1.4.18 — Header adaptativo sem fundo
+## Novo na v1.4.19 — Animação de textos mais nítida
+
+O movimento vertical das entradas de textos (títulos, menus, parágrafos, serviços, botões e links) agora usa deslocamento visual com `position: relative` / `top` em vez de `translate3d`. Isso reduz a suavização temporária dos caracteres, especialmente na Nexa, porque o navegador redesenha os glifos ao longo do movimento. O deslocamento, os tempos e as curvas do movimento permanecem; a opacidade dos textos atinge 100% no primeiro quarto da entrada para evitar a sensação de letras desbotadas durante todo o movimento. Elementos puramente visuais (capas e imagens) continuam com transformações aceleradas.
+
+O header transparente e a inversão de cores foram preservados. A animação de saída continua um fade-out de 460 ms, agora sem deslocar a página inteira por `transform`, evitando borrões adicionais. O efeito roleta dos botões e a revelação dos nomes dos projetos foram mantidos, mas os movimentos de texto também foram transferidos de `transform` para `top`.
+
+O texto ainda possui um fade breve no início da entrada, então poderá parecer mais claro apenas nos primeiros instantes. Isso **não** é desfoque; o objetivo da correção é manter as bordas dos caracteres mais definidas durante o movimento.
+
+Arquivos alterados: `assets/css/styles.css`, `assets/js/site.js`, os três HTML (versões de cache) e este guia. Não altere as imagens da pasta `assets/img/`; elas são preservadas.
+
+## Anterior na v1.4.18 — Header adaptativo sem fundo
 
 O header continua preso ao topo, transparente. A propriedade `mix-blend-mode: difference`, combinada com a cor-base `#ffffeb`, produz **exatamente Black Russian `#000014` em fundo branco puro** para monograma, links e menu fechado. Em fundos escuros ou imagens, o contraste continua adaptativo por pixel, sem criar faixa branca. Em fundos que nao sao brancos puros, o resultado varia conforme a cor de cada pixel, uma limitacao natural da mesclagem CSS. A cor de hover segue a referencia rosa em fundos claros. Em imagens muito coloridas, o resultado do hover e naturalmente adaptativo (mistura de cor).
 
 No celular, o menu aberto utiliza um painel branco para garantir leitura e navegacao; ao fechar, retorna automaticamente ao modo transparente/invertido. O efeito depende do suporte do navegador a `mix-blend-mode` (navegadores modernos).
 
-Arquivos alterados em relacao a v1.4.17: `assets/css/styles.css`, os tres arquivos HTML (versao do cache CSS) e este guia. Nao e necessario reenviar as imagens, JavaScript ou fontes.
+Historico da v1.4.18: o header foi ajustado sem precisar reenviar as imagens. Na v1.4.19, o JavaScript tambem recebe uma atualizacao para reconhecer a nova animacao de textos.
 
 ## 1. Onde enviar as imagens
 
@@ -74,9 +84,9 @@ Para excluir ou trocar imagens, basta remover ou substituir o arquivo correspond
 
 Se uma imagem não aparecer: confira a grafia exata, a pasta, a extensão WebP verdadeira e se o GitHub Pages concluiu a publicação.
 
-## 3. Como publicar a v1.4.18
+## 3. Como publicar a v1.4.19
 
-Para quem ja esta usando a **v1.4.16**, utilize o ZIP de atualizacao e substitua somente estes **seis arquivos**, preservando os caminhos:
+Para quem ja esta usando a **v1.4.18**, utilize o ZIP de atualizacao e substitua somente estes **seis arquivos**, preservando os caminhos:
 
 - `index.html`
 - `projetos.html`
@@ -85,7 +95,7 @@ Para quem ja esta usando a **v1.4.16**, utilize o ZIP de atualizacao e substitua
 - `assets/js/site.js`
 - `LEIA-ME.md`
 
-O arquivo CSS e o JavaScript estao identificados com a versao `1417` nos HTMLs para evitar cache. Nao e necessario atualizar capas, projetos, fontes ou outros arquivos. Use a mensagem de commit `Header transparente adaptativo v1.4.18`.
+O CSS e o JavaScript usam a versao `1419` nos HTMLs para evitar cache. Nao e necessario atualizar capas, projetos, fontes ou outros arquivos. Use a mensagem de commit `Melhoria da nitidez das animacoes v1.4.19`.
 
 Para uma instalacao do zero, utilize o ZIP completo. O GitHub Pages deve continuar configurado para a branch de publicacao e o caminho `/(root)`.
 

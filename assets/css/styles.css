@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.18
+ * RAFAEL CABRAL | Portfolio v1.4.19
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -115,7 +115,13 @@ p { line-height: 1.55; }
   .site-header .primary-nav a:hover,
   .site-header .header-contact:hover { color: var(--accent); }
 }
-@keyframes header-enter { from {opacity:0; transform:translateY(-12px);} to {opacity:1; transform:translateY(0);} }
+/* Texto do header: mover via top (repaint) evita suavizacao por
+   rasterizacao em camadas transformadas durante o movimento. */
+.header-inner > .brand, .header-inner > .primary-nav, .header-inner > .header-contact, .header-inner > .menu-toggle {
+  position: relative;
+  top: 0;
+}
+@keyframes header-enter { from { opacity:0; top:-12px; } 25% { opacity:1; } to { opacity:1; top:0; } }
 .header-inner > .brand, .header-inner > .primary-nav, .header-inner > .header-contact, .header-inner > .menu-toggle { animation: header-enter .75s var(--ease) both; }
 .header-inner > .primary-nav { animation-delay: .09s; }
 .header-inner > .header-contact, .header-inner > .menu-toggle { animation-delay: .16s; }
@@ -159,9 +165,9 @@ p { line-height: 1.55; }
 .pill:hover::before, .pill:focus-visible::before { transform: translate3d(0,0,0); }
 .pill:hover, .pill:focus-visible { box-shadow: 0 10px 24px rgba(0,0,20,.09); }
 .pill-mask { display: block; height: 1.24em; overflow: hidden; }
-.pill-track { display: flex; flex-direction: column; transform: translate3d(0,0,0); transition: transform .72s cubic-bezier(.22,1,.36,1); }
+.pill-track { display: flex; flex-direction: column; position:relative; top:0; transform:none; transition: top .72s cubic-bezier(.22,1,.36,1); }
 .pill-label { display: block; flex: none; white-space: nowrap; line-height: 1.24em; }
-.pill:hover .pill-track, .pill:focus-visible .pill-track { transform: translate3d(0,-50%,0); }
+.pill:hover .pill-track, .pill:focus-visible .pill-track { top:-1.24em; }
 .pill-dark { color: #fff; background: var(--ink); --pill-hover-bg: var(--accent); }
 .pill-light { background: var(--pill); color: var(--ink); --pill-hover-bg: #d6d6d9; }
 /* Project cards: dinamicos, nome dentro da propria capa e cantos arredondados. */
@@ -218,21 +224,23 @@ h2.section-label { margin: 0; }
   right: 28px;
   color: #fff;
   opacity: 0;
-  transform: translate3d(0,22px,0);
-  transition: opacity .52s var(--ease), transform .68s var(--ease);
+  transform: none;
+  /* Entrada sem transform para preservar as bordas das letras no hover. */
+  bottom: 6px;
+  transition: opacity .52s var(--ease), bottom .68s var(--ease);
   pointer-events: none;
   text-shadow: 0 2px 12px rgba(0,0,0,.24);
 }
 .project-cover:hover .cover-meta, .project-cover:focus-visible .cover-meta {
   opacity: 1;
-  transform: translate3d(0,0,0);
+  bottom: 28px;
 }
 .project-title { margin: 0; font-size: clamp(20px,1.5vw,28px); font-weight: 500; line-height: 1.22; letter-spacing: -.02em; overflow-wrap: anywhere; }
 .project-category { margin: 7px 0 0; font-size: 14px; line-height: 1.35; color: rgba(255,255,255,.86); }
 @media (hover: none), (pointer: coarse) {
   /* Sem hover, os titulos permanecem visiveis: o usuario sabe onde tocar. */
   .project-cover::after { opacity: 1; }
-  .cover-meta { opacity: 1; transform: none; }
+  .cover-meta { opacity: 1; bottom: 28px; transform: none; }
 }
 /* Todas as capas da homepage e do portfolio compartilham a mesma proporcao. */
 .projects-grid--featured, .projects-grid--all { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -413,9 +421,60 @@ html.motion-ready :is(
   from { opacity: 0; transform: translate3d(0, var(--reveal-distance, 100px), 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-/* Fade-out uniforme antes de navegar para outra pagina interna. */
-body { transition: opacity 460ms cubic-bezier(.4, 0, .2, 1), transform 460ms cubic-bezier(.4, 0, .2, 1); }
-body.is-page-leaving { opacity: 0; transform: translate3d(0, -12px, 0); pointer-events: none; }
+/* v1.4.19: entradas de TEXTO sem transform.
+   Transform/translate3d move um bitmap do texto por subpixels e deixa
+   letras finas com aspecto borrado ate o fim da animacao. Animar top em
+   um elemento relativo repinta os glifos a cada frame, com mais nitidez.
+   As imagens e capas continuam usando transform para preservar performance.
+   A deslocacao visual (baixo -> cima), opacidade, curvas e duracoes sao mantidas. */
+html.motion-ready :is(
+  .hero-content > *,
+  .section-top > *,
+  .services-section > .section-label,
+  .services-section > .statement,
+  .service-row,
+  .about-copy > *,
+  .contact-section > .section-label,
+  .contact-row > *,
+  .listing-intro > *,
+  .listing-tools > *,
+  .detail-intro > *,
+  .detail-overview > *,
+  .detail-detail-block > *,
+  .related-header > *,
+  .site-footer > *:not(.footer-signature)
+) {
+  position: relative;
+  top: var(--reveal-distance, 100px);
+  transform: none;
+}
+html.motion-ready :is(
+  .hero-content > *,
+  .section-top > *,
+  .services-section > .section-label,
+  .services-section > .statement,
+  .service-row,
+  .about-copy > *,
+  .contact-section > .section-label,
+  .contact-row > *,
+  .listing-intro > *,
+  .listing-tools > *,
+  .detail-intro > *,
+  .detail-overview > *,
+  .detail-detail-block > *,
+  .related-header > *,
+  .site-footer > *:not(.footer-signature)
+).is-revealed {
+  animation-name: reveal-enter-crisp;
+}
+@keyframes reveal-enter-crisp {
+  from { opacity: 0; top: var(--reveal-distance, 100px); }
+  24%  { opacity: 1; }
+  to   { opacity: 1; top: 0; }
+}
+/* Fade-out de pagina sem mover o corpo inteiro como camada de bitmap. */
+body { transition: opacity 460ms cubic-bezier(.4, 0, .2, 1); }
+body.is-page-leaving { opacity: 0; pointer-events: none; }
 
 @media (min-width: 761px) and (max-width: 1240px) {
   .service-row { grid-template-columns: 32px minmax(0, 70%); gap: 12px; }
@@ -491,7 +550,7 @@ body.is-page-leaving { opacity: 0; transform: translate3d(0, -12px, 0); pointer-
   .about-photo { min-height: 325px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html.motion-ready :is(.hero-content > *, .section-top > *, .projects-grid .project-card, .services-section > .section-label, .services-section > .statement, .services-aside, .service-row, .about-copy > *, .about-photo, .contact-section > .section-label, .contact-row > *, .listing-intro > *, .listing-tools > *, .detail-intro > *, .detail-cover, .detail-overview > *, .detail-detail-block > *, .detail-gallery > *, .related-header > *, .site-footer > *:not(.footer-signature)) { opacity: 1; transform: none; animation: none !important; }
+  html.motion-ready :is(.hero-content > *, .section-top > *, .projects-grid .project-card, .services-section > .section-label, .services-section > .statement, .services-aside, .service-row, .about-copy > *, .about-photo, .contact-section > .section-label, .contact-row > *, .listing-intro > *, .listing-tools > *, .detail-intro > *, .detail-cover, .detail-overview > *, .detail-detail-block > *, .detail-gallery > *, .related-header > *, .site-footer > *:not(.footer-signature)) { opacity: 1; transform: none; top: 0; animation: none !important; }
   body { transition: none; }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

@@ -348,7 +348,7 @@
       element.style.setProperty('--reveal-duration', `${isCard ? 1550 : isHero ? 1580 : 1420}ms`);
       element.dataset.entrance = 'pending';
       element.addEventListener('animationend', event => {
-        if (event.animationName === 'reveal-enter') element.dataset.entrance = 'complete';
+        if (['reveal-enter', 'reveal-enter-crisp'].includes(event.animationName)) element.dataset.entrance = 'complete';
       });
       observer.observe(element);
     };
@@ -381,7 +381,7 @@
         item.style.setProperty('--reveal-duration', '1420ms');
         item.dataset.entrance = 'pending';
         item.addEventListener('animationend', event => {
-          if (event.target !== item || event.animationName !== 'reveal-enter') return;
+          if (event.target !== item || !['reveal-enter', 'reveal-enter-crisp'].includes(event.animationName)) return;
           item.dataset.entrance = 'complete';
           if (--remaining === 0) finishFooter();
         });
