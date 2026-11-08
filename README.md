@@ -56,3 +56,31 @@ Site estático para GitHub Pages, em HTML, CSS e JavaScript. Nexa é carregada d
 - Na restauracao do historico, a escrita pode comecar imediatamente se a entrada do rodape ja tiver sido acionada.
 - O JS recebe `?v=1413` nos tres arquivos HTML, evitando o cache da versao anterior.
 - Arquivos modificados: `assets/js/site.js`, `index.html`, `projetos.html`, `projeto.html` e `LEIA-ME.md`.
+
+
+## v1.4.14 — Ajuste do peso tipografico
+
+O projeto Adobe Fonts `pwt1xky` possui os pesos **Nexa Regular 400** e **Nexa Bold 700**. Como nao existe um peso intermediario habilitado nesse kit, esta atualizacao opta por um **reforco optico discreto** na Nexa Regular, sem substitui-la por Bold em todos os textos. Assim o contraste aumenta um nivel visual, evitando uma mudanca abrupta na direcao editorial do site. A assinatura vetorial do rodape nao foi alterada.
+
+- Textos corridos: reforco optico de 0,24 px.
+- Titulos: reforco de 0,42 px.
+- Navegacao, botoes, links, rotulos e lista de servicos: reforco de 0,28 px.
+- Tamanho de fonte, espacamento, altura de linha, responsividade e animacoes permanecem inalterados.
+- A alteracao esta unicamente em `assets/css/styles.css` e no parametro de cache `?v=1414` nos tres HTMLs.
+- Nao e necessario enviar arquivos de fonte ao GitHub. A fonte continua carregada pelo kit Adobe oficial.
+
+Se for necessario utilizar um peso realmente mais forte do arquivo de fonte em vez do reforco optico, sera preciso optar pelo peso Nexa Bold (700), que representa um salto perceptivelmente maior.
+
+
+## v1.4.15 — Pesos oficiais Nexa / Adobe Fonts
+
+O projeto web Adobe Fonts `https://use.typekit.net/pwt1xky.css` foi atualizado e agora oferece os pesos **100, 200, 300, 400, 500, 600, 700, 800 e 900** da familia `nexa`, com estilos normais e italicos. A familia `nexa-text` tambem possui esses pesos.
+
+Esta versao substitui o reforco de contorno da v1.4.14 pelos pesos reais da fonte: todos os textos com peso 400 passam para **500 (Medium)**, e os anteriormente configurados com 500 passam para **600 (Semibold)**. A base do documento herda 500. Utilizamos `font-synthesis: none` para impedir pesos sinteticos.
+
+- Nao foram alterados tamanhos de fonte, altura de linha, espacos, cores, conteudos, animacoes nem comportamento dos links.
+- O SVG da assinatura permanece inalterado.
+- Nenhum arquivo de fonte esta no ZIP: o carregamento e feito pelo Adobe Fonts.
+- Foram alterados `assets/css/styles.css`, os tres HTMLs (para trocar o parametro de cache `?v=1415`) e este guia.
+
+**Para atualizar:** envie o conteudo do ZIP de atualizacao ao GitHub, mantendo os caminhos das pastas. Confira se o projeto Adobe Fonts continua ativo e com as variantes desejadas publicadas.
