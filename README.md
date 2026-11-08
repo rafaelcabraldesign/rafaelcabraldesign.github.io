@@ -1,3 +1,32 @@
+# Portfólio Rafael Cabral — v1.4.23
+
+## Entrada do título e animações com fade sincronizado
+
+A v1.4.22 tornava as palavras do título 100% opacas logo aos 28% do movimento enquanto ainda eram recortadas por máscaras individuais. Isso produzia letras pela metade durante a entrada. **A v1.4.23 elimina esse recorte**: a palavra inteira sobe suavemente por uma distância pequena (`.44em`) e ganha opacidade durante toda a animação, do início ao fim. A ordem das oito palavras e a quebra após a vírgula continuam iguais.
+
+- **Título principal:** deslocamento de `.44em` (em vez de 115%); movimento e fade sincronizados em 1.060 ms, 112 ms de intervalo entre palavras.
+- **Seções e cards:** deslocamentos de 28 a 38 px (antes 44 a 58 px); fade acompanha a entrada até 100%, com duração de 1.160 a 1.220 ms, com a mesma curva de aceleracao para posicao e transparencia.
+- **Header:** entrada em sequência com fade progressivo durante 980 ms, mantendo o efeito de contraste adaptativo.
+- **Menu mobile:** entrada em sequência com 850 ms e deslocamento de 13 px.
+- Mantidos o menu mobile, as transições de páginas, os 15 projetos, o carregamento automático de imagens WebP, a Nexa do Adobe Fonts, a assinatura SVG e os links do WhatsApp.
+
+**Sobre a referência:** a animação exata da BerrielBrands não pôde ser medida frame a frame na inspeção, portanto estes valores são uma adaptação intencional do comportamento solicitado, e não uma cópia de valores internos do Framer.
+
+## Atualização no GitHub
+
+Para quem tem a v1.4.22, faça upload dos 6 itens abaixo com os mesmos caminhos (sem excluir pastas ou imagens):
+
+- `index.html`
+- `projetos.html`
+- `projeto.html`
+- `assets/css/styles.css`
+- `assets/js/site.js`
+- `LEIA-ME.md`
+
+Os HTMLs usam `?v=1423` para recarregar CSS e JavaScript atualizados. Commit sugerido: `Fade e entradas refinadas v1.4.23`.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.22
 
 ## Alterações desta versão

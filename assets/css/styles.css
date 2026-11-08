@@ -115,20 +115,20 @@ p { line-height: 1.55; }
   .site-header .primary-nav a:hover,
   .site-header .header-contact:hover { color: var(--accent); }
 }
-/* v1.4.22: entradas independentes por link, compositor sem animar top.
-   O header nao recebe transform como grupo: o blend adaptativo e preservado. */
+/* v1.4.23 — Entrada do header: opacidade acompanha o deslocamento.
+   Mantem a sequencia individual, o blend adaptativo e a posicao sticky. */
 @keyframes header-item-enter {
-  from { opacity: 0; translate: 0 -18px; }
+  from { opacity: 0; translate: 0 -14px; }
   to   { opacity: 1; translate: 0 0; }
 }
-.header-inner > .brand { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 0ms both; }
-.header-inner > .menu-toggle { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 150ms both; }
+.header-inner > .brand { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 0ms both; }
+.header-inner > .menu-toggle { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 150ms both; }
 @media (min-width: 761px) {
-  .primary-nav > a { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) both; }
+  .primary-nav > a { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) both; }
   .primary-nav > a:nth-child(1) { animation-delay: 95ms; }
   .primary-nav > a:nth-child(2) { animation-delay: 215ms; }
   .primary-nav > a:nth-child(3) { animation-delay: 335ms; }
-  .header-inner > .header-contact { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 455ms both; }
+  .header-inner > .header-contact { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 455ms both; }
 }
 
 /* Hero editorial. Titulo e linha de apoio acompanham toda a largura util. */
@@ -137,19 +137,32 @@ p { line-height: 1.55; }
 .eyebrow { margin-bottom: 28px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow span { padding: 0 8px; color: #a4a5a9; }
 .hero h1 { max-width: none; margin: 0 0 25px; font-size: clamp(2.7rem, 3.85vw, 6rem); font-weight: 500; line-height: 1.1; letter-spacing: -.043em; text-wrap: pretty; }
-/* Titulo editorial: cada palavra entra de baixo para cima, na ordem de leitura.
-   A quebra apos a virgula e preservada; no mobile pode haver quebras adicionais. */
-.hero-word-mask { display: inline-block; overflow: clip; vertical-align: bottom; padding: .09em 0; margin: -.09em 0; }
-.hero-word { display: inline-block; }
-html.motion-ready .hero-word { opacity: 0; translate: 0 115%; }
-html.motion-ready .hero-title.is-word-animated .hero-word {
-  animation: hero-word-enter 900ms cubic-bezier(.2,.8,.2,1) both;
-  animation-delay: calc(70ms + var(--word-index) * 135ms);
+/* v1.4.23 — Titulo palavra a palavra, SEM corte de glifos.
+   A mascara continua como wrapper editorial para manter as quebras, mas nao
+   recorta as letras. Deslocamento curto + fade longo, simultaneos.
+   Antes: opacidade 100% aos 28% + movimento de 115%, gerando meia letra solida. */
+.hero-word-mask {
+  display: inline-block;
+  overflow: visible;
+  vertical-align: bottom;
+  padding: .09em 0;
+  margin: -.09em 0;
 }
-@keyframes hero-word-enter {
-  0% { opacity: 0; translate: 0 115%; }
-  28% { opacity: 1; }
-  100% { opacity: 1; translate: 0 0; }
+.hero-word { display: inline-block; }
+html.motion-ready .hero-word { opacity: 0; translate: 0 .44em; }
+html.motion-ready .hero-title.is-word-animated .hero-word {
+  animation:
+    hero-word-rise 1060ms cubic-bezier(.4,0,.3,1) both,
+    hero-word-fade 1060ms cubic-bezier(.4,0,.3,1) both;
+  animation-delay: calc(85ms + var(--word-index) * 112ms);
+}
+@keyframes hero-word-rise {
+  from { translate: 0 .44em; }
+  to   { translate: 0 0; }
+}
+@keyframes hero-word-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 .hero-lead { max-width: min(840px, 84vw); margin: 0; font-size: clamp(18px, 1.26vw, 25px); font-weight: 500; letter-spacing: -.015em; line-height: 1.46; color: var(--muted); }
 .hero-actions { display: flex; gap: 10px; align-items: center; margin-top: 34px; }
@@ -385,9 +398,9 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .related-projects .project-title { font-size: clamp(19px, 1.45vw, 26px); }
 
 
-/* v1.4.22: composited translate avoids per-frame layout/repaint that made
-   thin letters judder on mobile. Lower travel distance reduces subpixel blur.
-   The CSS initial state prevents content flashing before IntersectionObserver. */
+/* v1.4.23 — Entradas sem aparicao prematura: texto se torna visivel
+   enquanto sobe, ao longo da animacao inteira. O deslocamento menor reduz
+   suavizacao por subpixel e os estados iniciais seguem definidos no CSS. */
 html.motion-ready :is(
   .hero-content > :not(h1),
   .section-top > *,
@@ -411,7 +424,7 @@ html.motion-ready :is(
   .site-footer > *:not(.footer-signature)
 ) {
   opacity: 0;
-  translate: 0 var(--reveal-distance, 44px);
+  translate: 0 var(--reveal-distance, 30px);
 }
 html.motion-ready :is(
   .hero-content > :not(h1),
@@ -435,12 +448,11 @@ html.motion-ready :is(
   .related-header > *,
   .site-footer > *:not(.footer-signature)
 ).is-revealed {
-  animation: reveal-enter var(--reveal-duration, 1120ms) cubic-bezier(.16,1,.3,1) var(--reveal-delay,0ms) both;
+  animation: reveal-enter var(--reveal-duration, 1180ms) cubic-bezier(.4,0,.3,1) var(--reveal-delay,0ms) both;
 }
 @keyframes reveal-enter {
-  0%   { opacity: 0; translate: 0 var(--reveal-distance,44px); }
-  22%  { opacity: 1; }
-  100% { opacity: 1; translate: 0 0; }
+  from { opacity: 0; translate: 0 var(--reveal-distance,30px); }
+  to   { opacity: 1; translate: 0 0; }
 }
 
 /* v1.4.20 — transicao com cortina branca em vez de opacidade no body.
@@ -482,8 +494,8 @@ body.is-page-leaving::after { opacity: 1; }
   .related-projects .projects-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @keyframes mobile-link-enter {
-  from { opacity: 0; translate: 0 18px; }
-  to { opacity: 1; translate: 0 0; }
+  from { opacity: 0; translate: 0 13px; }
+  to   { opacity: 1; translate: 0 0; }
 }
 @media (max-width: 760px) {
   html { scroll-padding-top: 80px; }
@@ -527,7 +539,7 @@ body.is-page-leaving::after { opacity: 1; }
   .primary-nav .mobile-only-link { display: block !important; }
   .primary-nav a::after { display: none; }
   .primary-nav.is-open a {
-    animation: mobile-link-enter 680ms cubic-bezier(.22,1,.36,1) both;
+    animation: mobile-link-enter 850ms cubic-bezier(.4,0,.3,1) both;
   }
   .primary-nav.is-open a:nth-child(1) { animation-delay: 35ms; }
   .primary-nav.is-open a:nth-child(2) { animation-delay: 115ms; }
