@@ -1,3 +1,20 @@
+# Portfólio Rafael Cabral — v1.4.22
+
+## Alterações desta versão
+
+- Entradas reimplementadas com `translate` e opacidade curta, sem animar `top`: melhora a fluidez do movimento, especialmente em celulares.
+- Título principal entra palavra por palavra da esquerda para a direita, mantendo a quebra de linha depois de `design,`.
+- Header: links entram individualmente em sequência (Projetos, Serviços, Sobre, Vamos conversar).
+- Menu mobile: monograma à esquerda e controle de fechar no mesmo lugar das duas barras, com os links centralizados logo abaixo da linha superior.
+- Estados de hover, efeito adaptativo do header, WhatsApp, 15 projetos, SVG e imagens automáticas preservados.
+- Preferência do sistema por movimento reduzido respeitada.
+
+## Como publicar
+
+Atualize `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css`, `assets/js/site.js` no repositório GitHub Pages. Não apague `assets/img/` nem os arquivos WebP existentes. Os arquivos HTML usam cache-busting `?v=1422`.
+
+---
+
 # Rafael Cabral Design — Portfólio v1.4.21
 
 Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**

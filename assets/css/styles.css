@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.20
+ * RAFAEL CABRAL | Portfolio v1.4.22
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -115,16 +115,21 @@ p { line-height: 1.55; }
   .site-header .primary-nav a:hover,
   .site-header .header-contact:hover { color: var(--accent); }
 }
-/* Texto do header: mover via top (repaint) evita suavizacao por
-   rasterizacao em camadas transformadas durante o movimento. */
-.header-inner > .brand, .header-inner > .primary-nav, .header-inner > .header-contact, .header-inner > .menu-toggle {
-  position: relative;
-  top: 0;
+/* v1.4.22: entradas independentes por link, compositor sem animar top.
+   O header nao recebe transform como grupo: o blend adaptativo e preservado. */
+@keyframes header-item-enter {
+  from { opacity: 0; translate: 0 -18px; }
+  to   { opacity: 1; translate: 0 0; }
 }
-@keyframes header-enter { from { opacity:0; top:-12px; } 25% { opacity:1; } to { opacity:1; top:0; } }
-.header-inner > .brand, .header-inner > .primary-nav, .header-inner > .header-contact, .header-inner > .menu-toggle { animation: header-enter .75s var(--ease) both; }
-.header-inner > .primary-nav { animation-delay: .09s; }
-.header-inner > .header-contact, .header-inner > .menu-toggle { animation-delay: .16s; }
+.header-inner > .brand { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 0ms both; }
+.header-inner > .menu-toggle { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 150ms both; }
+@media (min-width: 761px) {
+  .primary-nav > a { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) both; }
+  .primary-nav > a:nth-child(1) { animation-delay: 95ms; }
+  .primary-nav > a:nth-child(2) { animation-delay: 215ms; }
+  .primary-nav > a:nth-child(3) { animation-delay: 335ms; }
+  .header-inner > .header-contact { animation: header-item-enter 850ms cubic-bezier(.22,1,.36,1) 455ms both; }
+}
 
 /* Hero editorial. Titulo e linha de apoio acompanham toda a largura util. */
 .hero { padding-top: clamp(145px, 11.5vw, 250px); padding-bottom: clamp(126px, 11vw, 210px); }
@@ -132,6 +137,20 @@ p { line-height: 1.55; }
 .eyebrow { margin-bottom: 28px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow span { padding: 0 8px; color: #a4a5a9; }
 .hero h1 { max-width: none; margin: 0 0 25px; font-size: clamp(2.7rem, 3.85vw, 6rem); font-weight: 500; line-height: 1.1; letter-spacing: -.043em; text-wrap: pretty; }
+/* Titulo editorial: cada palavra entra de baixo para cima, na ordem de leitura.
+   A quebra apos a virgula e preservada; no mobile pode haver quebras adicionais. */
+.hero-word-mask { display: inline-block; overflow: clip; vertical-align: bottom; padding: .09em 0; margin: -.09em 0; }
+.hero-word { display: inline-block; }
+html.motion-ready .hero-word { opacity: 0; translate: 0 115%; }
+html.motion-ready .hero-title.is-word-animated .hero-word {
+  animation: hero-word-enter 900ms cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(70ms + var(--word-index) * 135ms);
+}
+@keyframes hero-word-enter {
+  0% { opacity: 0; translate: 0 115%; }
+  28% { opacity: 1; }
+  100% { opacity: 1; translate: 0 0; }
+}
 .hero-lead { max-width: min(840px, 84vw); margin: 0; font-size: clamp(18px, 1.26vw, 25px); font-weight: 500; letter-spacing: -.015em; line-height: 1.46; color: var(--muted); }
 .hero-actions { display: flex; gap: 10px; align-items: center; margin-top: 34px; }
 
@@ -282,7 +301,7 @@ h2.section-label { margin: 0; }
 .contact-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 50px; }
 .contact-row h2 { max-width: none; margin: 0; font-size: clamp(2rem, 3.6vw, 4.75rem); font-weight: 500; line-height: 1.16; letter-spacing: -.035em; }
 .contact-row > .pill { flex: 0 0 auto; align-self: flex-end; }
-/* Os filhos entram com translateY(90px). Sem clipping, o deslocamento
+/* Os filhos entram com translate suave. Sem clipping, o deslocamento
    aumenta o scrollHeight e provoca um salto no limite final da pagina.
    overflow: clip limita apenas a pintura; mantem a animacao e nao cria
    uma nova area de rolagem. O footer (nao seus filhos) aciona a entrada. */
@@ -366,10 +385,11 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .related-projects .project-title { font-size: clamp(19px, 1.45vw, 26px); }
 
 
-/* V1.4.10: a ocultacao ocorre no primeiro paint, antes de qualquer revelacao.
-   Com JavaScript desativado o html nunca recebe motion-ready: tudo fica visivel. */
+/* v1.4.22: composited translate avoids per-frame layout/repaint that made
+   thin letters judder on mobile. Lower travel distance reduces subpixel blur.
+   The CSS initial state prevents content flashing before IntersectionObserver. */
 html.motion-ready :is(
-  .hero-content > *,
+  .hero-content > :not(h1),
   .section-top > *,
   .projects-grid .project-card,
   .services-section > .section-label,
@@ -391,10 +411,10 @@ html.motion-ready :is(
   .site-footer > *:not(.footer-signature)
 ) {
   opacity: 0;
-  transform: translate3d(0, var(--reveal-distance, 100px), 0);
+  translate: 0 var(--reveal-distance, 44px);
 }
 html.motion-ready :is(
-  .hero-content > *,
+  .hero-content > :not(h1),
   .section-top > *,
   .projects-grid .project-card,
   .services-section > .section-label,
@@ -415,63 +435,14 @@ html.motion-ready :is(
   .related-header > *,
   .site-footer > *:not(.footer-signature)
 ).is-revealed {
-  animation: reveal-enter var(--reveal-duration, 1450ms) cubic-bezier(.2, .65, .19, 1) var(--reveal-delay, 0ms) both;
+  animation: reveal-enter var(--reveal-duration, 1120ms) cubic-bezier(.16,1,.3,1) var(--reveal-delay,0ms) both;
 }
 @keyframes reveal-enter {
-  from { opacity: 0; transform: translate3d(0, var(--reveal-distance, 100px), 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  0%   { opacity: 0; translate: 0 var(--reveal-distance,44px); }
+  22%  { opacity: 1; }
+  100% { opacity: 1; translate: 0 0; }
 }
-/* v1.4.19: entradas de TEXTO sem transform.
-   Transform/translate3d move um bitmap do texto por subpixels e deixa
-   letras finas com aspecto borrado ate o fim da animacao. Animar top em
-   um elemento relativo repinta os glifos a cada frame, com mais nitidez.
-   As imagens e capas continuam usando transform para preservar performance.
-   A deslocacao visual (baixo -> cima), opacidade, curvas e duracoes sao mantidas. */
-html.motion-ready :is(
-  .hero-content > *,
-  .section-top > *,
-  .services-section > .section-label,
-  .services-section > .statement,
-  .service-row,
-  .about-copy > *,
-  .contact-section > .section-label,
-  .contact-row > *,
-  .listing-intro > *,
-  .listing-tools > *,
-  .detail-intro > *,
-  .detail-overview > *,
-  .detail-detail-block > *,
-  .related-header > *,
-  .site-footer > *:not(.footer-signature)
-) {
-  position: relative;
-  top: var(--reveal-distance, 100px);
-  transform: none;
-}
-html.motion-ready :is(
-  .hero-content > *,
-  .section-top > *,
-  .services-section > .section-label,
-  .services-section > .statement,
-  .service-row,
-  .about-copy > *,
-  .contact-section > .section-label,
-  .contact-row > *,
-  .listing-intro > *,
-  .listing-tools > *,
-  .detail-intro > *,
-  .detail-overview > *,
-  .detail-detail-block > *,
-  .related-header > *,
-  .site-footer > *:not(.footer-signature)
-).is-revealed {
-  animation-name: reveal-enter-crisp;
-}
-@keyframes reveal-enter-crisp {
-  from { opacity: 0; top: var(--reveal-distance, 100px); }
-  24%  { opacity: 1; }
-  to   { opacity: 1; top: 0; }
-}
+
 /* v1.4.20 — transicao com cortina branca em vez de opacidade no body.
  * O header usa mix-blend-mode: difference e seu rosa de hover e codificado
  * internamente como #29f4ad. Ao diminuir a opacidade de todo o body,
@@ -510,19 +481,59 @@ body.is-page-leaving::after { opacity: 1; }
 @media (min-width: 761px) and (max-width: 1100px) {
   .related-projects .projects-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
+@keyframes mobile-link-enter {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: 0 0; }
+}
 @media (max-width: 760px) {
   html { scroll-padding-top: 80px; }
   :root { --gutter: 20px; }
-  .header-inner { min-height: 72px; display: grid; grid-template-columns: 1fr auto; }
+  .site-header { z-index: 95; }
+  .header-inner { min-height: 72px; grid-template-columns: 1fr auto; column-gap: 14px; position: relative; }
+  .brand { grid-column: 1; grid-row: 1; align-self: center; position: relative; z-index: 2; }
   .brand-icon { width: 29px; height: 30px; }
   .header-contact { display: none; }
-  .menu-toggle { display: block; justify-self: end; }
-  .primary-nav { display: none; position: absolute; z-index: 50; top: 100%; left: 0; right: 0; padding: 24px 20px 27px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); align-items: stretch; flex-direction: column; gap: 0; box-shadow: 0 16px 20px rgba(0,0,20,.025); }
-  .primary-nav.is-open { display: flex; animation: none; opacity: 1; transform: none; }
-  .primary-nav a { display: block; padding: 15px 0; font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--line); }
+  .menu-toggle { display: block; grid-column: 2; grid-row: 1; justify-self: end; align-self: center; position: relative; z-index: 2; }
+  .primary-nav {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: calc(-1 * var(--gutter));
+    right: calc(-1 * var(--gutter));
+    width: calc(100% + 2 * var(--gutter));
+    padding: 24px var(--gutter) 40px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    box-shadow: 0 18px 32px rgba(0,0,20,.06);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+    text-align: center;
+  }
+  .primary-nav.is-open { display: flex; }
+  .primary-nav a {
+    display: block;
+    width: min(100%, 440px);
+    padding: 17px 10px;
+    font-size: clamp(21px, 5.6vw, 28px);
+    font-weight: 500;
+    line-height: 1.3;
+    border-bottom: 1px solid var(--line);
+  }
   .primary-nav a:last-child { border-bottom: 0; }
   .primary-nav .mobile-only-link { display: block !important; }
   .primary-nav a::after { display: none; }
+  .primary-nav.is-open a {
+    animation: mobile-link-enter 680ms cubic-bezier(.22,1,.36,1) both;
+  }
+  .primary-nav.is-open a:nth-child(1) { animation-delay: 35ms; }
+  .primary-nav.is-open a:nth-child(2) { animation-delay: 115ms; }
+  .primary-nav.is-open a:nth-child(3) { animation-delay: 195ms; }
+  .primary-nav.is-open a:nth-child(4) { animation-delay: 275ms; }
+  body.mobile-menu-open { overflow: hidden; }
   .hero { padding-top: 100px; padding-bottom: 135px; }
   .eyebrow { margin-bottom: 24px; font-size: 10px; }
   .hero h1 { font-size: clamp(2.28rem, 7.2vw, 3.65rem); letter-spacing: -.045em; }
@@ -569,7 +580,9 @@ body.is-page-leaving::after { opacity: 1; }
   .about-photo { min-height: 325px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html.motion-ready :is(.hero-content > *, .section-top > *, .projects-grid .project-card, .services-section > .section-label, .services-section > .statement, .services-aside, .service-row, .about-copy > *, .about-photo, .contact-section > .section-label, .contact-row > *, .listing-intro > *, .listing-tools > *, .detail-intro > *, .detail-cover, .detail-overview > *, .detail-detail-block > *, .detail-gallery > *, .related-header > *, .site-footer > *:not(.footer-signature)) { opacity: 1; transform: none; top: 0; animation: none !important; }
+  html.motion-ready :is(.hero-content > *, .section-top > *, .projects-grid .project-card, .services-section > .section-label, .services-section > .statement, .services-aside, .service-row, .about-copy > *, .about-photo, .contact-section > .section-label, .contact-row > *, .listing-intro > *, .listing-tools > *, .detail-intro > *, .detail-cover, .detail-overview > *, .detail-detail-block > *, .detail-gallery > *, .related-header > *, .site-footer > *:not(.footer-signature)) { opacity: 1; transform: none; translate: none; top: 0; animation: none !important; }
+  .hero-word { opacity: 1 !important; translate: none !important; animation: none !important; }
+  .primary-nav a { opacity: 1; translate: none; animation: none !important; }
   body { transition: none; }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

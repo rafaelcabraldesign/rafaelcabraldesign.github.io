@@ -243,6 +243,14 @@
     showToast.timeout = setTimeout(() => toast.hidden = true, 4500);
   }
 
+  function setupHeroWordEntrance() {
+    const title = document.getElementById('hero-title');
+    if (!title || !title.querySelector('.hero-word')) return;
+    if (!document.documentElement.classList.contains('motion-ready')) return;
+    // O estado inicial oculto ja veio no CSS; iniciar apenas apos montar o DOM.
+    requestAnimationFrame(() => title.classList.add('is-word-animated'));
+  }
+
   function setupMenu() {
     const toggle = document.querySelector('[data-menu-toggle]');
     const nav = document.getElementById('menu-principal');
@@ -253,6 +261,7 @@
       header?.classList.remove('is-menu-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Abrir menu');
+      document.body.classList.remove('mobile-menu-open');
     };
     toggle.addEventListener('click', () => {
       const open = toggle.getAttribute('aria-expanded') !== 'true';
@@ -260,6 +269,7 @@
       header?.classList.toggle('is-menu-open', open);
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      document.body.classList.toggle('mobile-menu-open', open);
     });
     nav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
     document.addEventListener('keydown', event => {
@@ -304,7 +314,7 @@
       return;
     }
     const selectors = [
-      '.hero-content > *',
+      '.hero-content > :not(h1)',
       '.section-top > *',
       '.projects-grid .project-card',
       '.services-section > .section-label',
@@ -342,13 +352,13 @@
       const isCard = element.classList.contains('project-card');
       const isHero = !!element.closest('.hero-content');
       const delay = isCard ? (position % 2) * 155 : (position % 3) * 130;
-      const distance = isCard ? 120 : isHero ? 105 : 90;
+      const distance = isCard ? 58 : isHero ? 46 : 44;
       element.style.setProperty('--reveal-delay', `${delay}ms`);
       element.style.setProperty('--reveal-distance', `${distance}px`);
-      element.style.setProperty('--reveal-duration', `${isCard ? 1550 : isHero ? 1580 : 1420}ms`);
+      element.style.setProperty('--reveal-duration', `${isCard ? 1120 : isHero ? 1150 : 1050}ms`);
       element.dataset.entrance = 'pending';
       element.addEventListener('animationend', event => {
-        if (['reveal-enter', 'reveal-enter-crisp'].includes(event.animationName)) element.dataset.entrance = 'complete';
+        if (['reveal-enter'].includes(event.animationName)) element.dataset.entrance = 'complete';
       });
       observer.observe(element);
     };
@@ -377,11 +387,11 @@
       for (const item of footerItems) {
         const position = [...footer.children].indexOf(item);
         item.style.setProperty('--reveal-delay', `${(position % 3) * 130}ms`);
-        item.style.setProperty('--reveal-distance', '90px');
-        item.style.setProperty('--reveal-duration', '1420ms');
+        item.style.setProperty('--reveal-distance', '44px');
+        item.style.setProperty('--reveal-duration', '1050ms');
         item.dataset.entrance = 'pending';
         item.addEventListener('animationend', event => {
-          if (event.target !== item || !['reveal-enter', 'reveal-enter-crisp'].includes(event.animationName)) return;
+          if (event.target !== item || !['reveal-enter'].includes(event.animationName)) return;
           item.dataset.entrance = 'complete';
           if (--remaining === 0) finishFooter();
         });
@@ -535,6 +545,7 @@
   configureContact();
   setupAutoSectionImages();
   setupMenu();
+  setupHeroWordEntrance();
   setupStickyHeader();
   setupReveal();
   setupPageTransitions();
