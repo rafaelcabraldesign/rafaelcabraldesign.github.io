@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.17
+ * RAFAEL CABRAL | Portfolio v1.4.18
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -46,15 +46,17 @@ p { line-height: 1.55; }
    Medium 500 -> Semibold 600. Sem sintetizacao por contorno.
    Tamanhos, espacamentos e animacoes permanecem identicos. */
 
-/* v1.4.17: header inteiramente transparente, como na referencia editorial.
- * Difference com branco: sobre branco aparece preto; sobre preto aparece branco.
+/* v1.4.18: header transparente com inversao cromatica.
+ * No modo difference, a cor-base #ffffeb misturada com fundo branco #ffffff
+ * produz exatamente Black Russian #000014 (por diferenca de canais RGB).
+ * Sobre imagens e fundos escuros, conserva a inversao adaptativa e o contraste.
  * O tom de hover e o inverso do rosa oficial: ao misturar com branco, retorna #d60b52.
  * A inversao adapta a cada pixel sob o elemento, inclusive fotos, sem alterar os cards.
  * Importante: aplicar o blend ao HEADER (nivel superior), nao apenas a seus filhos,
  * para que a composicao encontre o conteudo da pagina por tras do header fixo.
  */
 .site-header {
-  --header-ink: #ffffff;
+  --header-ink: #ffffeb;
   --header-hover: #29f4ad;
   position: sticky;
   top: 0;

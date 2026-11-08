@@ -1,14 +1,14 @@
-# Rafael Cabral Design — Portfólio v1.4.17
+# Rafael Cabral Design — Portfólio v1.4.18
 
 Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
 
-## Novo na v1.4.17 — Header adaptativo sem fundo
+## Novo na v1.4.18 — Header adaptativo sem fundo
 
-O header continua preso ao topo, mas agora e inteiramente transparente. A propriedade `mix-blend-mode: difference` faz a marca e os links aparecerem escuros sobre branco e claros sobre imagens pretas/escuras, sem inserir uma faixa branca durante a rolagem. A cor de hover segue a referencia rosa em fundos claros. Em imagens muito coloridas, o resultado do hover e naturalmente adaptativo (mistura de cor).
+O header continua preso ao topo, transparente. A propriedade `mix-blend-mode: difference`, combinada com a cor-base `#ffffeb`, produz **exatamente Black Russian `#000014` em fundo branco puro** para monograma, links e menu fechado. Em fundos escuros ou imagens, o contraste continua adaptativo por pixel, sem criar faixa branca. Em fundos que nao sao brancos puros, o resultado varia conforme a cor de cada pixel, uma limitacao natural da mesclagem CSS. A cor de hover segue a referencia rosa em fundos claros. Em imagens muito coloridas, o resultado do hover e naturalmente adaptativo (mistura de cor).
 
 No celular, o menu aberto utiliza um painel branco para garantir leitura e navegacao; ao fechar, retorna automaticamente ao modo transparente/invertido. O efeito depende do suporte do navegador a `mix-blend-mode` (navegadores modernos).
 
-Arquivos alterados em relacao a v1.4.16: `assets/css/styles.css`, `assets/js/site.js`, os tres arquivos HTML e este guia. Nenhuma imagem ou fonte precisa ser reenviada.
+Arquivos alterados em relacao a v1.4.17: `assets/css/styles.css`, os tres arquivos HTML (versao do cache CSS) e este guia. Nao e necessario reenviar as imagens, JavaScript ou fontes.
 
 ## 1. Onde enviar as imagens
 
@@ -74,7 +74,7 @@ Para excluir ou trocar imagens, basta remover ou substituir o arquivo correspond
 
 Se uma imagem não aparecer: confira a grafia exata, a pasta, a extensão WebP verdadeira e se o GitHub Pages concluiu a publicação.
 
-## 3. Como publicar a v1.4.17
+## 3. Como publicar a v1.4.18
 
 Para quem ja esta usando a **v1.4.16**, utilize o ZIP de atualizacao e substitua somente estes **seis arquivos**, preservando os caminhos:
 
@@ -85,7 +85,7 @@ Para quem ja esta usando a **v1.4.16**, utilize o ZIP de atualizacao e substitua
 - `assets/js/site.js`
 - `LEIA-ME.md`
 
-O arquivo CSS e o JavaScript estao identificados com a versao `1417` nos HTMLs para evitar cache. Nao e necessario atualizar capas, projetos, fontes ou outros arquivos. Use a mensagem de commit `Header transparente adaptativo v1.4.17`.
+O arquivo CSS e o JavaScript estao identificados com a versao `1417` nos HTMLs para evitar cache. Nao e necessario atualizar capas, projetos, fontes ou outros arquivos. Use a mensagem de commit `Header transparente adaptativo v1.4.18`.
 
 Para uma instalacao do zero, utilize o ZIP completo. O GitHub Pages deve continuar configurado para a branch de publicacao e o caminho `/(root)`.
 
