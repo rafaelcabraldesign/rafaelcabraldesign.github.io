@@ -514,7 +514,7 @@ body.is-page-leaving::after { opacity: 1; }
     left: calc(-1 * var(--gutter));
     right: calc(-1 * var(--gutter));
     width: calc(100% + 2 * var(--gutter));
-    padding: 24px var(--gutter) 40px;
+    padding: 0 var(--gutter);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     background: var(--paper);
