@@ -1,6 +1,14 @@
-# Rafael Cabral Design — Portfólio v1.4.19
+# Rafael Cabral Design — Portfólio v1.4.20
 
 Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
+
+## Novo na v1.4.20 — Menu sem verde durante a navegacao
+
+A cor verde fugaz do monograma e dos links ao clicar em Projetos ou Inicio era provocada pelo fade-out aplicado ao `body` inteiro. Isso altera a composicao do header com `mix-blend-mode: difference`, expondo a cor complementar interna usada para produzir o rosa da marca.
+
+A v1.4.20 conserva o fade de 460 ms, mas agora clareia a pagina com uma cortina branca posicionada acima do conteudo. O `body` nao muda de opacidade: o header transparente continua invertendo cores ate ficar encoberto pela cortina. Durante a saida o hover e neutralizado para impedir o verde complementar mesmo em navegadores que reordenam as camadas de composicao. Nenhuma alteracao em imagens, conteudos, fontes, hovers ou regras de navegacao foi feita.
+
+Atualizacao em relacao a v1.4.19: apenas `assets/css/styles.css` e os tres HTMLs para forcar o CSS novo via `?v=1420`. Envie o conteudo do ZIP de atualizacao ao GitHub sem apagar a pasta `assets/img`.
 
 ## Novo na v1.4.19 — Animação de textos mais nítida
 

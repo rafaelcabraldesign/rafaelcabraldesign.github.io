@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.19
+ * RAFAEL CABRAL | Portfolio v1.4.20
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -472,9 +472,28 @@ html.motion-ready :is(
   24%  { opacity: 1; }
   to   { opacity: 1; top: 0; }
 }
-/* Fade-out de pagina sem mover o corpo inteiro como camada de bitmap. */
-body { transition: opacity 460ms cubic-bezier(.4, 0, .2, 1); }
-body.is-page-leaving { opacity: 0; pointer-events: none; }
+/* v1.4.20 — transicao com cortina branca em vez de opacidade no body.
+ * O header usa mix-blend-mode: difference e seu rosa de hover e codificado
+ * internamente como #29f4ad. Ao diminuir a opacidade de todo o body,
+ * o blend pode perder o backdrop e mostrar esse verde antes da navegacao.
+ * A cortina aparece por CIMA da pagina, mantendo o backdrop e a inversao
+ * intactos durante o fade-out. Sem tremor de cor no logo e no menu. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 460ms cubic-bezier(.4, 0, .2, 1);
+}
+body.is-page-leaving { pointer-events: none; }
+/* Ao clicar, congela o hover no tom adaptativo neutro durante o fade.
+ * Evita que o verde complementar (#29f4ad) apareca mesmo que o navegador
+ * reordene as camadas de composicao num frame da navegacao. */
+body.is-page-leaving .site-header { --header-hover: var(--header-ink); }
+body.is-page-leaving::after { opacity: 1; }
 
 @media (min-width: 761px) and (max-width: 1240px) {
   .service-row { grid-template-columns: 32px minmax(0, 70%); gap: 12px; }
