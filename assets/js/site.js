@@ -17,6 +17,12 @@
   };
 
   const projectLink = project => `projeto.html?projeto=${encodeURIComponent(project.slug)}`;
+  // Convenção de arquivos: só adicionar WebP ao GitHub, sem editar o JS.
+  // Se um caminho manual estiver preenchido em conteudo.js, ele tem prioridade.
+  const projectCoverSource = project => (typeof project.imagem === 'string' && project.imagem.trim())
+    || `assets/img/projetos/${project.slug}.webp`;
+  const numberedProjectSource = (project, number) =>
+    `assets/img/projetos/${project.slug}-${String(number).padStart(2, '0')}.webp`;
   const names = { instagram: 'Instagram', behance: 'Behance', linkedin: 'LinkedIn' };
 
   function cover(project, index) {
@@ -24,22 +30,16 @@
     link.href = projectLink(project);
     link.setAttribute('aria-label', `Ver projeto ${project.nome}`);
 
-    if (project.imagem) {
-      link.classList.add('has-image');
-      const img = el('img');
-      img.src = project.imagem;
-      img.alt = ''; // O nome do projeto ja esta no texto do proprio link.
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.addEventListener('error', () => {
-        img.remove();
-        link.classList.remove('has-image');
-        link.append(el('span', 'placeholder-center', 'Imagem em breve'));
-      }, { once: true });
-      link.append(img);
-    } else {
-      link.append(el('span', 'placeholder-center', 'Imagem em breve'));
-    }
+    // Tentativa automatica de carregar assets/img/projetos/<slug>.webp.
+    // A capa so e exibida quando o download termina com sucesso.
+    const img = el('img');
+    img.alt = ''; // O nome do projeto ja e anunciado pelo proprio link.
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('load', () => link.classList.add('has-image'), { once: true });
+    img.addEventListener('error', () => img.remove(), { once: true });
+    link.append(img, el('span', 'placeholder-center', 'Imagem em breve'));
+    img.src = projectCoverSource(project);
 
     const caption = el('div', 'cover-meta');
     caption.append(el('h3', 'project-title', project.nome));
@@ -67,6 +67,57 @@
     return section;
   }
 
+  /* O GitHub Pages e estatico: ele nao tem uma API de listagem de imagens.
+   * Para manter a edicao sem codigo, tentamos os numeros em ordem crescente.
+   * O primeiro arquivo ausente encerra a busca (01, 02, 03... sem lacunas).
+   */
+  async function populateProjectGallery(project, gallery) {
+    const manual = Array.isArray(project.galeria) ? project.galeria.filter(Boolean) : [];
+    const sources = manual.length ? manual : null;
+    const maxImages = 40; // limite de seguranca; pode receber 01 a 40.
+    for (let index = 0; index < (sources ? sources.length : maxImages); index++) {
+      const src = sources ? sources[index] : numberedProjectSource(project, index + 1);
+      const loaded = await new Promise(resolve => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.onload = () => resolve(image);
+        image.onerror = () => resolve(null);
+        image.src = src;
+      });
+      // Com a convencao automatica, a primeira lacuna significa fim da galeria.
+      if (!loaded) { if (sources) continue; else break; }
+      loaded.alt = `${project.nome} — aplicação visual ${index + 1}`;
+      loaded.decoding = 'async';
+      loaded.loading = 'lazy';
+      gallery.append(loaded);
+      gallery.hidden = false;
+      document.dispatchEvent(new CustomEvent('portfolio:reveal-added', {
+        detail: { elements: [loaded] }
+      }));
+    }
+  }
+
+  /* Fotos fixas: `sobre.webp` e `servicos.webp` sao opcionais e substituem
+   * os placeholders quando presentes na pasta assets/img/.
+   */
+  function setupAutoSectionImages() {
+    document.querySelectorAll('[data-auto-image]').forEach(frame => {
+      const source = frame.dataset.autoImage;
+      if (!source) return;
+      const image = el('img', 'auto-section-image');
+      image.alt = frame.dataset.autoAlt || 'Imagem de apoio';
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      image.addEventListener('load', () => {
+        frame.classList.add('has-image');
+        frame.setAttribute('aria-label', image.alt);
+      }, { once: true });
+      image.addEventListener('error', () => image.remove(), { once: true });
+      frame.prepend(image);
+      image.src = source;
+    });
+  }
+
   function renderProjectDetail(container) {
     const params = new URLSearchParams(location.search);
     const slug = params.get('projeto');
@@ -89,19 +140,20 @@
     if (project.categoria || project.ano) intro.append(el('span', 'detail-badge', [project.categoria, project.ano].filter(Boolean).join(' · ')));
 
     const hero = el('div', 'detail-cover');
-    if (project.imagem) {
-      const img = el('img');
-      img.src = project.imagem;
-      img.alt = `Capa do projeto ${project.nome}`;
-      img.decoding = 'async';
-      img.addEventListener('error', () => {
-        img.remove();
-        hero.append(el('span', 'detail-placeholder', 'Imagem do projeto em breve'));
-      }, { once: true });
-      hero.append(img);
-    } else {
-      hero.append(el('span', 'detail-placeholder', 'Imagem do projeto em breve'));
-    }
+    const heroPlaceholder = el('span', 'detail-placeholder', 'Imagem do projeto em breve');
+    hero.append(heroPlaceholder);
+    const img = el('img');
+    img.alt = `Capa do projeto ${project.nome}`;
+    img.decoding = 'async';
+    // Evita mostrar um icone de imagem quebrada se ainda nao existir a capa.
+    img.style.visibility = 'hidden';
+    img.addEventListener('load', () => {
+      heroPlaceholder.remove();
+      img.style.visibility = 'visible';
+    }, { once: true });
+    img.addEventListener('error', () => img.remove(), { once: true });
+    hero.append(img);
+    img.src = projectCoverSource(project);
 
     const overview = el('div', 'detail-overview');
     overview.append(el('h2', '', 'O projeto'));
@@ -113,19 +165,14 @@
     if (context) container.append(context);
     if (solution) container.append(solution);
 
-    if (Array.isArray(project.galeria) && project.galeria.length) {
-      const gallery = el('div', 'detail-gallery');
-      project.galeria.forEach((src, i) => {
-        if (!src) return;
-        const img = el('img');
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.src = src;
-        img.alt = `${project.nome} — aplicação visual ${i + 1}`;
-        gallery.append(img);
-      });
-      if (gallery.children.length) container.append(gallery);
-    }
+    // O navegador nao consegue listar arquivos do GitHub Pages.
+    // Detectamos <slug>-01.webp, -02.webp... sequencialmente, ate a primeira falta.
+    // Nao mostramos uma galeria vazia quando ainda nao ha arquivos.
+    const gallery = el('div', 'detail-gallery');
+    gallery.hidden = true;
+    gallery.setAttribute('aria-label', `Imagens do projeto ${project.nome}`);
+    container.append(gallery);
+    populateProjectGallery(project, gallery);
 
     // Relacionados: todos os demais projetos, sem botoes de anterior/proximo.
     const others = projects.filter(item => item.slug !== project.slug);
@@ -285,7 +332,8 @@
       });
     }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
 
-    for (const element of nodes) {
+    const observeReveal = element => {
+      if (!element || !element.parentElement || element.dataset.entrance) return;
       const siblings = [...element.parentElement.children];
       const position = Math.max(siblings.indexOf(element), 0);
       const isCard = element.classList.contains('project-card');
@@ -300,7 +348,12 @@
         if (event.animationName === 'reveal-enter') element.dataset.entrance = 'complete';
       });
       observer.observe(element);
-    }
+    };
+    nodes.forEach(observeReveal);
+    // As imagens numeradas entram no DOM apos o primeiro carregamento.
+    document.addEventListener('portfolio:reveal-added', event => {
+      (event.detail?.elements || []).forEach(observeReveal);
+    });
     // O rodape precisa de um unico gatilho de entrada para nao gerar
     // rolagem adicional: filhos transformados nao sao observados separados.
     // Preservamos os mesmos tempos, distancias, atrasos e keyframes.
@@ -477,6 +530,7 @@
   if (detail) renderProjectDetail(detail);
   document.querySelectorAll('[data-year]').forEach(node => node.textContent = new Date().getFullYear());
   configureContact();
+  setupAutoSectionImages();
   setupMenu();
   setupStickyHeader();
   setupReveal();

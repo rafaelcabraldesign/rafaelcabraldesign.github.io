@@ -4,12 +4,17 @@
  * Edite apenas os campos entre aspas para atualizar o site.
  * Campos vazios nao aparecem publicamente. Nunca publique dados sigilosos.
  *
- * Para incluir uma capa:
- * 1. Coloque a imagem em assets/img/projetos/
- * 2. Preencha imagem: "assets/img/projetos/nome-da-imagem.webp"
+ * IMAGENS AUTOMATICAS (sem editar este arquivo):
+ * - Capa do projeto: assets/img/projetos/<slug>.webp
+ * - Imagens do case: assets/img/projetos/<slug>-01.webp, -02.webp, ...
+ * - Sobre: assets/img/sobre.webp
+ * - Servicos: assets/img/servicos.webp
  *
- * Para mais imagens na pagina individual:
- * galeria: ["assets/img/projetos/imagem1.webp", "assets/img/projetos/imagem2.webp"]
+ * Os numeros dos cases devem ser sequenciais, sem lacunas.
+ * Se nao existir uma imagem, o placeholder continua aparecendo.
+ * Os campos imagem e galeria abaixo sao opcionais e funcionam como
+ * substituicoes manuais APENAS se voce quiser mudar esta convencao.
+
  */
 
 window.PORTFOLIO_CONTEUDO = {

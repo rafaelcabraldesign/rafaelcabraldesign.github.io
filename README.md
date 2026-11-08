@@ -1,86 +1,105 @@
-# Rafael Cabral Design — Portfólio v1.4.12
+# Rafael Cabral Design — Portfólio v1.4.16
 
-Site estático para GitHub Pages, em HTML, CSS e JavaScript. Nexa é carregada diretamente pelo Adobe Fonts (https://use.typekit.net/pwt1xky.css). As fontes não são incluídas no pacote.
+Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
 
-## Mudanças da v1.4.12
+## 1. Onde enviar as imagens
 
-1. **Animação de entrada sem piscar.** Antes havia uma janela de tempo em que o elemento aparecia normalmente, era ocultado pelo JavaScript e só então começava o movimento. Agora o navegador recebe a classe `motion-ready` ainda no `<head>` e o CSS oculta apenas os elementos animáveis desde o primeiro frame. Eles aparecem apenas durante a primeira animação. Se o JavaScript estiver desativado ou a pessoa preferir menos movimento, o conteúdo aparece normalmente.
-2. **Transição de saída nas páginas internas.** Ao clicar em links entre página inicial, galeria e cases, a página inteira sai com um `fade-out` uniforme de 460 ms e leve deslocamento para cima antes de carregar a próxima. Links externos, WhatsApp, e-mail, âncoras internas e novos separadores não são interceptados. O histórico (Voltar/Avançar) é tratado com `pageshow`.
-3. **Serviços: agora são cinco.** Removido `Comunicação para Redes` por sobrepor `Materiais de Marca`; `Experiências Digitais` passa a ocupar a posição 05. Os demais títulos e descrições permanecem inalterados.
-4. Atualizados o CSS para `?v=1410` e o JS para `?v=1410` em todas as páginas, evitando problemas com versões em cache.
+| O que vai aparecer no site | Onde colocar e como nomear |
+| --- | --- |
+| Imagem da seção Sobre | `assets/img/sobre.webp` |
+| Imagem da seção Serviços | `assets/img/servicos.webp` |
+| Capa de um projeto | `assets/img/projetos/NOME-DO-PROJETO.webp` |
+| Imagens internas de um projeto | `assets/img/projetos/NOME-DO-PROJETO-01.webp`, `-02.webp` etc. |
 
-## Atualizar no GitHub Pages (a partir da v1.4.9)
+Use sempre arquivos **WebP reais**, em letras minúsculas e com hífens exatamente como nos exemplos. Não basta mudar a extensão de um JPG para `.webp`: é necessário converter a imagem para esse formato.
 
-1. Faça backup do repositório (Code > Download ZIP).
-2. Extraia `portfolio-rafael-cabral-v1.4.12-atualizacao.zip` no seu computador.
-3. Abra o repositório `rafaelcabraldesign.github.io` no GitHub e escolha **Add file > Upload files**.
-4. Arraste **os arquivos que estão dentro da pasta extraída**, preservando as subpastas `assets/css/` e `assets/js/`, para substituir os arquivos existentes nos mesmos caminhos.
-5. Confirme o commit com a mensagem: `Animações e navegação sem piscar v1.4.12`.
-6. Acesse o site publicado e pressione Ctrl + Shift + R para atualizar os arquivos do cache.
+### Nome exato das capas dos 15 projetos
 
-## Personalização posterior
+| Projeto | Nome do arquivo (dentro de `assets/img/projetos/`) |
+| --- | --- |
+| CRISFIT | `crisfit.webp` |
+| Neto Motors | `neto-motors.webp` |
+| Juliana Vitorino | `juliana-vitorino.webp` |
+| Salto Energia | `salto-energia.webp` |
+| Uber Brindes | `uber-brindes.webp` |
+| Mariana Morais | `mariana-morais.webp` |
+| Iná Game Studio | `ina-game-studio.webp` |
+| Poiôô Kids | `poioo-kids.webp` |
+| Artes do meu Brasil | `artes-do-meu-brasil.webp` |
+| Funil Exponencial | `funil-exponencial.webp` |
+| Ita Corretora de Seguros | `ita-corretora-de-seguros.webp` |
+| Eagle Investment | `eagle-investment.webp` |
+| Agrofixa | `agrofixa.webp` |
+| Down Five | `down-five.webp` |
+| Lara Land | `lara-land.webp` |
 
-- Para atualizar as imagens, edite os dados de cada trabalho em `assets/js/conteudo.js`. No projeto Lara Land, informe `imagem: "assets/img/projetos/lara-land.webp"` somente depois de enviar a imagem para esta pasta.
-- Para ajustar a duração da escrita, mude `totalDuration = 1850` em `setupFooterSignature()` dentro de `assets/js/site.js`.
-- O desenho final da assinatura usa os caminhos vetoriais enviados por Rafael. A cópia original está em `assets/img/assinatura.svg`, sem alterações.
-- Com JavaScript desativado ou preferência por movimento reduzido, a assinatura permanece completamente visível.
-- Os textos, cores, contato e os 14 projetos anteriores foram preservados.
+O nome é reutilizado automaticamente nos cards da página inicial, na página com todos os projetos, na capa do case individual e nos cards de outros projetos.
 
+### Como adicionar as imagens internas dos cases
 
-## Alteracoes v1.4.12 - assinatura
+Por exemplo, para apresentar três imagens do projeto CRISFIT:
 
-- Corrigida a piscada da assinatura durante atualizacao, navegacao e restauracao do historico: ela comeca invisivel **antes da primeira pintura** e somente aparece quando o rodape entra em tela e a animacao comeca.
-- Escrita mais rapida: aproximadamente **1,1 segundo**, antes 1,85 segundo.
-- Ao passar o mouse a cor muda para rosa, sem repetir a escrita.
-- Nos tres HTMLs, a versao de CSS/JS muda para `v=1411` para evitar cache.
-- Fallback de acessibilidade: se movimentos reduzidos estiverem ativos, a assinatura aparece pronta.
+```
+assets/img/projetos/crisfit-01.webp
+assets/img/projetos/crisfit-02.webp
+assets/img/projetos/crisfit-03.webp
+```
 
-**Para publicar:** substitua `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css`, `assets/js/site.js`. Nao e necessario reenviar fontes nem os SVGs.
+A ordem é numérica. **Não pule números.** Se `crisfit-02.webp` não existir, o site interromperá a busca depois de `crisfit-01.webp` e não exibirá `crisfit-03.webp`. É possível adicionar até **40 imagens numeradas por case**, sem editar o código.
 
+A capa `crisfit.webp` é independente da galeria numerada.
 
-## Ajuste v1.4.12 — Rodape sem salto
+Como o GitHub Pages não fornece uma lista de arquivos do diretório, o JavaScript verifica os arquivos em sequência. É normal o navegador registrar um pedido 404 para o primeiro número que não existe; o visitante não vê erro, apenas a galeria com as imagens disponíveis.
 
-- Mantivemos a entrada vertical dos textos e links com os tempos e distancias anteriores.
-- `overflow: clip` no rodape impede que o `translateY` dos filhos acrescente area rolavel ao final da pagina.
-- O observador usa o proprio rodape, que tem posicao estatica, para iniciar a entrada conjunta dos textos; nao depende da posicao animada dos filhos.
-- A escrita SVG so comeca **depois** que a entrada dos textos e links termina e a assinatura esta na area visivel.
-- Hover da assinatura apenas altera sua cor, sem reiniciar a escrita.
-- Arquivos alterados: `assets/css/styles.css`, `assets/js/site.js`, `index.html`, `projetos.html` e `projeto.html`; o guia tambem foi atualizado.
+**Quando não existe arquivo:** o site preserva o placeholder. A seção de galeria interna nem aparece quando nenhuma imagem numerada foi enviada.
 
+## 2. Como atualizar as imagens pelo GitHub (sem código)
 
-## Ajuste v1.4.13 — Sincronismo do rodape
+1. Prepare a arte em WebP. Para capas, experimente imagens de **1600 a 2200 px na dimensão maior** e tente mantê-las abaixo de **500 KB**, preservando a qualidade visual.
+2. Renomeie o arquivo conforme a tabela acima.
+3. No GitHub, abra o repositório `rafaelcabraldesign.github.io` e navegue até a pasta `assets/img/` ou `assets/img/projetos/`.
+4. Clique em **Add file → Upload files** dentro da pasta correta.
+5. Envie a imagem; se o mesmo nome já existir, substitua o arquivo anterior.
+6. Confirme em **Commit changes** e abra o site publicado. Se continuar vendo a imagem antiga, use `Ctrl + Shift + R` ou aguarde a publicação do GitHub Pages.
 
-- A assinatura SVG comeca no **mesmo evento** em que os textos e links do rodape iniciam suas entradas, nao no fim delas.
-- Permanecem identicos: a escrita de 1,1 segundo, a animacao vertical dos textos, o hover rosa e o clique para o topo.
-- Mantido `overflow: clip` do rodape da v1.4.12 para impedir salto no limite da pagina.
-- Na restauracao do historico, a escrita pode comecar imediatamente se a entrada do rodape ja tiver sido acionada.
-- O JS recebe `?v=1413` nos tres arquivos HTML, evitando o cache da versao anterior.
-- Arquivos modificados: `assets/js/site.js`, `index.html`, `projetos.html`, `projeto.html` e `LEIA-ME.md`.
+Para excluir ou trocar imagens, basta remover ou substituir o arquivo correspondente no GitHub. **Não precisa alterar `index.html`, `projeto.html` ou os arquivos JavaScript.**
 
+Se uma imagem não aparecer: confira a grafia exata, a pasta, a extensão WebP verdadeira e se o GitHub Pages concluiu a publicação.
 
-## v1.4.14 — Ajuste do peso tipografico
+## 3. Como publicar a v1.4.16
 
-O projeto Adobe Fonts `pwt1xky` possui os pesos **Nexa Regular 400** e **Nexa Bold 700**. Como nao existe um peso intermediario habilitado nesse kit, esta atualizacao opta por um **reforco optico discreto** na Nexa Regular, sem substitui-la por Bold em todos os textos. Assim o contraste aumenta um nivel visual, evitando uma mudanca abrupta na direcao editorial do site. A assinatura vetorial do rodape nao foi alterada.
+Você pode usar o **ZIP completo** para uma instalação limpa ou o **ZIP de atualização** para substituir apenas os nove arquivos modificados ou acrescentados à v1.4.15:
 
-- Textos corridos: reforco optico de 0,24 px.
-- Titulos: reforco de 0,42 px.
-- Navegacao, botoes, links, rotulos e lista de servicos: reforco de 0,28 px.
-- Tamanho de fonte, espacamento, altura de linha, responsividade e animacoes permanecem inalterados.
-- A alteracao esta unicamente em `assets/css/styles.css` e no parametro de cache `?v=1414` nos tres HTMLs.
-- Nao e necessario enviar arquivos de fonte ao GitHub. A fonte continua carregada pelo kit Adobe oficial.
+- `index.html`
+- `projetos.html`
+- `projeto.html`
+- `assets/js/site.js`
+- `assets/js/conteudo.js`
+- `assets/css/styles.css`
+- `assets/img/LEIA-ME.txt`
+- `assets/img/projetos/LEIA-ME.txt`
+- `LEIA-ME.md`
 
-Se for necessario utilizar um peso realmente mais forte do arquivo de fonte em vez do reforco optico, sera preciso optar pelo peso Nexa Bold (700), que representa um salto perceptivelmente maior.
+Extraia o ZIP, faça o upload dos arquivos internos para os mesmos caminhos do repositório e use o commit `Imagens automaticas v1.4.16`.
 
+O GitHub Pages deve continuar apontando para a branch de publicação e para `/(root)` conforme a configuração que já funciona no seu site.
 
-## v1.4.15 — Pesos oficiais Nexa / Adobe Fonts
+## 4. O que continua editável por código
 
-O projeto web Adobe Fonts `https://use.typekit.net/pwt1xky.css` foi atualizado e agora oferece os pesos **100, 200, 300, 400, 500, 600, 700, 800 e 900** da familia `nexa`, com estilos normais e italicos. A familia `nexa-text` tambem possui esses pesos.
+- **Nomes de projetos, ordem, textos e descrições dos cases:** `assets/js/conteudo.js`.
+- **Textos fixos das seções Sobre, Serviços e Contato:** `index.html`.
+- **Cores e estilos:** `assets/css/styles.css`.
+- **Comportamento das animações e navegação:** `assets/js/site.js`.
 
-Esta versao substitui o reforco de contorno da v1.4.14 pelos pesos reais da fonte: todos os textos com peso 400 passam para **500 (Medium)**, e os anteriormente configurados com 500 passam para **600 (Semibold)**. A base do documento herda 500. Utilizamos `font-synthesis: none` para impedir pesos sinteticos.
+Para imagens, **não é mais necessário** fazer essas alterações. Os campos opcionais `imagem` e `galeria` no arquivo de conteúdo continuam existindo apenas para casos especiais em que você quiser escolher um caminho manual fora da convenção automática.
 
-- Nao foram alterados tamanhos de fonte, altura de linha, espacos, cores, conteudos, animacoes nem comportamento dos links.
-- O SVG da assinatura permanece inalterado.
-- Nenhum arquivo de fonte esta no ZIP: o carregamento e feito pelo Adobe Fonts.
-- Foram alterados `assets/css/styles.css`, os tres HTMLs (para trocar o parametro de cache `?v=1415`) e este guia.
+## 5. O que foi preservado
 
-**Para atualizar:** envie o conteudo do ZIP de atualizacao ao GitHub, mantendo os caminhos das pastas. Confira se o projeto Adobe Fonts continua ativo e com as variantes desejadas publicadas.
+- A direção de arte branca, minimalista e editorial.
+- 15 projetos, incluindo Lara Land.
+- Nexa pelo Adobe Fonts (kit `pwt1xky`), sem redistribuir arquivos de fonte.
+- Monograma, favicon, assinatura SVG do rodapé e animações de entrada/saída.
+- Contato WhatsApp e e-mail.
+- Responsividade para celulares, tablets, desktop e ultrawide.
+
+O ZIP não contém imagens fictícias nem arquivos de fontes licenciadas. As imagens sintéticas utilizadas na validação são temporárias e **não** fazem parte da publicação.
