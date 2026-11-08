@@ -115,20 +115,20 @@ p { line-height: 1.55; }
   .site-header .primary-nav a:hover,
   .site-header .header-contact:hover { color: var(--accent); }
 }
-/* v1.4.23 — Entrada do header: opacidade acompanha o deslocamento.
+/* v1.4.24 — Entrada do header mais agil: opacidade acompanha o deslocamento.
    Mantem a sequencia individual, o blend adaptativo e a posicao sticky. */
 @keyframes header-item-enter {
   from { opacity: 0; translate: 0 -14px; }
   to   { opacity: 1; translate: 0 0; }
 }
-.header-inner > .brand { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 0ms both; }
-.header-inner > .menu-toggle { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 150ms both; }
+.header-inner > .brand { animation: header-item-enter 650ms cubic-bezier(.4,0,.3,1) 0ms both; }
+.header-inner > .menu-toggle { animation: header-item-enter 650ms cubic-bezier(.4,0,.3,1) 95ms both; }
 @media (min-width: 761px) {
-  .primary-nav > a { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) both; }
-  .primary-nav > a:nth-child(1) { animation-delay: 95ms; }
-  .primary-nav > a:nth-child(2) { animation-delay: 215ms; }
-  .primary-nav > a:nth-child(3) { animation-delay: 335ms; }
-  .header-inner > .header-contact { animation: header-item-enter 980ms cubic-bezier(.4,0,.3,1) 455ms both; }
+  .primary-nav > a { animation: header-item-enter 650ms cubic-bezier(.4,0,.3,1) both; }
+  .primary-nav > a:nth-child(1) { animation-delay: 60ms; }
+  .primary-nav > a:nth-child(2) { animation-delay: 135ms; }
+  .primary-nav > a:nth-child(3) { animation-delay: 210ms; }
+  .header-inner > .header-contact { animation: header-item-enter 650ms cubic-bezier(.4,0,.3,1) 285ms both; }
 }
 
 /* Hero editorial. Titulo e linha de apoio acompanham toda a largura util. */
@@ -137,7 +137,7 @@ p { line-height: 1.55; }
 .eyebrow { margin-bottom: 28px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow span { padding: 0 8px; color: #a4a5a9; }
 .hero h1 { max-width: none; margin: 0 0 25px; font-size: clamp(2.7rem, 3.85vw, 6rem); font-weight: 500; line-height: 1.1; letter-spacing: -.043em; text-wrap: pretty; }
-/* v1.4.23 — Titulo palavra a palavra, SEM corte de glifos.
+/* v1.4.24 — Titulo palavra a palavra mais agil, SEM corte de glifos.
    A mascara continua como wrapper editorial para manter as quebras, mas nao
    recorta as letras. Deslocamento curto + fade longo, simultaneos.
    Antes: opacidade 100% aos 28% + movimento de 115%, gerando meia letra solida. */
@@ -152,9 +152,9 @@ p { line-height: 1.55; }
 html.motion-ready .hero-word { opacity: 0; translate: 0 .44em; }
 html.motion-ready .hero-title.is-word-animated .hero-word {
   animation:
-    hero-word-rise 1060ms cubic-bezier(.4,0,.3,1) both,
-    hero-word-fade 1060ms cubic-bezier(.4,0,.3,1) both;
-  animation-delay: calc(85ms + var(--word-index) * 112ms);
+    hero-word-rise 720ms cubic-bezier(.4,0,.3,1) both,
+    hero-word-fade 720ms cubic-bezier(.4,0,.3,1) both;
+  animation-delay: calc(45ms + var(--word-index) * 70ms);
 }
 @keyframes hero-word-rise {
   from { translate: 0 .44em; }
@@ -448,7 +448,7 @@ html.motion-ready :is(
   .related-header > *,
   .site-footer > *:not(.footer-signature)
 ).is-revealed {
-  animation: reveal-enter var(--reveal-duration, 1180ms) cubic-bezier(.4,0,.3,1) var(--reveal-delay,0ms) both;
+  animation: reveal-enter var(--reveal-duration, 780ms) cubic-bezier(.4,0,.3,1) var(--reveal-delay,0ms) both;
 }
 @keyframes reveal-enter {
   from { opacity: 0; translate: 0 var(--reveal-distance,30px); }
@@ -539,12 +539,12 @@ body.is-page-leaving::after { opacity: 1; }
   .primary-nav .mobile-only-link { display: block !important; }
   .primary-nav a::after { display: none; }
   .primary-nav.is-open a {
-    animation: mobile-link-enter 850ms cubic-bezier(.4,0,.3,1) both;
+    animation: mobile-link-enter 630ms cubic-bezier(.4,0,.3,1) both;
   }
-  .primary-nav.is-open a:nth-child(1) { animation-delay: 35ms; }
-  .primary-nav.is-open a:nth-child(2) { animation-delay: 115ms; }
-  .primary-nav.is-open a:nth-child(3) { animation-delay: 195ms; }
-  .primary-nav.is-open a:nth-child(4) { animation-delay: 275ms; }
+  .primary-nav.is-open a:nth-child(1) { animation-delay: 25ms; }
+  .primary-nav.is-open a:nth-child(2) { animation-delay: 85ms; }
+  .primary-nav.is-open a:nth-child(3) { animation-delay: 145ms; }
+  .primary-nav.is-open a:nth-child(4) { animation-delay: 205ms; }
   body.mobile-menu-open { overflow: hidden; }
   .hero { padding-top: 100px; padding-bottom: 135px; }
   .eyebrow { margin-bottom: 24px; font-size: 10px; }

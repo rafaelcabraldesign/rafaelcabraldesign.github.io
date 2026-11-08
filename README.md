@@ -1,11 +1,42 @@
+# Portfólio Rafael Cabral — v1.4.24
+
+## Animações mais ágeis, preservando a qualidade visual da v1.4.23
+
+Esta versão altera apenas as **durações e intervalos** das entradas, mantendo os movimentos, a opacidade sincronizada e a ausência de corte nos glifos.
+
+- **Título principal:** 720 ms por palavra, com intervalos de 70 ms (antes: 1.060 ms e 112 ms). Primeiro início em 45 ms. Entrada total aproximada: 1,26 s para as oito palavras.
+- **Header:** 650 ms por elemento (antes: 980 ms). Sequência com intervalos menores.
+- **Seções e textos:** 760–780 ms (antes: 1.160–1.180 ms), com atrasos reduzidos.
+- **Cards:** 820 ms (antes: 1.220 ms).
+- **Menu mobile:** 630 ms por item (antes: 850 ms), com intervalo de 60 ms.
+- **Rodapé:** 760 ms por elemento (antes: 1.160 ms). A assinatura continua sincronizada ao início da entrada do rodapé, com sua duração original de 1,1 s.
+
+Não foram alterados tamanho/cores/fontes, imagens, URLs, transições entre páginas, animações de hover, a assinatura ou as distâncias de movimento.
+
+## Atualização no GitHub (a partir da v1.4.23)
+
+Envie o conteúdo de `portfolio-rafael-cabral-v1.4.24-atualizacao.zip` para a raiz do repositório, preservando o caminho `assets/css` e `assets/js`, sem excluir imagens já publicadas.
+
+Arquivos modificados:
+- `index.html`
+- `projetos.html`
+- `projeto.html`
+- `assets/css/styles.css`
+- `assets/js/site.js`
+- `LEIA-ME.md`
+
+Os HTMLs usam `?v=1424` para atualizar o cache do CSS e JavaScript. Commit sugerido: `Animações mais rápidas v1.4.24`.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.23
 
 ## Entrada do título e animações com fade sincronizado
 
 A v1.4.22 tornava as palavras do título 100% opacas logo aos 28% do movimento enquanto ainda eram recortadas por máscaras individuais. Isso produzia letras pela metade durante a entrada. **A v1.4.23 elimina esse recorte**: a palavra inteira sobe suavemente por uma distância pequena (`.44em`) e ganha opacidade durante toda a animação, do início ao fim. A ordem das oito palavras e a quebra após a vírgula continuam iguais.
 
-- **Título principal:** deslocamento de `.44em` (em vez de 115%); movimento e fade sincronizados em 1.060 ms, 112 ms de intervalo entre palavras.
-- **Seções e cards:** deslocamentos de 28 a 38 px (antes 44 a 58 px); fade acompanha a entrada até 100%, com duração de 1.160 a 1.220 ms, com a mesma curva de aceleracao para posicao e transparencia.
+- **Título principal:** deslocamento de `.44em` (em vez de 115%); movimento de 1.010 ms, fade de 1.070 ms, 112 ms de intervalo entre palavras.
+- **Seções e cards:** deslocamentos de 28 a 38 px (antes 44 a 58 px); fade acompanha a entrada até 100%, com duração de 1.160 a 1.220 ms.
 - **Header:** entrada em sequência com fade progressivo durante 980 ms, mantendo o efeito de contraste adaptativo.
 - **Menu mobile:** entrada em sequência com 850 ms e deslocamento de 13 px.
 - Mantidos o menu mobile, as transições de páginas, os 15 projetos, o carregamento automático de imagens WebP, a Nexa do Adobe Fonts, a assinatura SVG e os links do WhatsApp.

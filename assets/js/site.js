@@ -351,12 +351,12 @@
       const position = Math.max(siblings.indexOf(element), 0);
       const isCard = element.classList.contains('project-card');
       const isHero = !!element.closest('.hero-content');
-      const delay = isCard ? (position % 2) * 145 : (position % 3) * 120;
-      // Deslocamentos menores: a letra inteira aparece enquanto o fade progride.
+      const delay = isCard ? (position % 2) * 95 : (position % 3) * 75;
+      // Deslocamentos curtos: fade acompanha o deslocamento, sem recortar os glifos.
       const distance = isCard ? 38 : isHero ? 30 : 28;
       element.style.setProperty('--reveal-delay', `${delay}ms`);
       element.style.setProperty('--reveal-distance', `${distance}px`);
-      element.style.setProperty('--reveal-duration', `${isCard ? 1220 : isHero ? 1180 : 1160}ms`);
+      element.style.setProperty('--reveal-duration', `${isCard ? 820 : isHero ? 780 : 760}ms`);
       element.dataset.entrance = 'pending';
       element.addEventListener('animationend', event => {
         if (['reveal-enter'].includes(event.animationName)) element.dataset.entrance = 'complete';
@@ -387,9 +387,9 @@
 
       for (const item of footerItems) {
         const position = [...footer.children].indexOf(item);
-        item.style.setProperty('--reveal-delay', `${(position % 3) * 130}ms`);
+        item.style.setProperty('--reveal-delay', `${(position % 3) * 75}ms`);
         item.style.setProperty('--reveal-distance', '28px');
-        item.style.setProperty('--reveal-duration', '1160ms');
+        item.style.setProperty('--reveal-duration', '760ms');
         item.dataset.entrance = 'pending';
         item.addEventListener('animationend', event => {
           if (event.target !== item || !['reveal-enter'].includes(event.animationName)) return;
