@@ -383,11 +383,20 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .detail-cover img { display: block; width: 100%; height: auto; max-height: none; position: static; inset: auto; object-fit: contain; aspect-ratio: auto; }
 /* O placeholder conserva uma altura propria sem impor proporcao as fotos. */
 .detail-placeholder { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 360px; aspect-ratio: 2 / 1; font-size: 14px; color: var(--subtle); }
+/* v1.4.29 — Metadados dos cases: mais respiro, hierarquia de cores
+   e acompanhamento do texto sem sair dos limites da propria secao. */
 .detail-meta { display: grid; grid-template-columns: minmax(280px,.92fr) minmax(0,1fr); gap: 42px; padding: 65px 0 110px; }
 .detail-specs { margin: 0; border-top: 1px solid var(--line); }
-.detail-spec-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; padding: 15px 0; border-bottom: 1px solid var(--line); }
-.detail-spec-row dt { margin: 0; color: var(--muted); font-size: clamp(12px,.78vw,14px); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
-.detail-spec-row dd { margin: 0; text-align: right; font-size: clamp(12px,.78vw,14px); font-weight: 500; letter-spacing: .015em; }
+.detail-spec-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; padding: 23px 0; border-bottom: 1px solid var(--line); }
+.detail-spec-row dt { margin: 0; color: #000014; font-size: clamp(12px,.78vw,14px); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.detail-spec-row dd { margin: 0; color: #707584; text-align: right; font-size: clamp(12px,.78vw,14px); font-weight: 500; letter-spacing: .015em; }
+@media (min-width: 761px) {
+  .detail-specs {
+    position: sticky;
+    top: clamp(92px, 7vw, 120px);
+    align-self: start;
+  }
+}
 .detail-description { max-width: min(960px, 100%); }
 .detail-description p { margin: 0 0 18px; color: var(--muted); font-size: var(--type-ui); line-height: 1.58; }
 .detail-description p:last-child { margin-bottom: 0; }

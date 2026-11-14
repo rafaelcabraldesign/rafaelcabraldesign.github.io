@@ -1,3 +1,18 @@
+# Atualizacao v1.4.29 — metadados dos projetos
+
+A lista de **SERVICOS / SEGMENTO / ANO** foi ajustada em todos os cases:
+
+- Espacamento vertical das linhas ampliado (padding de 15px para 23px).
+- Rotulos da esquerda em Black Russian `#000014`.
+- Valores da direita em cinza `#707584`.
+- Em telas desktop (largura maior que 760px), a lista acompanha a leitura do texto da direita por `position: sticky` e para no final dessa secao.
+- Em mobile a lista continua no fluxo normal, sem ficar fixa.
+- Layout, imagem principal, galeria e conteudo CRISFIT preservados.
+
+Para atualizar o site, envie o **conteudo** do arquivo de atualizacao para a raiz do repositorio, preservando pastas. Arquivos nao presentes no ZIP nao sao excluidos. Nao apague `assets/img` nem reenvie imagens WebP.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.28
 
 ## Imagens dos cases em largura total, sem cortes verticais
