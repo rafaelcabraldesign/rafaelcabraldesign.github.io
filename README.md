@@ -1,3 +1,36 @@
+# Portfólio Rafael Cabral — v1.4.26
+
+## Novo layout das páginas de projetos
+
+Esta versão aplica o padrão editorial inspirado na referência aprovada aos **15 cases**:
+
+1. Nome do projeto à esquerda e frase-resumo à direita, em tamanho intermediário entre o título e os textos gerais.
+2. Primeira imagem/capa do projeto em largura total, mantendo o carregamento automático `assets/img/projetos/<slug>.webp`.
+3. Abaixo da imagem, uma grade com **SERVIÇOS, SEGMENTO e ANO** à esquerda, com linhas horizontais discretas, e texto do projeto à direita.
+4. A seguir, galeria automática de imagens `<slug>-01.webp`, `<slug>-02.webp` etc. e grid de Outros projetos.
+
+**CRISFIT já possui o conteúdo textual completo solicitado**, incluindo frase-resumo, serviços, segmento, ano (2024) e os cinco parágrafos descritivos. Os demais cases usam placeholders editoriais discretos nos campos ainda não fornecidos; nenhum dado foi inventado.
+
+Para editar os outros cases, preencha `frase`, `servicos`, `segmento`, `ano` e `texto` em `assets/js/conteudo.js`. Separe os parágrafos do campo `texto` por uma linha em branco. Não é necessário modificar o HTML de cada projeto.
+
+### Atualização no GitHub a partir da v1.4.25
+
+O ZIP `portfolio-rafael-cabral-v1.4.26-atualizacao.zip` possui os arquivos já na **raiz do pacote**, sem pasta intermediária. Arraste seu conteúdo extraído à raiz do repositório `rafaelcabraldesign.github.io`, mantendo os diretórios `assets/css/` e `assets/js/`.
+
+Arquivos atualizados:
+
+- `index.html`, `projeto.html`, `projetos.html` — cache-busting `?v=1426`
+- `assets/js/conteudo.js` — conteúdo de CRISFIT e novos campos
+- `assets/js/site.js` — estrutura do case
+- `assets/css/styles.css` — hierarquia e responsividade
+- `LEIA-ME.md` — instruções
+
+**Não apague a pasta `assets/img`**, pois suas imagens WebP já publicadas permanecem no GitHub. O ZIP completo é destinado a novas instalações; o ZIP de atualização é a melhor opção para o seu site existente.
+
+Commit sugerido: `Novo layout dos cases e conteúdo CRISFIT v1.4.26`.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.24
 
 ## Animações mais ágeis, preservando a qualidade visual da v1.4.23

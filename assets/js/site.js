@@ -118,6 +118,23 @@
     });
   }
 
+  function appendParagraphs(container, text) {
+    const blocks = String(text || '')
+      .split(/\n\s*\n/)
+      .map(block => block.trim())
+      .filter(Boolean);
+    blocks.forEach(block => container.append(el('p', '', block)));
+    return blocks.length > 0;
+  }
+
+  function createSpecRow(label, value) {
+    const row = el('div', 'detail-spec-row');
+    const term = el('dt', '', label);
+    const description = el('dd', '', value || '—');
+    row.append(term, description);
+    return row;
+  }
+
   function renderProjectDetail(container) {
     const params = new URLSearchParams(location.search);
     const slug = params.get('projeto');
@@ -133,11 +150,12 @@
 
     const project = projects[index];
     document.title = `${project.nome} — Rafael Cabral`;
+
     const intro = el('div', 'detail-intro');
-    const headingGroup = el('div');
+    const headingGroup = el('div', 'detail-heading');
     headingGroup.append(el('h1', '', project.nome));
     intro.append(headingGroup);
-    if (project.categoria || project.ano) intro.append(el('span', 'detail-badge', [project.categoria, project.ano].filter(Boolean).join(' · ')));
+    intro.append(el('p', 'detail-summary', project.frase || 'Apresentação do projeto em preparação.'));
 
     const hero = el('div', 'detail-cover');
     const heroPlaceholder = el('span', 'detail-placeholder', 'Imagem do projeto em breve');
@@ -145,7 +163,6 @@
     const img = el('img');
     img.alt = `Capa do projeto ${project.nome}`;
     img.decoding = 'async';
-    // Evita mostrar um icone de imagem quebrada se ainda nao existir a capa.
     img.style.visibility = 'hidden';
     img.addEventListener('load', () => {
       heroPlaceholder.remove();
@@ -155,15 +172,26 @@
     hero.append(img);
     img.src = projectCoverSource(project);
 
-    const overview = el('div', 'detail-overview');
-    overview.append(el('h2', '', 'O projeto'));
-    overview.append(el('p', '', project.resumo || 'Este case está em preparação. Em breve, este espaço reunirá a apresentação do projeto, suas imagens e os detalhes do processo criativo.'));
+    const meta = el('section', 'detail-meta');
+    const specs = el('dl', 'detail-specs');
+    [
+      createSpecRow('SERVIÇOS', project.servicos),
+      createSpecRow('SEGMENTO', project.segmento || project.categoria),
+      createSpecRow('ANO', project.ano)
+    ].filter(Boolean).forEach(row => specs.append(row));
 
-    container.append(intro, hero, overview);
-    const context = makeDetailBlock('Contexto', project.contexto);
-    const solution = makeDetailBlock('Solução', project.solucao);
-    if (context) container.append(context);
-    if (solution) container.append(solution);
+    const description = el('div', 'detail-description');
+    const hasDescription = appendParagraphs(
+      description,
+      project.texto || project.resumo || 'Este case está em preparação. Em breve, este espaço reunirá a apresentação do projeto, suas imagens e os detalhes do processo criativo.'
+    );
+    if (!hasDescription) {
+      description.append(el('p', '', 'Este case está em preparação. Em breve, este espaço reunirá a apresentação do projeto, suas imagens e os detalhes do processo criativo.'));
+    }
+
+    meta.append(specs, description);
+
+    container.append(intro, hero, meta);
 
     // O navegador nao consegue listar arquivos do GitHub Pages.
     // Detectamos <slug>-01.webp, -02.webp... sequencialmente, ate a primeira falta.
@@ -329,7 +357,7 @@
       '.listing-tools > *',
       '.detail-intro > *',
       '.detail-cover',
-      '.detail-overview > *',
+      '.detail-meta > *',
       '.detail-detail-block > *',
       '.detail-gallery > *',
       '.related-header > *'

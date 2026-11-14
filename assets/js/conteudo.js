@@ -3,6 +3,7 @@
  *
  * Edite apenas os campos entre aspas para atualizar o site.
  * Campos vazios nao aparecem publicamente. Nunca publique dados sigilosos.
+ * Campos extras por projeto: frase, servicos, segmento e texto.
  *
  * IMAGENS AUTOMATICAS (sem editar este arquivo):
  * - Capa do projeto: assets/img/projetos/<slug>.webp
@@ -30,7 +31,15 @@ window.PORTFOLIO_CONTEUDO = {
     linkedin: ""
   },
   projetos: [
-    { nome: "CRISFIT", slug: "crisfit", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
+    { nome: "CRISFIT", slug: "crisfit", imagem: "", categoria: "", ano: "2024", frase: "CRISFIT é uma marca de moda fitness que combina energia, estilo e liberdade de movimento, valorizando a individualidade e a diversidade de cada corpo.", servicos: "NAMING, IDENTIDADE VISUAL", segmento: "MODA FITNESS / VESTUÁRIO ESPORTIVO", texto: `CRISFIT nasceu da união entre o nome da cliente Cristiane e o universo da moda fitness. O projeto partiu da proposta de construir uma marca de personalidade forte, capaz de unir energia, estilo e diversidade em uma identidade visual contemporânea e reconhecível.
+
+O desenvolvimento começou pela criação de um nome simples, sonoro e de fácil assimilação. A partir dele, foi desenhada uma assinatura tipográfica personalizada, com formas geométricas marcantes e uma construção visual que equilibra impacto, simplicidade e versatilidade.
+
+A paleta combina o coral vibrante, que representa energia, o azul-escuro, responsável pelo contraste, e o cinza-azulado, que acrescenta leveza. Esses elementos se conectam a um sistema de grafismos modulares, formado por curvas, recortes e composições geométricas que exploram diferentes formas e movimentos.
+
+A linguagem visual também incorpora a diversidade como parte essencial da expressão da marca. Fotografias, mensagens e composições gráficas reforçam a ideia de que cada pessoa possui seu próprio ritmo, sua própria identidade e sua maneira de se movimentar.
+
+O resultado é um sistema visual expressivo e adaptável, explorado em aplicações para vestuário, etiquetas, embalagens, acessórios e experiências digitais, demonstrando a capacidade da identidade de manter sua personalidade em diferentes pontos de contato.`, resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Neto Motors", slug: "neto-motors", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Juliana Vitorino", slug: "juliana-vitorino", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Salto Energia", slug: "salto-energia", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
