@@ -1,332 +1,67 @@
-# Atualizacao v1.4.29 — metadados dos projetos
+# Rafael Cabral Design — versão 1.5
 
-A lista de **SERVICOS / SEGMENTO / ANO** foi ajustada em todos os cases:
+Site estático (HTML, CSS, JS) para GitHub Pages, com Adobe Fonts, 15 projetos e imagens automáticas.
 
-- Espacamento vertical das linhas ampliado (padding de 15px para 23px).
-- Rotulos da esquerda em Black Russian `#000014`.
-- Valores da direita em cinza `#707584`.
-- Em telas desktop (largura maior que 760px), a lista acompanha a leitura do texto da direita por `position: sticky` e para no final dessa secao.
-- Em mobile a lista continua no fluxo normal, sem ficar fixa.
-- Layout, imagem principal, galeria e conteudo CRISFIT preservados.
+## Novidades da versão 1.5
 
-Para atualizar o site, envie o **conteudo** do arquivo de atualizacao para a raiz do repositorio, preservando pastas. Arquivos nao presentes no ZIP nao sao excluidos. Nao apague `assets/img` nem reenvie imagens WebP.
+- Títulos dos cards de projeto no mesmo tamanho tipográfico da tag “Projetos selecionados”.
+- Ano do projeto à direita do nome, na mesma linha, **sem o rótulo “ANO”**. Se o ano não estiver cadastrado, o espaço fica vazio e apenas o título aparece.
+- Removido o efeito de ampliação/zoom no hover tanto das imagens quanto dos placeholders. Mantidos o degradê, a sombra e a revelação do nome/ano.
+- Arquivos de instruções passam a se chamar `README.md` e `README.txt` (não `LEIA-ME`).
+- Todas as melhorias das versões anteriores preservadas (incluindo o layout dos cases, imagens responsivas, lista sticky, menu mobile e assinatura animada).
 
----
+## Atualização sobre a versão 1.4.29
 
-# Portfólio Rafael Cabral — v1.4.28
+Use `portfolio-rafael-cabral-v1.5-atualizacao.zip`.
 
-## Imagens dos cases em largura total, sem cortes verticais
+1. Extraia o ZIP no computador.
+2. Abra `github.com/rafaelcabraldesign/rafaelcabraldesign.github.io` na aba **Code**.
+3. Clique em **Add file → Upload files**.
+4. Envie o **conteúdo extraído** para a raiz do repositório, preservando `assets/js/` e `assets/css/`. Não envie uma pasta `portfolio-rafael-cabral-v1.5/` extra.
+5. Confirme com o commit `Portfólio v1.5 — cards e ano`.
+6. Confira `https://rafaelcabraldesign.github.io/` após a publicação; se necessário, pressione `Ctrl + Shift + R`.
 
-- Todas as páginas individuais dos **15 projetos** agora exibem a imagem principal na largura total do espaço disponível e na **altura proporcional ao arquivo WebP original**, sem recorte vertical.
-- A galeria interna deixa de usar duas colunas: cada imagem (`<slug>-02.webp`, `<slug>-03.webp` etc.) ocupa **uma linha inteira**, mantendo sua proporção (horizontal, quadrada ou vertical).
-- As bordas arredondadas, a ordem das imagens, o carregamento automático e as animações de entrada permanecem.
-- Se não houver imagem principal, o placeholder continua com a altura de apoio anterior, sem forçar essa altura nas imagens reais.
-- Os cards da home, da listagem e dos projetos relacionados **não** mudam: a alteração é exclusiva das imagens **dentro dos cases**.
+Arquivos modificados nesta atualização:
 
-### Publicar a atualização sobre a v1.4.27
+- `assets/js/site.js` — exibição do ano nos cards.
+- `assets/css/styles.css` — tamanho dos títulos e remoção do zoom.
+- `index.html`, `projetos.html`, `projeto.html` — revisão dos sufixos de cache para os arquivos CSS e JS.
+- `README.md` — este guia, com o nome padronizado.
 
-Extraia `portfolio-rafael-cabral-v1.4.28-atualizacao.zip` e envie seu conteúdo na raiz do repositório GitHub, substituindo apenas:
+**Importante:** O arquivo antigo `LEIA-ME.md` que já existe no GitHub não será removido automaticamente quando você enviar `README.md`. Você pode excluí-lo manualmente do repositório. Isso é apenas uma limpeza de documentação, não interfere no site. Os ZIPs da v1.5 não contêm mais arquivos com o nome `LEIA-ME`.
 
-- `index.html`
-- `projetos.html`
-- `projeto.html`
-- `assets/css/styles.css`
-- `LEIA-ME.md` (opcional)
+## Como mostrar o ano em cada card
 
-O stylesheet usa agora `styles.css?v=1428` para evitar cache. Não é necessário reenviar as imagens existentes em `assets/img/projetos/` e **não exclua essa pasta do GitHub**.
+Abra `assets/js/conteudo.js` e preencha o campo `ano` no respectivo projeto, por exemplo:
 
-Commit sugerido: `Cases com imagens em largura total v1.4.28`.
+```js
+{ nome: "CRISFIT", slug: "crisfit", ano: "2024", /* ...outros campos... */ }
+```
 
----
+O card exibe `CRISFIT` à esquerda e `2024` à direita, apenas quando a pessoa passa o mouse por cima. Em telas touch, a informação aparece permanentemente para facilitar a navegação. Sem ano, o card exibe somente o nome. **A versão atual já contém 2024 no CRISFIT; não é necessário editar esse projeto.**
 
-# Portfólio Rafael Cabral — v1.4.27
+## Como atualizar imagens sem editar código
 
-## Correção de caminhos das imagens dos projetos
-
-A atualização aceita duas organizações, sem editar HTML ou JavaScript:
-
-**Recomendada: uma pasta por projeto**
+Opção recomendada, usando uma pasta para cada projeto:
 
 ```text
-assets/img/projetos/
-  crisfit/
-    crisfit-01.webp
+assets/img/projetos/crisfit/
+    crisfit.webp       # capa específica (opcional)
+    crisfit-01.webp    # primeira imagem, ou capa se não existir crisfit.webp
     crisfit-02.webp
     crisfit-03.webp
-    crisfit-04.webp
 ```
 
-**Compatível com a organização anterior**
+A capa aparece nas grades e na abertura do case. Se a imagem `-01.webp` for usada como capa por ausência do arquivo específico, ela não aparece duplicada na galeria interna. A galeria procura até 40 arquivos numerados sequencialmente e para no primeiro número ausente.
 
-```text
-assets/img/projetos/
-  crisfit-01.webp
-  crisfit-02.webp
-```
+Para **Sobre** e **Serviços**, use `assets/img/sobre.webp` e `assets/img/servicos.webp`. As imagens já enviadas ao repositório **não devem ser excluídas ao atualizar o código**. Arquivos ausentes mantêm os placeholders.
 
-A capa é procurada nesta ordem: imagem manual definida no `conteudo.js`, `projetos/crisfit/crisfit.webp`, `projetos/crisfit.webp`, e por fim `crisfit-01.webp` na pasta do projeto ou na pasta principal. Assim, os quatro arquivos que você já colocou em `projetos/crisfit/` funcionam sem alterações. **Se a primeira imagem numerada for usada como capa, ela não será repetida na galeria**: a apresentação começa com ela e continua com 02, 03, 04.
+## Textos e páginas
 
-Os demais projetos seguem a mesma regra de nomes, substituindo `crisfit` pelo slug definido em `assets/js/conteudo.js`. A galeria aceita até 40 imagens sequenciais; uma numeração ausente encerra a busca. Quando não há imagens, os placeholders permanecem.
+Os conteúdos editáveis estão em `assets/js/conteudo.js` (`nome`, `frase`, `servicos`, `segmento`, `ano`, `texto`). O CRISFIT já tem frase-resumo, serviços, segmento, ano 2024 e texto completo. Os demais projetos aguardam conteúdos.
 
-### Como atualizar a v1.4.26 no GitHub
+As páginas são `index.html` (início), `projetos.html` (galeria) e `projeto.html?projeto=slug` (case individual). A seção dos cases usa imagem em largura total, descrições e metadados à esquerda com sticky no desktop e grid de outros projetos.
 
-Envie os arquivos da atualização, com os mesmos caminhos do repositório:
+## Tipografia e hospedagem
 
-- `index.html`
-- `projetos.html`
-- `projeto.html`
-- `assets/js/site.js`
-- `LEIA-ME.md` (guia opcional, sem impacto no site)
-
-O cache-busting do JavaScript muda para `?v=1427`. Não é necessário reenviar imagens, alterar o arquivo `conteudo.js` ou excluir pastas. Commit sugerido: `Correção de imagens por pasta v1.4.27`.
-
----
-
-# Portfólio Rafael Cabral — v1.4.26
-
-## Novo layout das páginas de projetos
-
-Esta versão aplica o padrão editorial inspirado na referência aprovada aos **15 cases**:
-
-1. Nome do projeto à esquerda e frase-resumo à direita, em tamanho intermediário entre o título e os textos gerais.
-2. Primeira imagem/capa do projeto em largura total, mantendo o carregamento automático `assets/img/projetos/<slug>.webp`.
-3. Abaixo da imagem, uma grade com **SERVIÇOS, SEGMENTO e ANO** à esquerda, com linhas horizontais discretas, e texto do projeto à direita.
-4. A seguir, galeria automática de imagens `<slug>-01.webp`, `<slug>-02.webp` etc. e grid de Outros projetos.
-
-**CRISFIT já possui o conteúdo textual completo solicitado**, incluindo frase-resumo, serviços, segmento, ano (2024) e os cinco parágrafos descritivos. Os demais cases usam placeholders editoriais discretos nos campos ainda não fornecidos; nenhum dado foi inventado.
-
-Para editar os outros cases, preencha `frase`, `servicos`, `segmento`, `ano` e `texto` em `assets/js/conteudo.js`. Separe os parágrafos do campo `texto` por uma linha em branco. Não é necessário modificar o HTML de cada projeto.
-
-### Atualização no GitHub a partir da v1.4.25
-
-O ZIP `portfolio-rafael-cabral-v1.4.26-atualizacao.zip` possui os arquivos já na **raiz do pacote**, sem pasta intermediária. Arraste seu conteúdo extraído à raiz do repositório `rafaelcabraldesign.github.io`, mantendo os diretórios `assets/css/` e `assets/js/`.
-
-Arquivos atualizados:
-
-- `index.html`, `projeto.html`, `projetos.html` — cache-busting `?v=1426`
-- `assets/js/conteudo.js` — conteúdo de CRISFIT e novos campos
-- `assets/js/site.js` — estrutura do case
-- `assets/css/styles.css` — hierarquia e responsividade
-- `LEIA-ME.md` — instruções
-
-**Não apague a pasta `assets/img`**, pois suas imagens WebP já publicadas permanecem no GitHub. O ZIP completo é destinado a novas instalações; o ZIP de atualização é a melhor opção para o seu site existente.
-
-Commit sugerido: `Novo layout dos cases e conteúdo CRISFIT v1.4.26`.
-
----
-
-# Portfólio Rafael Cabral — v1.4.24
-
-## Animações mais ágeis, preservando a qualidade visual da v1.4.23
-
-Esta versão altera apenas as **durações e intervalos** das entradas, mantendo os movimentos, a opacidade sincronizada e a ausência de corte nos glifos.
-
-- **Título principal:** 720 ms por palavra, com intervalos de 70 ms (antes: 1.060 ms e 112 ms). Primeiro início em 45 ms. Entrada total aproximada: 1,26 s para as oito palavras.
-- **Header:** 650 ms por elemento (antes: 980 ms). Sequência com intervalos menores.
-- **Seções e textos:** 760–780 ms (antes: 1.160–1.180 ms), com atrasos reduzidos.
-- **Cards:** 820 ms (antes: 1.220 ms).
-- **Menu mobile:** 630 ms por item (antes: 850 ms), com intervalo de 60 ms.
-- **Rodapé:** 760 ms por elemento (antes: 1.160 ms). A assinatura continua sincronizada ao início da entrada do rodapé, com sua duração original de 1,1 s.
-
-Não foram alterados tamanho/cores/fontes, imagens, URLs, transições entre páginas, animações de hover, a assinatura ou as distâncias de movimento.
-
-## Atualização no GitHub (a partir da v1.4.23)
-
-Envie o conteúdo de `portfolio-rafael-cabral-v1.4.24-atualizacao.zip` para a raiz do repositório, preservando o caminho `assets/css` e `assets/js`, sem excluir imagens já publicadas.
-
-Arquivos modificados:
-- `index.html`
-- `projetos.html`
-- `projeto.html`
-- `assets/css/styles.css`
-- `assets/js/site.js`
-- `LEIA-ME.md`
-
-Os HTMLs usam `?v=1424` para atualizar o cache do CSS e JavaScript. Commit sugerido: `Animações mais rápidas v1.4.24`.
-
----
-
-# Portfólio Rafael Cabral — v1.4.23
-
-## Entrada do título e animações com fade sincronizado
-
-A v1.4.22 tornava as palavras do título 100% opacas logo aos 28% do movimento enquanto ainda eram recortadas por máscaras individuais. Isso produzia letras pela metade durante a entrada. **A v1.4.23 elimina esse recorte**: a palavra inteira sobe suavemente por uma distância pequena (`.44em`) e ganha opacidade durante toda a animação, do início ao fim. A ordem das oito palavras e a quebra após a vírgula continuam iguais.
-
-- **Título principal:** deslocamento de `.44em` (em vez de 115%); movimento de 1.010 ms, fade de 1.070 ms, 112 ms de intervalo entre palavras.
-- **Seções e cards:** deslocamentos de 28 a 38 px (antes 44 a 58 px); fade acompanha a entrada até 100%, com duração de 1.160 a 1.220 ms.
-- **Header:** entrada em sequência com fade progressivo durante 980 ms, mantendo o efeito de contraste adaptativo.
-- **Menu mobile:** entrada em sequência com 850 ms e deslocamento de 13 px.
-- Mantidos o menu mobile, as transições de páginas, os 15 projetos, o carregamento automático de imagens WebP, a Nexa do Adobe Fonts, a assinatura SVG e os links do WhatsApp.
-
-**Sobre a referência:** a animação exata da BerrielBrands não pôde ser medida frame a frame na inspeção, portanto estes valores são uma adaptação intencional do comportamento solicitado, e não uma cópia de valores internos do Framer.
-
-## Atualização no GitHub
-
-Para quem tem a v1.4.22, faça upload dos 6 itens abaixo com os mesmos caminhos (sem excluir pastas ou imagens):
-
-- `index.html`
-- `projetos.html`
-- `projeto.html`
-- `assets/css/styles.css`
-- `assets/js/site.js`
-- `LEIA-ME.md`
-
-Os HTMLs usam `?v=1423` para recarregar CSS e JavaScript atualizados. Commit sugerido: `Fade e entradas refinadas v1.4.23`.
-
----
-
-# Portfólio Rafael Cabral — v1.4.22
-
-## Alterações desta versão
-
-- Entradas reimplementadas com `translate` e opacidade curta, sem animar `top`: melhora a fluidez do movimento, especialmente em celulares.
-- Título principal entra palavra por palavra da esquerda para a direita, mantendo a quebra de linha depois de `design,`.
-- Header: links entram individualmente em sequência (Projetos, Serviços, Sobre, Vamos conversar).
-- Menu mobile: monograma à esquerda e controle de fechar no mesmo lugar das duas barras, com os links centralizados logo abaixo da linha superior.
-- Estados de hover, efeito adaptativo do header, WhatsApp, 15 projetos, SVG e imagens automáticas preservados.
-- Preferência do sistema por movimento reduzido respeitada.
-
-## Como publicar
-
-Atualize `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css`, `assets/js/site.js` no repositório GitHub Pages. Não apague `assets/img/` nem os arquivos WebP existentes. Os arquivos HTML usam cache-busting `?v=1422`.
-
----
-
-# Rafael Cabral Design — Portfólio v1.4.21
-
-Portfólio em HTML, CSS e JavaScript, compatível com o GitHub Pages gratuito. **A partir desta versão, você não precisa editar código para adicionar ou substituir imagens dos 15 projetos ou das seções Sobre e Serviços.**
-
-## Novo na v1.4.21 — Vamos conversar abre o WhatsApp
-
-O link **Vamos conversar** do header (desktop e menu mobile) abre agora diretamente o mesmo WhatsApp dos botoes **Entre em contato**, com a mensagem predefinida: "Olá, Rafael! Gostaria de conversar sobre um projeto.". O visitante confirma o envio da mensagem no WhatsApp.
-
-- A cor, tipografia, hover e comportamento do menu não foram modificados.
-- A configuração central de contato continua em `assets/js/conteudo.js`; os quatro links do header e os botoes da pagina inicial usam `data-contact-whatsapp` e sao atualizados pelo mesmo JavaScript.
-- O HTML tambem contem o link completo como fallback caso o JavaScript não carregue.
-- A conversa abre em nova aba; nao aciona a animacao de saida entre paginas.
-- Para atualizar da **v1.4.20**, envie somente `index.html`, `projetos.html` e `projeto.html`. Nao e necessario alterar imagens, CSS ou JS.
-
-## Novo na v1.4.20 — Menu sem verde durante a navegacao
-
-A cor verde fugaz do monograma e dos links ao clicar em Projetos ou Inicio era provocada pelo fade-out aplicado ao `body` inteiro. Isso altera a composicao do header com `mix-blend-mode: difference`, expondo a cor complementar interna usada para produzir o rosa da marca.
-
-A v1.4.20 conserva o fade de 460 ms, mas agora clareia a pagina com uma cortina branca posicionada acima do conteudo. O `body` nao muda de opacidade: o header transparente continua invertendo cores ate ficar encoberto pela cortina. Durante a saida o hover e neutralizado para impedir o verde complementar mesmo em navegadores que reordenam as camadas de composicao. Nenhuma alteracao em imagens, conteudos, fontes, hovers ou regras de navegacao foi feita.
-
-Atualizacao em relacao a v1.4.19: apenas `assets/css/styles.css` e os tres HTMLs para forcar o CSS novo via `?v=1420`. Envie o conteudo do ZIP de atualizacao ao GitHub sem apagar a pasta `assets/img`.
-
-## Novo na v1.4.19 — Animação de textos mais nítida
-
-O movimento vertical das entradas de textos (títulos, menus, parágrafos, serviços, botões e links) agora usa deslocamento visual com `position: relative` / `top` em vez de `translate3d`. Isso reduz a suavização temporária dos caracteres, especialmente na Nexa, porque o navegador redesenha os glifos ao longo do movimento. O deslocamento, os tempos e as curvas do movimento permanecem; a opacidade dos textos atinge 100% no primeiro quarto da entrada para evitar a sensação de letras desbotadas durante todo o movimento. Elementos puramente visuais (capas e imagens) continuam com transformações aceleradas.
-
-O header transparente e a inversão de cores foram preservados. A animação de saída continua um fade-out de 460 ms, agora sem deslocar a página inteira por `transform`, evitando borrões adicionais. O efeito roleta dos botões e a revelação dos nomes dos projetos foram mantidos, mas os movimentos de texto também foram transferidos de `transform` para `top`.
-
-O texto ainda possui um fade breve no início da entrada, então poderá parecer mais claro apenas nos primeiros instantes. Isso **não** é desfoque; o objetivo da correção é manter as bordas dos caracteres mais definidas durante o movimento.
-
-Arquivos alterados: `assets/css/styles.css`, `assets/js/site.js`, os três HTML (versões de cache) e este guia. Não altere as imagens da pasta `assets/img/`; elas são preservadas.
-
-## Anterior na v1.4.18 — Header adaptativo sem fundo
-
-O header continua preso ao topo, transparente. A propriedade `mix-blend-mode: difference`, combinada com a cor-base `#ffffeb`, produz **exatamente Black Russian `#000014` em fundo branco puro** para monograma, links e menu fechado. Em fundos escuros ou imagens, o contraste continua adaptativo por pixel, sem criar faixa branca. Em fundos que nao sao brancos puros, o resultado varia conforme a cor de cada pixel, uma limitacao natural da mesclagem CSS. A cor de hover segue a referencia rosa em fundos claros. Em imagens muito coloridas, o resultado do hover e naturalmente adaptativo (mistura de cor).
-
-No celular, o menu aberto utiliza um painel branco para garantir leitura e navegacao; ao fechar, retorna automaticamente ao modo transparente/invertido. O efeito depende do suporte do navegador a `mix-blend-mode` (navegadores modernos).
-
-Historico da v1.4.18: o header foi ajustado sem precisar reenviar as imagens. Na v1.4.19, o JavaScript tambem recebe uma atualizacao para reconhecer a nova animacao de textos.
-
-## 1. Onde enviar as imagens
-
-| O que vai aparecer no site | Onde colocar e como nomear |
-| --- | --- |
-| Imagem da seção Sobre | `assets/img/sobre.webp` |
-| Imagem da seção Serviços | `assets/img/servicos.webp` |
-| Capa de um projeto | `assets/img/projetos/NOME-DO-PROJETO.webp` |
-| Imagens internas de um projeto | `assets/img/projetos/NOME-DO-PROJETO-01.webp`, `-02.webp` etc. |
-
-Use sempre arquivos **WebP reais**, em letras minúsculas e com hífens exatamente como nos exemplos. Não basta mudar a extensão de um JPG para `.webp`: é necessário converter a imagem para esse formato.
-
-### Nome exato das capas dos 15 projetos
-
-| Projeto | Nome do arquivo (dentro de `assets/img/projetos/`) |
-| --- | --- |
-| CRISFIT | `crisfit.webp` |
-| Neto Motors | `neto-motors.webp` |
-| Juliana Vitorino | `juliana-vitorino.webp` |
-| Salto Energia | `salto-energia.webp` |
-| Uber Brindes | `uber-brindes.webp` |
-| Mariana Morais | `mariana-morais.webp` |
-| Iná Game Studio | `ina-game-studio.webp` |
-| Poiôô Kids | `poioo-kids.webp` |
-| Artes do meu Brasil | `artes-do-meu-brasil.webp` |
-| Funil Exponencial | `funil-exponencial.webp` |
-| Ita Corretora de Seguros | `ita-corretora-de-seguros.webp` |
-| Eagle Investment | `eagle-investment.webp` |
-| Agrofixa | `agrofixa.webp` |
-| Down Five | `down-five.webp` |
-| Lara Land | `lara-land.webp` |
-
-O nome é reutilizado automaticamente nos cards da página inicial, na página com todos os projetos, na capa do case individual e nos cards de outros projetos.
-
-### Como adicionar as imagens internas dos cases
-
-Por exemplo, para apresentar três imagens do projeto CRISFIT:
-
-```
-assets/img/projetos/crisfit-01.webp
-assets/img/projetos/crisfit-02.webp
-assets/img/projetos/crisfit-03.webp
-```
-
-A ordem é numérica. **Não pule números.** Se `crisfit-02.webp` não existir, o site interromperá a busca depois de `crisfit-01.webp` e não exibirá `crisfit-03.webp`. É possível adicionar até **40 imagens numeradas por case**, sem editar o código.
-
-A capa `crisfit.webp` é independente da galeria numerada.
-
-Como o GitHub Pages não fornece uma lista de arquivos do diretório, o JavaScript verifica os arquivos em sequência. É normal o navegador registrar um pedido 404 para o primeiro número que não existe; o visitante não vê erro, apenas a galeria com as imagens disponíveis.
-
-**Quando não existe arquivo:** o site preserva o placeholder. A seção de galeria interna nem aparece quando nenhuma imagem numerada foi enviada.
-
-## 2. Como atualizar as imagens pelo GitHub (sem código)
-
-1. Prepare a arte em WebP. Para capas, experimente imagens de **1600 a 2200 px na dimensão maior** e tente mantê-las abaixo de **500 KB**, preservando a qualidade visual.
-2. Renomeie o arquivo conforme a tabela acima.
-3. No GitHub, abra o repositório `rafaelcabraldesign.github.io` e navegue até a pasta `assets/img/` ou `assets/img/projetos/`.
-4. Clique em **Add file → Upload files** dentro da pasta correta.
-5. Envie a imagem; se o mesmo nome já existir, substitua o arquivo anterior.
-6. Confirme em **Commit changes** e abra o site publicado. Se continuar vendo a imagem antiga, use `Ctrl + Shift + R` ou aguarde a publicação do GitHub Pages.
-
-Para excluir ou trocar imagens, basta remover ou substituir o arquivo correspondente no GitHub. **Não precisa alterar `index.html`, `projeto.html` ou os arquivos JavaScript.**
-
-Se uma imagem não aparecer: confira a grafia exata, a pasta, a extensão WebP verdadeira e se o GitHub Pages concluiu a publicação.
-
-## 3. Como publicar a v1.4.19
-
-Para quem ja esta usando a **v1.4.18**, utilize o ZIP de atualizacao e substitua somente estes **seis arquivos**, preservando os caminhos:
-
-- `index.html`
-- `projetos.html`
-- `projeto.html`
-- `assets/css/styles.css`
-- `assets/js/site.js`
-- `LEIA-ME.md`
-
-O CSS e o JavaScript usam a versao `1419` nos HTMLs para evitar cache. Nao e necessario atualizar capas, projetos, fontes ou outros arquivos. Use a mensagem de commit `Melhoria da nitidez das animacoes v1.4.19`.
-
-Para uma instalacao do zero, utilize o ZIP completo. O GitHub Pages deve continuar configurado para a branch de publicacao e o caminho `/(root)`.
-
-## 4. O que continua editável por código
-
-- **Nomes de projetos, ordem, textos e descrições dos cases:** `assets/js/conteudo.js`.
-- **Textos fixos das seções Sobre, Serviços e Contato:** `index.html`.
-- **Cores e estilos:** `assets/css/styles.css`.
-- **Comportamento das animações e navegação:** `assets/js/site.js`.
-
-Para imagens, **não é mais necessário** fazer essas alterações. Os campos opcionais `imagem` e `galeria` no arquivo de conteúdo continuam existindo apenas para casos especiais em que você quiser escolher um caminho manual fora da convenção automática.
-
-## 5. O que foi preservado
-
-- A direção de arte branca, minimalista e editorial.
-- 15 projetos, incluindo Lara Land.
-- Nexa pelo Adobe Fonts (kit `pwt1xky`), sem redistribuir arquivos de fonte.
-- Monograma, favicon, assinatura SVG do rodapé e animações de entrada/saída.
-- Contato WhatsApp e e-mail.
-- Responsividade para celulares, tablets, desktop e ultrawide.
-
-O ZIP não contém imagens fictícias nem arquivos de fontes licenciadas. As imagens sintéticas utilizadas na validação são temporárias e **não** fazem parte da publicação.
+Nexa carrega pelo projeto Adobe Fonts `https://use.typekit.net/pwt1xky.css`, sem hospedar arquivos de fontes no repositório. A assinatura do rodapé usa SVG. O site permanece 100% compatível com o GitHub Pages gratuito.

@@ -72,9 +72,13 @@
       else img.remove();
     });
 
+    // Nome e ano dividem a mesma linha. Anos nao cadastrados nao aparecem.
     const caption = el('div', 'cover-meta');
-    caption.append(el('h3', 'project-title', project.nome));
-    if (project.categoria) caption.append(el('p', 'project-category', project.categoria));
+    const captionLine = el('div', 'cover-meta-line');
+    captionLine.append(el('h3', 'project-title', project.nome));
+    const year = String(project.ano ?? '').trim();
+    if (year) captionLine.append(el('span', 'project-year', year));
+    caption.append(captionLine);
     link.append(caption);
     return link;
   }

@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v1.4.22
+ * RAFAEL CABRAL | Portfolio v1.5
  * Direcao: editorial, minimalista, predominantemente branca.
  * Os tres tons abaixo sao os da identidade visual original.
  */
@@ -227,10 +227,10 @@ h2.section-label { margin: 0; }
   max-height: 880px;
   border-radius: var(--round);
   background: #f0f1f2;
-  transition: box-shadow .55s ease, transform .65s var(--ease);
+  transition: box-shadow .55s ease;
 }
 .project-cover:focus-visible { outline-offset: 3px; }
-.project-cover::before { content: ''; display: block; position: absolute; inset: 0; z-index: 0; opacity: .95; transition: transform 1s var(--ease), filter .5s ease; background: linear-gradient(135deg,#f0f1f2 0%,#e9eaeb 49%,#f4f4f5 100%); }
+.project-cover::before { content: ''; display: block; position: absolute; inset: 0; z-index: 0; opacity: .95; transition: filter .5s ease; background: linear-gradient(135deg,#f0f1f2 0%,#e9eaeb 49%,#f4f4f5 100%); }
 .project-card:nth-child(4n + 2) .project-cover::before { background: linear-gradient(135deg,#e1e3e5 0%,#f3f3f4 55%,#e7e9eb 100%); }
 .project-card:nth-child(4n + 3) .project-cover::before { background: linear-gradient(145deg,#efeff1 0%,#e3e4e7 52%,#f5f5f5 100%); }
 .project-card:nth-child(4n + 4) .project-cover::before { background: linear-gradient(140deg,#e9eaeb 0%,#f6f6f6 60%,#e5e6e8 100%); }
@@ -238,13 +238,12 @@ h2.section-label { margin: 0; }
 .project-cover::after { content: ''; position: absolute; inset: 0; z-index: 1; opacity: 0; background: linear-gradient(to top, rgba(0,0,0,.48) 0%, rgba(0,0,0,.20) 25%, rgba(0,0,0,.055) 50%, rgba(0,0,0,0) 78%); pointer-events: none; transition: opacity .7s var(--ease); }
 .project-cover:hover::after, .project-cover:focus-visible::after { opacity: 1; }
 .project-cover:hover, .project-cover:focus-visible { box-shadow: 0 18px 35px rgba(0,0,20,.09); }
-.project-cover:hover::before, .project-cover:focus-visible::before { transform: scale(1.045); filter: brightness(.97); }
+.project-cover:hover::before, .project-cover:focus-visible::before { filter: brightness(.97); }
 /* A imagem existe apenas se o arquivo .webp tiver sido encontrado. O placeholder
    permanece ate o load e volta a ser usado se a URL nao existir. */
-.project-cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: transform .95s var(--ease), opacity .42s ease; }
+.project-cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .42s ease; }
 .project-cover.has-image > img { opacity: 1; }
 .project-cover.has-image .placeholder-center { opacity: 0; visibility: hidden; }
-.project-cover:hover img, .project-cover:focus-visible img { transform: scale(1.055); }
 .placeholder-center { position: absolute; z-index: 1; left: 20px; right: 20px; top: 50%; text-align: center; transform: translateY(-50%); color: #a4a6ae; font-size: 13px; font-weight: 500; letter-spacing: .02em; transition: opacity .3s ease; }
 .project-cover:hover .placeholder-center, .project-cover:focus-visible .placeholder-center { opacity: .2; }
 /* O titulo da capa aparece apenas no hover e no foco pelo teclado. */
@@ -267,7 +266,9 @@ h2.section-label { margin: 0; }
   opacity: 1;
   bottom: 28px;
 }
-.project-title { margin: 0; font-size: clamp(20px,1.5vw,28px); font-weight: 500; line-height: 1.22; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.cover-meta-line { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.project-title { margin: 0; min-width: 0; font-size: var(--type-ui); font-weight: 500; line-height: 1.4; letter-spacing: -.015em; overflow-wrap: anywhere; }
+.project-year { flex: 0 0 auto; font-size: var(--type-ui); font-weight: 500; line-height: 1.4; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
 .project-category { margin: 7px 0 0; font-size: 14px; line-height: 1.35; color: rgba(255,255,255,.86); }
 @media (hover: none), (pointer: coarse) {
   /* Sem hover, os titulos permanecem visiveis: o usuario sabe onde tocar. */
@@ -414,7 +415,7 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .related-header .related-counter { color: var(--muted); font-size: var(--type-ui); font-variant-numeric: tabular-nums; }
 .related-projects .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .related-projects .project-cover { aspect-ratio: 1.25; max-height: none; }
-.related-projects .project-title { font-size: clamp(19px, 1.45vw, 26px); }
+.related-projects .project-title, .related-projects .project-year { font-size: var(--type-ui); }
 
 
 /* v1.4.23 — Entradas sem aparicao prematura: texto se torna visivel
@@ -575,7 +576,7 @@ body.is-page-leaving::after { opacity: 1; }
   .projects-grid, .projects-grid--featured, .projects-grid--all { grid-template-columns: 1fr; gap: 16px; }
   .project-cover, .projects-grid--featured .project-cover, .projects-grid--all .project-cover, .related-projects .project-cover { aspect-ratio: 1.26; height: auto; max-height: none; }
   .cover-meta { left: 19px; bottom: 20px; right: 19px; }
-  .project-title { font-size: clamp(18px,5vw,24px); }
+  .project-title, .project-year { font-size: var(--type-ui); }
   .projects-grid--featured .project-card, .projects-grid--all .project-card { grid-column: auto; }
   .statement { font-size: clamp(1.6rem, 5.3vw, 2.35rem); margin-bottom: 48px; }
   .services-body { grid-template-columns: 1fr; gap: 30px; }
@@ -610,7 +611,7 @@ body.is-page-leaving::after { opacity: 1; }
   .hero h1 { font-size: 2.2rem; }
   .section-top, .listing-tools { align-items: start; flex-wrap: wrap; row-gap: 12px; }
   .text-link { font-size: var(--type-ui); }
-  .project-title { font-size: 20px; }
+  .project-title, .project-year { font-size: var(--type-ui); }
   .statement { font-size: 25px; }
   .about-photo { min-height: 325px; }
 }
