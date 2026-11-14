@@ -102,25 +102,32 @@
     return section;
   }
 
-  /* O GitHub Pages nao tem API de listagem de imagens. Buscamos arquivos
-   * sequenciais primeiro na pasta do projeto e, depois, na estrutura antiga.
-   * Se a capa usou -01.webp como alternativa, omitimos essa repeticao na galeria.
+  /* A capa sem numero (slug.webp) e exclusiva dos cards/grades.
+   * Na pagina individual, slug-01.webp e a imagem principal;
+   * as imagens da galeria comecam em slug-02.webp e seguem ate slug-40.webp.
+   * Mantemos as pastas individuais e os caminhos antigos sem subpasta.
+   * Se o usuario definir uma galeria manual, evitamos repeticao da imagem principal.
    */
   async function populateProjectGallery(project, gallery, heroSourcePromise = Promise.resolve(null)) {
     const manual = Array.isArray(project.galeria) ? project.galeria.filter(Boolean) : [];
     const sources = manual.length ? manual : null;
     const heroSource = await heroSourcePromise;
-    const heroUsesFirstImage = !sources && !!heroSource && /-01\.webp(?:[?#].*)?$/i.test(heroSource);
     const maxImages = 40;
-    for (let index = 0; index < (sources ? sources.length : maxImages); index++) {
-      const paths = sources ? [sources[index]] : galleryCandidates(project, index + 1);
+    // O arquivo -01 sempre ocupa a abertura do case. A galeria automatica
+    // comeca no -02, independentemente da existencia de slug.webp.
+    const firstGalleryNumber = sources ? 1 : 2;
+    const count = sources ? sources.length : maxImages - 1;
+    for (let index = 0; index < count; index++) {
+      const number = index + firstGalleryNumber;
+      const paths = sources ? [sources[index]] : galleryCandidates(project, number);
       const loaded = new Image();
       loaded.decoding = 'async';
       const result = await loadWithFallback(loaded, paths);
       // Na convencao automatica, a primeira lacuna termina a sequencia.
       if (!result) { if (sources) continue; else break; }
-      if (heroUsesFirstImage && index === 0) continue;
-      loaded.alt = `${project.nome} — aplicação visual ${index + 1}`;
+      // Galerias manuais podem conter a mesma imagem da abertura; nao duplicar.
+      if (heroSource && new URL(result, document.baseURI).href === new URL(heroSource, document.baseURI).href) continue;
+      loaded.alt = `${project.nome} — aplicação visual ${number}`;
       loaded.loading = 'lazy';
       gallery.append(loaded);
       gallery.hidden = false;
@@ -194,11 +201,11 @@
     const heroPlaceholder = el('span', 'detail-placeholder', 'Imagem do projeto em breve');
     hero.append(heroPlaceholder);
     const img = el('img');
-    img.alt = `Capa do projeto ${project.nome}`;
+    img.alt = `Primeira imagem do projeto ${project.nome}`;
     img.decoding = 'async';
     img.style.visibility = 'hidden';
     hero.append(img);
-    const heroSourcePromise = loadWithFallback(img, coverCandidates(project)).then(src => {
+    const heroSourcePromise = loadWithFallback(img, galleryCandidates(project, 1)).then(src => {
       if (src) {
         heroPlaceholder.remove();
         img.style.visibility = 'visible';
@@ -228,7 +235,8 @@
     container.append(intro, hero, meta);
 
     // O navegador nao consegue listar arquivos do GitHub Pages.
-    // Detectamos <slug>-01.webp, -02.webp... sequencialmente, ate a primeira falta.
+    // A primeira imagem (-01.webp) fica acima da descricao do case.
+    // A galeria comeca em -02.webp, sem repetir a abertura nem incluir slug.webp.
     // Nao mostramos uma galeria vazia quando ainda nao ha arquivos.
     const gallery = el('div', 'detail-gallery');
     gallery.hidden = true;

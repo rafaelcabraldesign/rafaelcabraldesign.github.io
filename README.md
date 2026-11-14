@@ -1,6 +1,31 @@
-# Rafael Cabral Design — versão 1.5
+# Rafael Cabral Design — versão 1.5.1
 
 Site estático (HTML, CSS, JS) para GitHub Pages, com Adobe Fonts, 15 projetos e imagens automáticas.
+
+## Correção da versão 1.5.1 — capa exclusiva dos cards
+
+A imagem sem numero (`crisfit.webp`) agora e **exclusiva dos cards** da pagina
+inicial, da listagem completa e da grade de outros projetos. Ela **nao entra
+no case individual**, mesmo quando existir.
+
+As imagens da pagina individual seguem esta regra para qualquer projeto:
+
+- `<slug>-01.webp`: primeira imagem do case, logo abaixo do titulo/frase.
+- `<slug>-02.webp`, `<slug>-03.webp` etc.: galeria interna, apos texto e ficha.
+- `<slug>.webp`: capa exclusiva dos cards; se ausente, o card usa `-01.webp`.
+
+Arquivos tanto em `assets/img/projetos/<slug>/` (preferido) quanto em
+`assets/img/projetos/` (legado) continuam reconhecidos. Nenhuma imagem precisa
+ser renomeada ou reenviada. A abertura mostra o placeholder se `-01.webp` nao
+existir, em vez de exibir a capa destinada aos cards.
+
+### Atualizar sobre a versão 1.5
+
+Envie os arquivos de `portfolio-rafael-cabral-v1.5.1-atualizacao.zip` para a
+**raiz** do repositorio no GitHub, preservando as pastas.
+Somente `assets/js/site.js`, os tres HTMLs e este `README.md` mudaram.
+O JavaScript usa `site.js?v=1501` para evitar cache antigo.
+Suas imagens WebP existentes permanecem intactas.
 
 ## Novidades da versão 1.5
 
@@ -46,13 +71,13 @@ Opção recomendada, usando uma pasta para cada projeto:
 
 ```text
 assets/img/projetos/crisfit/
-    crisfit.webp       # capa específica (opcional)
-    crisfit-01.webp    # primeira imagem, ou capa se não existir crisfit.webp
-    crisfit-02.webp
-    crisfit-03.webp
+    crisfit.webp       # capa exclusiva dos cards (opcional)
+    crisfit-01.webp    # primeira imagem da pagina individual
+    crisfit-02.webp    # galeria interna
+    crisfit-03.webp    # galeria interna
 ```
 
-A capa aparece nas grades e na abertura do case. Se a imagem `-01.webp` for usada como capa por ausência do arquivo específico, ela não aparece duplicada na galeria interna. A galeria procura até 40 arquivos numerados sequencialmente e para no primeiro número ausente.
+A capa `crisfit.webp` aparece somente nos cards (inicio, todos os projetos e outros projetos). A imagem `crisfit-01.webp` e sempre a abertura da pagina individual. Se a capa exclusiva nao existir, o card usa `-01.webp` como alternativa. A galeria interna comeca no `-02.webp`, procura os arquivos ate `-40.webp` e termina na primeira lacuna. Nao ha duplicacao de imagens no case.
 
 Para **Sobre** e **Serviços**, use `assets/img/sobre.webp` e `assets/img/servicos.webp`. As imagens já enviadas ao repositório **não devem ser excluídas ao atualizar o código**. Arquivos ausentes mantêm os placeholders.
 
