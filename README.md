@@ -1,3 +1,46 @@
+# Portfólio Rafael Cabral — v1.4.27
+
+## Correção de caminhos das imagens dos projetos
+
+A atualização aceita duas organizações, sem editar HTML ou JavaScript:
+
+**Recomendada: uma pasta por projeto**
+
+```text
+assets/img/projetos/
+  crisfit/
+    crisfit-01.webp
+    crisfit-02.webp
+    crisfit-03.webp
+    crisfit-04.webp
+```
+
+**Compatível com a organização anterior**
+
+```text
+assets/img/projetos/
+  crisfit-01.webp
+  crisfit-02.webp
+```
+
+A capa é procurada nesta ordem: imagem manual definida no `conteudo.js`, `projetos/crisfit/crisfit.webp`, `projetos/crisfit.webp`, e por fim `crisfit-01.webp` na pasta do projeto ou na pasta principal. Assim, os quatro arquivos que você já colocou em `projetos/crisfit/` funcionam sem alterações. **Se a primeira imagem numerada for usada como capa, ela não será repetida na galeria**: a apresentação começa com ela e continua com 02, 03, 04.
+
+Os demais projetos seguem a mesma regra de nomes, substituindo `crisfit` pelo slug definido em `assets/js/conteudo.js`. A galeria aceita até 40 imagens sequenciais; uma numeração ausente encerra a busca. Quando não há imagens, os placeholders permanecem.
+
+### Como atualizar a v1.4.26 no GitHub
+
+Envie os arquivos da atualização, com os mesmos caminhos do repositório:
+
+- `index.html`
+- `projetos.html`
+- `projeto.html`
+- `assets/js/site.js`
+- `LEIA-ME.md` (guia opcional, sem impacto no site)
+
+O cache-busting do JavaScript muda para `?v=1427`. Não é necessário reenviar imagens, alterar o arquivo `conteudo.js` ou excluir pastas. Commit sugerido: `Correção de imagens por pasta v1.4.27`.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.26
 
 ## Novo layout das páginas de projetos

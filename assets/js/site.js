@@ -17,12 +17,43 @@
   };
 
   const projectLink = project => `projeto.html?projeto=${encodeURIComponent(project.slug)}`;
-  // Convenção de arquivos: só adicionar WebP ao GitHub, sem editar o JS.
-  // Se um caminho manual estiver preenchido em conteudo.js, ele tem prioridade.
-  const projectCoverSource = project => (typeof project.imagem === 'string' && project.imagem.trim())
-    || `assets/img/projetos/${project.slug}.webp`;
-  const numberedProjectSource = (project, number) =>
-    `assets/img/projetos/${project.slug}-${String(number).padStart(2, '0')}.webp`;
+  // Duas estruturas compativeis: pasta individual (preferencial) e pasta plana (legado).
+  // Ex.: projetos/crisfit/crisfit-01.webp ou projetos/crisfit-01.webp.
+  // Como o GitHub Pages nao lista diretorios, tentamos caminhos previsiveis.
+  const projectFolder = project => `assets/img/projetos/${project.slug}`;
+  const coverCandidates = project => [...new Set([
+    typeof project.imagem === 'string' ? project.imagem.trim() : '',
+    `${projectFolder(project)}/${project.slug}.webp`,
+    `assets/img/projetos/${project.slug}.webp`,
+    `${projectFolder(project)}/${project.slug}-01.webp`,
+    `assets/img/projetos/${project.slug}-01.webp`
+  ].filter(Boolean))];
+  const galleryCandidates = (project, number) => {
+    const suffix = String(number).padStart(2, '0');
+    return [
+      `${projectFolder(project)}/${project.slug}-${suffix}.webp`,
+      `assets/img/projetos/${project.slug}-${suffix}.webp`
+    ];
+  };
+  // Carrega a primeira imagem existente. Se nenhuma existir, mantem o placeholder.
+  function loadWithFallback(image, sources) {
+    return new Promise(resolve => {
+      let cursor = 0;
+      const clean = () => {
+        image.removeEventListener('load', onLoad);
+        image.removeEventListener('error', onError);
+      };
+      const onLoad = () => { clean(); resolve(image.getAttribute('src')); };
+      const onError = () => attempt();
+      const attempt = () => {
+        if (cursor >= sources.length) { clean(); resolve(null); return; }
+        image.src = sources[cursor++];
+      };
+      image.addEventListener('load', onLoad);
+      image.addEventListener('error', onError);
+      attempt();
+    });
+  }
   const names = { instagram: 'Instagram', behance: 'Behance', linkedin: 'LinkedIn' };
 
   function cover(project, index) {
@@ -30,16 +61,16 @@
     link.href = projectLink(project);
     link.setAttribute('aria-label', `Ver projeto ${project.nome}`);
 
-    // Tentativa automatica de carregar assets/img/projetos/<slug>.webp.
-    // A capa so e exibida quando o download termina com sucesso.
+    // Permite capa explicita ou a primeira imagem numerada como fallback.
     const img = el('img');
     img.alt = ''; // O nome do projeto ja e anunciado pelo proprio link.
     img.loading = 'lazy';
     img.decoding = 'async';
-    img.addEventListener('load', () => link.classList.add('has-image'), { once: true });
-    img.addEventListener('error', () => img.remove(), { once: true });
     link.append(img, el('span', 'placeholder-center', 'Imagem em breve'));
-    img.src = projectCoverSource(project);
+    loadWithFallback(img, coverCandidates(project)).then(src => {
+      if (src) link.classList.add('has-image');
+      else img.remove();
+    });
 
     const caption = el('div', 'cover-meta');
     caption.append(el('h3', 'project-title', project.nome));
@@ -67,27 +98,25 @@
     return section;
   }
 
-  /* O GitHub Pages e estatico: ele nao tem uma API de listagem de imagens.
-   * Para manter a edicao sem codigo, tentamos os numeros em ordem crescente.
-   * O primeiro arquivo ausente encerra a busca (01, 02, 03... sem lacunas).
+  /* O GitHub Pages nao tem API de listagem de imagens. Buscamos arquivos
+   * sequenciais primeiro na pasta do projeto e, depois, na estrutura antiga.
+   * Se a capa usou -01.webp como alternativa, omitimos essa repeticao na galeria.
    */
-  async function populateProjectGallery(project, gallery) {
+  async function populateProjectGallery(project, gallery, heroSourcePromise = Promise.resolve(null)) {
     const manual = Array.isArray(project.galeria) ? project.galeria.filter(Boolean) : [];
     const sources = manual.length ? manual : null;
-    const maxImages = 40; // limite de seguranca; pode receber 01 a 40.
+    const heroSource = await heroSourcePromise;
+    const heroUsesFirstImage = !sources && !!heroSource && /-01\.webp(?:[?#].*)?$/i.test(heroSource);
+    const maxImages = 40;
     for (let index = 0; index < (sources ? sources.length : maxImages); index++) {
-      const src = sources ? sources[index] : numberedProjectSource(project, index + 1);
-      const loaded = await new Promise(resolve => {
-        const image = new Image();
-        image.decoding = 'async';
-        image.onload = () => resolve(image);
-        image.onerror = () => resolve(null);
-        image.src = src;
-      });
-      // Com a convencao automatica, a primeira lacuna significa fim da galeria.
-      if (!loaded) { if (sources) continue; else break; }
-      loaded.alt = `${project.nome} — aplicação visual ${index + 1}`;
+      const paths = sources ? [sources[index]] : galleryCandidates(project, index + 1);
+      const loaded = new Image();
       loaded.decoding = 'async';
+      const result = await loadWithFallback(loaded, paths);
+      // Na convencao automatica, a primeira lacuna termina a sequencia.
+      if (!result) { if (sources) continue; else break; }
+      if (heroUsesFirstImage && index === 0) continue;
+      loaded.alt = `${project.nome} — aplicação visual ${index + 1}`;
       loaded.loading = 'lazy';
       gallery.append(loaded);
       gallery.hidden = false;
@@ -164,13 +193,14 @@
     img.alt = `Capa do projeto ${project.nome}`;
     img.decoding = 'async';
     img.style.visibility = 'hidden';
-    img.addEventListener('load', () => {
-      heroPlaceholder.remove();
-      img.style.visibility = 'visible';
-    }, { once: true });
-    img.addEventListener('error', () => img.remove(), { once: true });
     hero.append(img);
-    img.src = projectCoverSource(project);
+    const heroSourcePromise = loadWithFallback(img, coverCandidates(project)).then(src => {
+      if (src) {
+        heroPlaceholder.remove();
+        img.style.visibility = 'visible';
+      } else img.remove();
+      return src;
+    });
 
     const meta = el('section', 'detail-meta');
     const specs = el('dl', 'detail-specs');
@@ -200,7 +230,7 @@
     gallery.hidden = true;
     gallery.setAttribute('aria-label', `Imagens do projeto ${project.nome}`);
     container.append(gallery);
-    populateProjectGallery(project, gallery);
+    populateProjectGallery(project, gallery, heroSourcePromise);
 
     // Relacionados: todos os demais projetos, sem botoes de anterior/proximo.
     const others = projects.filter(item => item.slug !== project.slug);
