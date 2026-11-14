@@ -1,3 +1,29 @@
+# Portfólio Rafael Cabral — v1.4.28
+
+## Imagens dos cases em largura total, sem cortes verticais
+
+- Todas as páginas individuais dos **15 projetos** agora exibem a imagem principal na largura total do espaço disponível e na **altura proporcional ao arquivo WebP original**, sem recorte vertical.
+- A galeria interna deixa de usar duas colunas: cada imagem (`<slug>-02.webp`, `<slug>-03.webp` etc.) ocupa **uma linha inteira**, mantendo sua proporção (horizontal, quadrada ou vertical).
+- As bordas arredondadas, a ordem das imagens, o carregamento automático e as animações de entrada permanecem.
+- Se não houver imagem principal, o placeholder continua com a altura de apoio anterior, sem forçar essa altura nas imagens reais.
+- Os cards da home, da listagem e dos projetos relacionados **não** mudam: a alteração é exclusiva das imagens **dentro dos cases**.
+
+### Publicar a atualização sobre a v1.4.27
+
+Extraia `portfolio-rafael-cabral-v1.4.28-atualizacao.zip` e envie seu conteúdo na raiz do repositório GitHub, substituindo apenas:
+
+- `index.html`
+- `projetos.html`
+- `projeto.html`
+- `assets/css/styles.css`
+- `LEIA-ME.md` (opcional)
+
+O stylesheet usa agora `styles.css?v=1428` para evitar cache. Não é necessário reenviar as imagens existentes em `assets/img/projetos/` e **não exclua essa pasta do GitHub**.
+
+Commit sugerido: `Cases com imagens em largura total v1.4.28`.
+
+---
+
 # Portfólio Rafael Cabral — v1.4.27
 
 ## Correção de caminhos das imagens dos projetos

@@ -376,9 +376,13 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .detail-heading h1 { font-size: clamp(2.6rem,4.7vw,5.6rem); font-weight: 500; letter-spacing: -.042em; line-height: 1.11; margin: 8px 0 0; }
 .detail-summary { max-width: 100%; margin: 8px 0 0; font-size: clamp(1.6rem,1.85vw,2.2rem); font-weight: 500; line-height: 1.28; letter-spacing: -.028em; text-wrap: pretty; }
 .detail-badge { color: var(--muted); font-size: var(--type-ui); }
-.detail-cover { width: 100%; min-height: 400px; max-height: 760px; aspect-ratio: 2 / 1; border-radius: var(--round); overflow: hidden; position: relative; background: linear-gradient(135deg,#eeeeef,#f6f6f7 55%,#e7e9ea); display: flex; align-items: center; justify-content: center; }
-.detail-cover img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; }
-.detail-placeholder { font-size: 14px; color: var(--subtle); }
+/* Case: imagens sempre em largura total e altura proporcional ao arquivo.
+   A capa deixa de ter altura maxima, aspect-ratio fixo e object-fit:cover,
+   que antes cortavam o enquadramento em telas largas e verticais. */
+.detail-cover { width: 100%; min-height: 0; max-height: none; aspect-ratio: auto; border-radius: var(--round); overflow: hidden; position: relative; background: linear-gradient(135deg,#eeeeef,#f6f6f7 55%,#e7e9ea); display: block; }
+.detail-cover img { display: block; width: 100%; height: auto; max-height: none; position: static; inset: auto; object-fit: contain; aspect-ratio: auto; }
+/* O placeholder conserva uma altura propria sem impor proporcao as fotos. */
+.detail-placeholder { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 360px; aspect-ratio: 2 / 1; font-size: 14px; color: var(--subtle); }
 .detail-meta { display: grid; grid-template-columns: minmax(280px,.92fr) minmax(0,1fr); gap: 42px; padding: 65px 0 110px; }
 .detail-specs { margin: 0; border-top: 1px solid var(--line); }
 .detail-spec-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; padding: 15px 0; border-bottom: 1px solid var(--line); }
@@ -390,9 +394,10 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .detail-detail-block { display: grid; grid-template-columns: 1fr 1.3fr; gap: 42px; border-top: 1px solid var(--line); padding: 50px 0; }
 .detail-detail-block h2 { font-size: 23px; font-weight: 500; }
 .detail-detail-block p { max-width: 700px; color: var(--muted); }
-.detail-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-bottom: 110px; }
-.detail-gallery img { width: 100%; height: auto; object-fit: contain; border-radius: var(--round); align-self: start; }
-.detail-gallery a:first-child:last-child { grid-column: 1/-1; }
+/* As imagens internas aparecem uma abaixo da outra, cada uma com 100%
+   da largura e sua proporcao original (inclusive as imagens verticais). */
+.detail-gallery { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; margin-bottom: 110px; }
+.detail-gallery img { display: block; width: 100%; height: auto; max-height: none; object-fit: contain; aspect-ratio: auto; border-radius: var(--round); align-self: start; }
 /* Outros projetos: uma galeria editorial ao fim de cada case. */
 .related-projects { border-top: 1px solid var(--line); margin-top: clamp(40px, 6vw, 115px); padding-top: clamp(22px, 3vw, 48px); }
 .related-header { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
@@ -580,7 +585,8 @@ body.is-page-leaving::after { opacity: 1; }
   .social-links { grid-column: 1; justify-self: center; justify-content: center; }
   .inner-main { padding-top: 85px; }
   .detail-intro { flex-direction: column; align-items: start; }
-  .detail-cover { min-height: 300px; aspect-ratio: 1.22; }
+  .detail-cover { min-height: 0; aspect-ratio: auto; }
+  .detail-placeholder { min-height: 260px; aspect-ratio: 1.22; }
   .detail-intro, .detail-meta, .detail-detail-block { grid-template-columns: 1fr; gap: 18px; }
   .detail-summary { max-width: none; font-size: clamp(23px,5.1vw,28px); }
   .detail-meta { padding: 48px 0 75px; }
