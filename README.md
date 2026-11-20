@@ -1,61 +1,58 @@
-# Rafael Cabral Design — versão 1.5.3
+# Rafael Cabral Design — versão 2.0
 
-Portfólio estático em HTML, CSS e JavaScript, hospedado gratuitamente no GitHub Pages. Tipografia Nexa pelo Adobe Fonts (`pwt1xky.css`), 15 projetos, assinatura animada no rodapé e imagens de cases carregadas por convenção de nomes.
+Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Atualização v1.5.3 — header corrigido
+## Novidades da versão 2.0
 
-- **Avatar circular** no canto superior esquerdo, com a foto preto e branco em estado normal e a versão colorida exclusivamente no hover ou foco pelo teclado.
-- A fotografia não usa `mix-blend-mode`, filtros, negativo nem rotação. Foi posicionada em camada separada porque o header utiliza inversão de cores nos textos para preservar contraste sobre imagens.
-- **Menu alinhado à direita**: Projetos, Serviços e Sobre imediatamente antes de Vamos conversar, como na referência enviada.
-- **Vamos conversar** apresenta borda fina arredondada, continua abrindo o mesmo WhatsApp com a mensagem predefinida. Menus e animações foram mantidos.
-- **Menu mobile** mantém a foto à esquerda, o botão de fechar na posição original e os links centralizados abaixo.
-- As imagens de avatar permanecem em `assets/img/header-avatar-bw.webp` e `assets/img/header-avatar-color.webp`, sem alterações nesta versão.
-- Versões anteriores continham documentação com número incorreto; este README foi reescrito para refletir a versão real **1.5.3**.
+- **Tema preto `#000000` em todas as páginas**, com textos principais em branco e secundários em cinzas claros.
+- **Cabeçalho compacto** inspirado na navegação de Kristián Ulrych: nome *Rafael Cabral* à esquerda, *Designer Gráfico* em cinza ao lado, navegação à direita e botão *Vamos conversar* com fundo claro.
+- **Blur verdadeiro no cabeçalho**, usando `backdrop-filter` com transparência que fica mais evidente quando a página é rolada. A versão anterior usava inversão de cores com `mix-blend-mode`; ela foi removida do menu.
+- **Tipografia Nexa ajustada proporcionalmente**: navegação, textos, botões e títulos com medidas menores, mantendo a hierarquia e a legibilidade.
+- **Botões retangulares com cantos arredondados discretos (9–10 px)**, sem perder o efeito de roleta nos botões de conteúdo.
+- **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
+- Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-### Atualizar a partir da v1.5.2
+## Instalação a partir da v1.5.3
 
-1. Baixe `portfolio-rafael-cabral-v1.5.3-atualizacao.zip` e extraia o conteúdo.
-2. No repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`, abra **Code → Add file → Upload files**.
-3. Envie **o conteúdo extraído** para a raiz (não a pasta que o contém). Os únicos arquivos alterados são `index.html`, `projetos.html`, `projeto.html`, `assets/css/styles.css` e `README.md`.
-4. Confirme o commit `Header e README v1.5.3`.
-5. Atualize o site e, se necessário, pressione **Ctrl + Shift + R**. Os HTMLs usam `styles.css?v=1503` para atualizar o cache.
+1. Baixe `portfolio-rafael-cabral-v2.0-atualizacao.zip` e extraia-o.
+2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
+3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
+4. Confirme o commit `Portfolio v2.0 — tema escuro e novo header`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2000`.
 
-**Não apague a pasta `assets` do GitHub e não exclua suas imagens WebP.** O upload substitui somente arquivos de mesmo nome/caminho. No ZIP completo existem os avatares e os arquivos estruturais, mas ele não contém os projetos reais enviados por você separadamente ao GitHub.
+**Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
-## Pastas e imagens automáticas
-
-```text
-assets/
-├── css/styles.css
-├── js/conteudo.js
-├── js/site.js
-└── img/
-    ├── header-avatar-bw.webp
-    ├── header-avatar-color.webp
-    ├── sobre.webp                # opcional
-    ├── servicos.webp             # opcional
-    └── projetos/
-        └── crisfit/
-            ├── crisfit.webp       # capa apenas para os cards
-            ├── crisfit-01.webp    # primeira imagem do case individual
-            ├── crisfit-02.webp    # segunda imagem depois do texto
-            └── crisfit-03.webp    # terceira imagem e assim por diante
-```
-
-Arquivos de case numerados são reconhecidos em sequência até `-40.webp`. Uma lacuna interrompe a sequência. A estrutura antiga de imagens diretamente em `assets/img/projetos/` também permanece compatível.
-
-## Conteúdos dos projetos
-
-Edite `assets/js/conteudo.js` para ajustar `nome`, `slug`, `frase`, `servicos`, `segmento`, `ano` e `texto` de cada projeto. O CRISFIT já possui descrição, serviços, segmento e ano 2024. Os demais projetos aguardam seus conteúdos.
+## Organização do site
 
 - `index.html`: página inicial, Projetos selecionados, Serviços, Sobre e Contato.
-- `projetos.html`: galeria de todos os projetos.
-- `projeto.html?projeto=crisfit`: página individual do projeto.
+- `projetos.html`: galeria dos projetos.
+- `projeto.html?projeto=crisfit`: página individual do case CRISFIT (o mesmo modelo é utilizado nos demais).
+- `assets/css/styles.css`: design system, tema, animações e responsividade.
+- `assets/js/conteudo.js`: textos e informações dos 15 projetos e links de contato.
+- `assets/js/site.js`: renderização dos cards, dos cases e das galerias, além de animações e navegação.
 
-Nas páginas individuais, o título divide a abertura com a frase-resumo; em seguida, aparece a primeira imagem numerada e depois a ficha Serviços/Segmento/Ano à esquerda, texto à direita e a galeria vertical em largura total. A ficha acompanha a rolagem no desktop dentro da seção de texto.
+### Imagens automáticas
 
-## Observações
+```text
+assets/img/
+├── sobre.webp                   # opcional
+├── servicos.webp                # opcional
+└── projetos/
+    └── crisfit/
+        ├── crisfit.webp         # apenas capa nos cards
+        ├── crisfit-01.webp      # primeira imagem da página individual
+        ├── crisfit-02.webp      # segunda imagem do case
+        └── crisfit-03.webp      # terceira imagem, etc.
+```
 
-- A foto do header agora é sempre exibida em sua tonalidade original. A inversão cromática foi preservada **somente para os elementos do menu**.
-- Use o ZIP de atualização para cada nova versão e preserve as imagens personalizadas já existentes no GitHub.
-- O portfólio utiliza somente tecnologias compatíveis com GitHub Pages, sem servidor de aplicação ou assinatura de hospedagem.
+As imagens internas carregam de `-01.webp` em diante, até 40 arquivos consecutivos. Se faltar uma imagem, a sequência se encerra. A convenção antiga, com arquivos diretamente em `assets/img/projetos/`, também é suportada.
+
+## Compatibilidade e manutenção
+
+- Fonte Nexa carregada pelo kit Adobe Fonts `https://use.typekit.net/pwt1xky.css`.
+- Conteúdos e links (inclusive o WhatsApp com mensagem predefinida) permanecem configurados no JavaScript e no HTML.
+- O favicon continua em `assets/img/favicon.svg`; o nome substitui a antiga foto circular **somente no cabeçalho**. Os arquivos de avatar anteriores podem permanecer guardados sem serem usados.
+- Respeita `prefers-reduced-motion` para usuários que reduzem animações.
+- Testar após publicar: menu mobile, links WhatsApp, cases com imagens reais e rolagem das galerias.
+
+O ZIP completo reúne apenas os arquivos-base do projeto. Ele não inclui arquivos enviados separadamente ao seu GitHub, como imagens reais de cases ou fotografias da seção Sobre.
