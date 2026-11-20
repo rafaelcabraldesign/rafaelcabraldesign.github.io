@@ -21,7 +21,7 @@ existir, em vez de exibir a capa destinada aos cards.
 
 ### Atualizar sobre a versão 1.5
 
-Envie os arquivos de `portfolio-rafael-cabral-v1.5.1-atualizacao.zip` para a
+Envie os arquivos de `portfolio-rafael-cabral-v1.5.2.2-atualizacao.zip` para a
 **raiz** do repositorio no GitHub, preservando as pastas.
 Somente `assets/js/site.js`, os tres HTMLs e este `README.md` mudaram.
 O JavaScript usa `site.js?v=1501` para evitar cache antigo.
@@ -90,3 +90,10 @@ As páginas são `index.html` (início), `projetos.html` (galeria) e `projeto.ht
 ## Tipografia e hospedagem
 
 Nexa carrega pelo projeto Adobe Fonts `https://use.typekit.net/pwt1xky.css`, sem hospedar arquivos de fontes no repositório. A assinatura do rodapé usa SVG. O site permanece 100% compatível com o GitHub Pages gratuito.
+
+
+## Atualização v1.5.2
+- Cabeçalho com avatar circular à esquerda.
+- Estado padrão com imagem em preto e branco e troca para versão colorida no hover/focus.
+- Mantidos os mesmos tamanhos de tipografia, animações e comportamento do header.
+- Novos arquivos em `assets/img/`: `header-avatar-bw.webp` e `header-avatar-color.webp`.
