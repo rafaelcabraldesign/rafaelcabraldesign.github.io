@@ -602,6 +602,94 @@
     window.addEventListener('pagehide', () => { if (started) complete(); });
   }
 
+
+  /* Hero e galeria selecionada em uma unica secao horizontal fixada.
+   * O scroll vertical nativo controla o deslocamento: nao interceptamos
+   * wheel nem touch, preservando rolagem, historico e acessibilidade.
+   * Layout vertical permanece como fallback no mobile/movimento reduzido. */
+  function setupHorizontalShowcase() {
+    const section = document.querySelector('[data-horizontal-showcase]');
+    if (!section) return;
+    const sticky = section.querySelector('[data-showcase-sticky]');
+    const track = section.querySelector('[data-showcase-track]');
+    const projectsPanel = section.querySelector('.showcase-projects');
+    const header = document.querySelector('[data-header]');
+    if (!sticky || !track || !projectsPanel) return;
+
+    const query = window.matchMedia('(min-width: 900px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)');
+    let distance = 0;
+    let scheduled = false;
+    let measureScheduled = false;
+    let active = false;
+    let progress = 0;
+
+    const getHeaderHeight = () => header?.getBoundingClientRect().height || 74;
+    const refreshPosition = () => {
+      if (!active) return;
+      // A secao comeca imediatamente abaixo do cabecalho sticky.
+      const sectionTop = section.getBoundingClientRect().top;
+      progress = Math.max(0, Math.min(distance, getHeaderHeight() - sectionTop));
+      track.style.setProperty('--showcase-x', `${-progress}px`);
+    };
+    const onScroll = () => {
+      if (!active || scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(() => {
+        scheduled = false;
+        refreshPosition();
+      });
+    };
+    const measure = () => {
+      active = query.matches;
+      if (!active) {
+        section.style.removeProperty('height');
+        track.style.removeProperty('--showcase-x');
+        return;
+      }
+      // Extensao horizontal = largura total do trilho menos o viewport.
+      const stickyHeight = sticky.getBoundingClientRect().height;
+      distance = Math.max(0, Math.ceil(track.scrollWidth - sticky.clientWidth));
+      section.style.height = `${Math.ceil(stickyHeight + distance)}px`;
+      refreshPosition();
+    };
+    const requestMeasure = () => {
+      if (measureScheduled) return;
+      measureScheduled = true;
+      window.requestAnimationFrame(() => {
+        measureScheduled = false;
+        measure();
+      });
+    };
+
+    // Inicia apos renderizar cards; recomputa quando dimensoes/fontes mudam.
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', requestMeasure, { passive: true });
+    window.addEventListener('pageshow', requestMeasure);
+    if (query.addEventListener) query.addEventListener('change', requestMeasure);
+    if (document.fonts?.ready) document.fonts.ready.then(requestMeasure);
+    if (window.ResizeObserver) {
+      const observer = new ResizeObserver(requestMeasure);
+      observer.observe(track);
+      observer.observe(sticky);
+    }
+
+    // O botao do hero pula para o inicio da galeria, sem causar um salto
+    // incorreto de âncora dentro de um elemento transformado.
+    section.querySelectorAll('[data-scroll-to-projects]').forEach(link => {
+      link.addEventListener('click', event => {
+        if (!active) return;
+        event.preventDefault();
+        const panelOffset = projectsPanel.offsetLeft - track.offsetLeft;
+        const desiredX = Math.min(distance, Math.max(0, panelOffset));
+        const sectionDocumentTop = section.getBoundingClientRect().top + window.scrollY;
+        const targetY = sectionDocumentTop - getHeaderHeight() + desiredX;
+        history.replaceState(null, '', '#projetos');
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      });
+    });
+  }
+
   const featured = document.getElementById('featured-projects');
   if (featured) renderCards(featured, projects.slice(0, 6));
   const listing = document.getElementById('all-projects');
@@ -618,6 +706,7 @@
   setupMenu();
   setupHeroWordEntrance();
   setupStickyHeader();
+  setupHorizontalShowcase();
   setupReveal();
   setupPageTransitions();
   setupFooterSignature();

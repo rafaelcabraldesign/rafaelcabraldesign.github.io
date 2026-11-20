@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.0
+ * RAFAEL CABRAL | Portfolio v2.0.1
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -608,4 +608,144 @@ body.is-page-leaving::after { opacity: 1; }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .cover-meta { transition: none !important; }
+}
+
+
+/* ---------------------------------------------------------------
+   v2.0.1 | Header preto translucido + CTA de roleta + showcase horizontal
+   --------------------------------------------------------------- */
+/* Fundo preto real: sobre areas #000, a camada nao vira uma faixa cinza.
+   O desfoque preserva imagens e conteudo que passam atras do cabecalho. */
+.site-header {
+  background: rgba(0,0,0,.22);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+.site-header.is-scrolled {
+  background: rgba(0,0,0,.75);
+  -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px);
+}
+.site-header.is-menu-open { background: rgba(0,0,0,.96); }
+
+/* O botao do header compartilha a mascara, a subida do fundo e a roleta
+   tipografica dos demais botoes, sem alterar seu tamanho compacto. */
+.site-header .header-contact.pill {
+  --pill-hover-bg: var(--accent);
+  min-height: 38px;
+  padding: 9px 16px;
+  font-size: clamp(13px, .82vw, 15px);
+  font-weight: 600;
+  line-height: 1.2;
+  border: 1px solid #f5f5f6;
+  border-radius: 10px;
+  background: #f5f5f6;
+  color: #0c0c10;
+  transform: none;
+}
+.site-header .header-contact.pill::before {
+  background: var(--accent);
+}
+.site-header .header-contact.pill:hover,
+.site-header .header-contact.pill:focus-visible {
+  color: #fff;
+  border-color: var(--accent);
+  background: #f5f5f6;
+  transform: none;
+}
+
+/* Comportamento padrao: secao vertical, adequada a mobile, tablets,
+   leitores de tela e preferencia por movimento reduzido. */
+.horizontal-showcase { position: relative; }
+.showcase-track { position: relative; }
+.showcase-more { display: none; }
+
+/* O efeito horizontal so e ativado em telas com area util suficiente.
+   A altura da secao e calculada pelo JS conforme o tamanho real dos cards. */
+@media (min-width: 900px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+  .horizontal-showcase {
+    position: relative;
+    height: 100vh; /* fallback sem JS */
+  }
+  .showcase-sticky {
+    position: sticky;
+    top: 74px;
+    height: calc(100vh - 74px);
+    height: calc(100dvh - 74px);
+    overflow: clip;
+    isolation: isolate;
+  }
+  .showcase-track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    align-items: flex-start;
+    gap: clamp(16px,1vw,28px);
+    padding: 0 var(--gutter);
+    transform: translate3d(var(--showcase-x,0px),0,0);
+    will-change: transform;
+  }
+  .showcase-hero.hero.shell {
+    flex: 0 0 auto;
+    display: flex;
+    width: clamp(440px, 40vw, 840px);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+  .showcase-hero .hero-content { width: 100%; }
+  .showcase-hero.hero h1 { font-size: clamp(37px,3.02vw,66px); }
+  .showcase-hero .hero-lead { max-width: min(92%,620px); }
+  .showcase-projects.section.shell {
+    display: block;
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: 0;
+    height: auto;
+    margin: 0;
+    padding: clamp(2px,1.3vh,16px) 0 0;
+  }
+  .showcase-projects .section-top { justify-content: flex-start; margin-bottom: 20px; }
+  .showcase-projects .section-top .text-link { display: none; }
+  .showcase-projects .projects-grid--featured {
+    display: flex;
+    grid-template-columns: none;
+    gap: clamp(14px,.8vw,24px);
+    width: max-content;
+    align-items: flex-start;
+  }
+  .showcase-projects .projects-grid--featured > .project-card {
+    display: block;
+    width: clamp(500px,46vw,940px);
+    flex: 0 0 clamp(500px,46vw,940px);
+  }
+  .showcase-projects .projects-grid--featured .project-cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.56;
+    max-height: min(68vh,730px);
+  }
+  .showcase-more {
+    display: inline-flex;
+    position: absolute;
+    z-index: 2;
+    top: min(calc(50px + clamp(320px,29.5vw,602px)),calc(100% - 52px));
+    right: var(--gutter);
+    padding: 5px 0;
+    font-size: var(--type-ui);
+  }
+}
+
+/* Ao desabilitar JavaScript, nao prender a secao sem poder navega-la. */
+@media (min-width: 900px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+  html:not(.js-enabled) .horizontal-showcase { height: auto; }
+  html:not(.js-enabled) .showcase-sticky { position: static; height: auto; overflow: visible; }
+  html:not(.js-enabled) .showcase-track { display: block; width: auto; transform: none; }
+  html:not(.js-enabled) .showcase-hero.hero.shell { height: auto; width: 100%; padding: 145px 0; }
+  html:not(.js-enabled) .showcase-projects.section.shell { width: auto; }
+  html:not(.js-enabled) .showcase-projects .projects-grid--featured { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: auto; }
+  html:not(.js-enabled) .showcase-projects .projects-grid--featured > .project-card { width: auto; }
+  html:not(.js-enabled) .showcase-projects .section-top .text-link { display: inline-flex; }
+  html:not(.js-enabled) .showcase-more { display: none; }
 }
