@@ -33,15 +33,21 @@
       } catch (_) { /* Fallback: elementos visiveis. */ }
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/styles.css?v=1502">
+  <link rel="stylesheet" href="assets/css/styles.css?v=1503">
   <script defer src="assets/js/conteudo.js?v=1426"></script>
   <script defer src="assets/js/site.js?v=1501"></script>
 </head>
 <body id="topo">
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <!-- O retrato fica fora da camada com inversao cromatica do menu. -->
+  <a class="brand" href="./" aria-label="Rafael Cabral — início">
+    <span class="brand-avatar" aria-hidden="true">
+      <img class="brand-avatar__img brand-avatar__img--bw" src="assets/img/header-avatar-bw.webp" alt="" width="40" height="40">
+      <img class="brand-avatar__img brand-avatar__img--color" src="assets/img/header-avatar-color.webp" alt="" width="40" height="40">
+    </span>
+  </a>
   <header class="site-header" data-header>
     <div class="header-inner shell">
-      <a class="brand" href="./" aria-label="Rafael Cabral — início"><span class="brand-icon" aria-hidden="true"></span></a>
       <nav class="primary-nav" id="menu-principal" aria-label="Navegação principal">
         <a href="projetos.html" aria-current="page">Projetos</a>
         <a href="index.html#servicos">Serviços</a>
