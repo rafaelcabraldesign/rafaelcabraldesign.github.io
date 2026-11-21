@@ -63,16 +63,16 @@ p { line-height: 1.55; }
   width: 100%;
   min-height: 74px;
   color: #f7f7f9;
-  /* Preto com pouca opacidade: desaparece visualmente sobre #000, mas
-     deixa as formas e letras de fundo perceptiveis sob o blur. */
-  background: rgba(0,0,0,.08);
+  /* Preto com opacidade moderada: melhora a leitura sobre imagens muito claras,
+     preservando o blur e ainda desaparecendo bem sobre o fundo preto. */
+  background: rgba(0,0,0,.16);
   -webkit-backdrop-filter: blur(16px) saturate(105%);
   backdrop-filter: blur(16px) saturate(105%);
   transition: background-color .4s ease, -webkit-backdrop-filter .4s ease, backdrop-filter .4s ease;
   isolation: isolate;
 }
 .site-header.is-scrolled {
-  background: rgba(0,0,0,.24);
+  background: rgba(0,0,0,.32);
   -webkit-backdrop-filter: blur(20px) saturate(105%);
   backdrop-filter: blur(20px) saturate(105%);
 }

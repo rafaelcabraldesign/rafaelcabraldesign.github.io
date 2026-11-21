@@ -1,8 +1,13 @@
-# Rafael Cabral Design — versão 2.0.7
+# Rafael Cabral Design — versão 2.0.8
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.7
+## Novidades da versão 2.0.8
+
+- **Legibilidade do cabeçalho:** o fundo com blur agora usa preto com opacidade um pouco maior no estado normal (`rgba(0,0,0,.16)`) e ao rolar (`rgba(0,0,0,.32)`), melhorando a leitura do menu sobre imagens muito claras sem perder o efeito de desfoque.
+- **Cache:** os HTMLs referenciam `styles.css?v=2008`, `site.js?v=2008` e `conteudo.js?v=2008`.
+
+## Alterações anteriores — v2.0.7
 
 - **Links do cabeçalho:** Rafael Cabral, Projetos, Serviços e Sobre agora ficam rosa `#d60b52` no hover/foco, acompanhando o sublinhado animado. O botão "Vamos conversar" conserva a roleta de preenchimento branco.
 - **Rodapé:** `LinkedIn` aparece imediatamente à esquerda de `E-mail`, com o mesmo efeito de sublinhado e rosa no hover. O link abre `https://www.linkedin.com/in/rafaelcabraldesign/` em outra aba.
@@ -54,13 +59,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.6
+## Instalação a partir da v2.0.7
 
-1. Baixe `portfolio-rafael-cabral-v2.0.7-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.8-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfólio v2.0.7 — hover rosa e LinkedIn no rodapé`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2007`, `site.js?v=2007` e `conteudo.js?v=2007`.
+4. Confirme o commit `Portfólio v2.0.8 — header com fundo mais legível`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2008`, `site.js?v=2008` e `conteudo.js?v=2008`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
