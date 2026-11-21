@@ -644,12 +644,24 @@
       if (!active) {
         section.style.removeProperty('height');
         track.style.removeProperty('--showcase-x');
+        sticky.style.removeProperty('--showcase-link-top');
         return;
       }
       // Extensao horizontal = largura total do trilho menos o viewport.
       const stickyHeight = sticky.getBoundingClientRect().height;
       distance = Math.max(0, Math.ceil(track.scrollWidth - sticky.clientWidth));
       section.style.height = `${Math.ceil(stickyHeight + distance)}px`;
+
+      // Mantem o link "Ver todos" exatamente 20px abaixo da imagem,
+      // mesmo em alturas de tela diferentes ou ao mudar as fontes.
+      // Medir o grid, nao o card: o card pode estar se deslocando na animacao
+      // de entrada e causaria um espacamento incorreto durante o primeiro frame.
+      const cardGrid = projectsPanel.querySelector('.projects-grid--featured');
+      if (cardGrid?.children.length) {
+        const linkTop = cardGrid.getBoundingClientRect().bottom
+          - sticky.getBoundingClientRect().top + 20;
+        sticky.style.setProperty('--showcase-link-top', `${Math.round(linkTop)}px`);
+      }
       refreshPosition();
     };
     const requestMeasure = () => {

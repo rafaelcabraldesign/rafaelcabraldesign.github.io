@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.0.1
+ * RAFAEL CABRAL | Portfolio v2.0.2
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -711,28 +711,33 @@ body.is-page-leaving::after { opacity: 1; }
   .showcase-projects .projects-grid--featured {
     display: flex;
     grid-template-columns: none;
-    gap: clamp(14px,.8vw,24px);
+    --showcase-card-gap: clamp(14px,1vw,24px);
+    gap: var(--showcase-card-gap);
     width: max-content;
     align-items: flex-start;
   }
+  /* Dois cards lado a lado preenchem toda a largura util de um viewport.
+     No trilho horizontal cada um preserva essa escala enquanto avanca. */
   .showcase-projects .projects-grid--featured > .project-card {
     display: block;
-    width: clamp(500px,46vw,940px);
-    flex: 0 0 clamp(500px,46vw,940px);
+    width: calc((100vw - 2 * var(--gutter) - var(--showcase-card-gap)) / 2);
+    flex: 0 0 calc((100vw - 2 * var(--gutter) - var(--showcase-card-gap)) / 2);
   }
   .showcase-projects .projects-grid--featured .project-cover {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1.56;
-    max-height: min(68vh,730px);
+    height: calc(100dvh - 200px);
+    aspect-ratio: auto;
+    max-height: none;
   }
+  /* A posicao vertical do link vem da borda real dos cards, medida no JS.
+     Seu espacamento inferior equivale a margem de 20px acima dos cards. */
   .showcase-more {
     display: inline-flex;
     position: absolute;
     z-index: 2;
-    top: min(calc(50px + clamp(320px,29.5vw,602px)),calc(100% - 52px));
+    top: var(--showcase-link-top, calc(100% - 48px));
     right: var(--gutter);
-    padding: 5px 0;
+    padding: 0;
     font-size: var(--type-ui);
   }
 }
