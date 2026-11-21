@@ -1,8 +1,13 @@
-# Rafael Cabral Design — versão 2.0.9
+# Rafael Cabral Design — versão 2.0.10
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.9
+## Novidades da versão 2.0.10
+
+- **Cabeçalho em meio-termo:** opacidade preta ajustada de 75% para **45%** no topo e de 85% para **60%** durante a rolagem. O blur permanece inalterado; o menu mobile aberto mantém 96% de opacidade.
+- **CSS sem cache antigo:** as três páginas agora carregam `styles.css?v=2010`. Nenhum arquivo JavaScript ou imagem foi alterado.
+
+## Alterações anteriores — v2.0.9
 
 - **Cabeçalho mais escuro para leitura:** preto com 75% de opacidade no estado padrão e 85% durante a rolagem, sobrepondo fotografias claras sem perder o `backdrop-filter: blur(...)`.
 - **Sem alteração nas animações, cores dos links e botões.** As páginas HTML usam `styles.css?v=2009` para renovar o cache.
@@ -64,13 +69,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.8
+## Instalação a partir da v2.0.9
 
-1. Baixe `portfolio-rafael-cabral-v2.0.9-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.10-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfólio v2.0.9 — contraste do cabeçalho`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2009`, `site.js?v=2008` e `conteudo.js?v=2008`.
+4. Confirme o commit `Portfólio v2.0.10 — opacidade intermediária do cabeçalho`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2010`, `site.js?v=2008` e `conteudo.js?v=2008`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 

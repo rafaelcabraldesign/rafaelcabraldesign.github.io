@@ -63,16 +63,16 @@ p { line-height: 1.55; }
   width: 100%;
   min-height: 74px;
   color: #f7f7f9;
-  /* Preto com alta opacidade: protege a leitura sobre imagens claras,
-     preservando o desfoque da imagem por tras do cabecalho. */
-  background: rgba(0,0,0,.75);
+  /* Opacidade intermediaria para equilibrar leitura sobre imagens claras
+     e percepcao do desfoque da imagem por tras do cabecalho. */
+  background: rgba(0,0,0,.45);
   -webkit-backdrop-filter: blur(16px) saturate(105%);
   backdrop-filter: blur(16px) saturate(105%);
   transition: background-color .4s ease, -webkit-backdrop-filter .4s ease, backdrop-filter .4s ease;
   isolation: isolate;
 }
 .site-header.is-scrolled {
-  background: rgba(0,0,0,.85);
+  background: rgba(0,0,0,.60);
   -webkit-backdrop-filter: blur(20px) saturate(105%);
   backdrop-filter: blur(20px) saturate(105%);
 }
