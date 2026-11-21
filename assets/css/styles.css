@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.0.2
+ * RAFAEL CABRAL | Portfolio v2.0.4
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -20,7 +20,10 @@
   --line: #333338;
   --pill: #1b1b20;
   --round: 16px;
-  --type-ui: clamp(15px, .92vw, 17px);
+  /* Escala tipografica: navegacao, botoes e rodape compartilham --type-ui. */
+  --type-ui: clamp(14px, .88vw, 16px);
+  --type-body: clamp(15px, 1vw, 18px);
+  --type-lead: clamp(16px, 1.05vw, 20px);
   --gutter: clamp(20px, 2.25vw, 60px);
   --header-gutter: clamp(16px, 1.25vw, 32px);
   --ease: cubic-bezier(.23, 1, .32, 1);
@@ -28,13 +31,14 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 110px; }
-body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: "nexa", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 500; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: "nexa", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: var(--type-body); font-weight: 500; font-synthesis: none; -webkit-font-smoothing: antialiased; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 p, h1, h2, h3 { margin-top: 0; }
 p { line-height: 1.55; }
-::selection { background: #e84d84; color: #000; }
+::selection { background: #560421; color: #fff; }
+::-moz-selection { background: #560421; color: #fff; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
 [hidden] { display: none !important; }
 .shell { width: calc(100% - (2 * var(--gutter))); max-width: none; margin-inline: auto; }
@@ -59,32 +63,40 @@ p { line-height: 1.55; }
   width: 100%;
   min-height: 74px;
   color: #f7f7f9;
-  background: rgba(15, 15, 18, .35);
-  -webkit-backdrop-filter: blur(18px) saturate(120%);
-  backdrop-filter: blur(18px) saturate(120%);
+  /* Preto com pouca opacidade: desaparece visualmente sobre #000, mas
+     deixa as formas e letras de fundo perceptiveis sob o blur. */
+  background: rgba(0,0,0,.08);
+  -webkit-backdrop-filter: blur(16px) saturate(105%);
+  backdrop-filter: blur(16px) saturate(105%);
   transition: background-color .4s ease, -webkit-backdrop-filter .4s ease, backdrop-filter .4s ease;
   isolation: isolate;
 }
-.site-header.is-scrolled, .site-header.is-menu-open {
-  background: rgba(24, 24, 27, .76);
-  -webkit-backdrop-filter: blur(25px) saturate(125%);
-  backdrop-filter: blur(25px) saturate(125%);
+.site-header.is-scrolled {
+  background: rgba(0,0,0,.24);
+  -webkit-backdrop-filter: blur(20px) saturate(105%);
+  backdrop-filter: blur(20px) saturate(105%);
+}
+/* O menu aberto e solido por legibilidade, sem afetar o header fechado. */
+.site-header.is-menu-open {
+  background: rgba(0,0,0,.96);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
 .header-inner { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 28px; position: relative; }
 .brand-lockup { display: flex; align-items: center; gap: clamp(17px, 2vw, 32px); min-width: 0; flex: 0 1 auto; white-space: nowrap; }
-.brand { display: inline-block; font-size: clamp(14px, .9vw, 16px); font-weight: 600; line-height: 1.3; letter-spacing: -.018em; color: #f7f7f9; padding: 10px 0; position: relative; }
+.brand { display: inline-block; font-size: var(--type-ui); font-weight: 600; line-height: 1.3; letter-spacing: -.018em; color: #f7f7f9; padding: 10px 0; position: relative; }
 .brand::after { content: ''; position: absolute; left: 0; bottom: 6px; height: 1px; width: 100%; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
 .brand:hover::after, .brand:focus-visible::after { transform: scaleX(1); }
-.brand-role { color: #bfc0c9; font-size: clamp(13px, .86vw, 15px); font-weight: 500; letter-spacing: -.012em; line-height: 1.3; }
+.brand-role { color: #bfc0c9; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.012em; line-height: 1.3; }
 .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: clamp(18px, 2vw, 38px); margin-left: auto; min-width: 0; }
 .primary-nav { display: flex; align-items: center; justify-content: flex-end; gap: clamp(20px, 2vw, 35px); }
-.primary-nav a { position: relative; color: #e2e2e6; font-size: clamp(13px, .82vw, 15px); font-weight: 500; letter-spacing: -.012em; line-height: 1.3; padding: 13px 0; transition: color .3s ease; white-space: nowrap; }
+.primary-nav a { position: relative; color: #e2e2e6; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.012em; line-height: 1.3; padding: 13px 0; transition: color .3s ease; white-space: nowrap; }
 .primary-nav a::after { content: ''; position: absolute; left: 0; bottom: 8px; height: 1px; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .42s var(--ease); }
 .primary-nav a:hover, .primary-nav a:focus-visible { color: #fff; }
 .primary-nav a:hover::after, .primary-nav a:focus-visible::after { transform: scaleX(1); }
 .primary-nav a[aria-current="page"] { color: #fff; }
 .mobile-only-link { display: none !important; }
-.header-contact { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 38px; padding: 9px 16px; background: #f2f2f4; color: #101014; border: 1px solid #f2f2f4; border-radius: 10px; font-size: clamp(13px,.82vw,15px); font-weight: 600; letter-spacing: -.01em; line-height: 1.2; white-space: nowrap; transition: background-color .32s ease, border-color .32s ease, color .32s ease, transform .32s ease; }
+.header-contact { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 42px; padding: 9px 18px; background: #f2f2f4; color: #101014; border: 1px solid #f2f2f4; border-radius: 9px; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.01em; line-height: 1.2; white-space: nowrap; transition: background-color .32s ease, border-color .32s ease, color .32s ease, transform .32s ease; }
 .header-contact:hover, .header-contact:focus-visible { background: #e0e0e4; border-color: #e0e0e4; color: #000; transform: translateY(-1px); }
 .menu-toggle { display: none; border: 0; padding: 0; background: transparent; cursor: pointer; color: #fff; position: relative; width: 42px; height: 42px; flex: 0 0 42px; }
 .menu-toggle span { position: absolute; top: 50%; left: 50%; width: 22px; height: 2px; display: block; background: currentColor; border-radius: 2px; transform-origin: center; transition: transform .38s cubic-bezier(.22,1,.36,1), background-color .25s ease; }
@@ -112,7 +124,7 @@ p { line-height: 1.55; }
 .hero-content { max-width: none; }
 .eyebrow { margin-bottom: 28px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow span { padding: 0 8px; color: #a4a5a9; }
-.hero h1 { max-width: none; margin: 0 0 25px; font-size: clamp(2.3rem, 3.28vw, 5.1rem); font-weight: 500; line-height: 1.1; letter-spacing: -.043em; text-wrap: pretty; }
+.hero h1 { max-width: none; margin: 0 0 25px; font-size: clamp(2.15rem, 3.1vw, 4.8rem); font-weight: 500; line-height: 1.1; letter-spacing: -.043em; text-wrap: pretty; }
 /* v1.4.24 — Titulo palavra a palavra mais agil, SEM corte de glifos.
    A mascara continua como wrapper editorial para manter as quebras, mas nao
    recorta as letras. Deslocamento curto + fade longo, simultaneos.
@@ -140,7 +152,7 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-.hero-lead { max-width: min(840px, 84vw); margin: 0; font-size: clamp(16px, 1.07vw, 21px); font-weight: 500; letter-spacing: -.015em; line-height: 1.46; color: var(--muted); }
+.hero-lead { max-width: min(840px, 84vw); margin: 0; font-size: var(--type-lead); font-weight: 500; letter-spacing: -.015em; line-height: 1.46; color: var(--muted); }
 .hero-actions { display: flex; gap: 10px; align-items: center; margin-top: 34px; }
 
 /* Botao "roleta": o fundo sobe, e o texto secundario chega de baixo dentro de mascara. */
@@ -149,11 +161,11 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 40px;
+  min-height: 42px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 18px;
+  padding: 9px 18px;
   border-radius: 9px;
   font-size: var(--type-ui);
   font-weight: 500;
@@ -260,7 +272,7 @@ h2.section-label { margin: 0; }
 
 /* Services: imagem com metade da largura; numeros a esquerda e textos na extrema direita. */
 .services-section > .section-label { margin: 0 0 19px; }
-.statement { max-width: min(1920px, 100%); margin: 0 0 72px; font-size: clamp(1.65rem, 2.08vw, 3.15rem); font-weight: 500; line-height: 1.23; letter-spacing: -.034em; text-wrap: pretty; }
+.statement { max-width: min(1920px, 100%); margin: 0 0 72px; font-size: clamp(1.55rem, 2vw, 3rem); font-weight: 500; line-height: 1.23; letter-spacing: -.034em; text-wrap: pretty; }
 .services-body { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0; align-items: stretch; }
 .services-aside { position: relative; width: 100%; min-height: 600px; padding: 31px; }
 .services-list { min-width: 0; padding-left: clamp(25px, 3vw, 64px); margin-top: 0; }
@@ -275,7 +287,7 @@ h2.section-label { margin: 0; }
 /* About */
 .about-grid { display: grid; grid-template-columns: minmax(0,1.18fr) minmax(0,.82fr); gap: clamp(45px, 5vw, 110px); align-items: center; }
 .about-copy .section-label { margin-bottom: 28px; }
-.about-copy h2 { max-width: none; margin-bottom: 24px; font-size: clamp(1.7rem, 2.38vw, 3.1rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.22; }
+.about-copy h2 { max-width: none; margin-bottom: 24px; font-size: clamp(1.6rem, 2.25vw, 2.9rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.22; }
 .about-copy > p:not(.section-label) { max-width: min(760px, 95%); color: var(--muted); font-size: var(--type-ui); line-height: 1.58; }
 .placeholder-frame { position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background: linear-gradient(138deg,#202025,#121215 60%,#26262b); border-radius: var(--round); }
 /* Imagem de Serviços ou Sobre: cobre o quadro apenas apos ser carregada. */
@@ -291,14 +303,15 @@ h2.section-label { margin: 0; }
 .contact-section { padding-bottom: clamp(125px,13vw,200px); }
 .contact-section > .section-label { margin-bottom: 21px; }
 .contact-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 50px; }
-.contact-row h2 { max-width: none; margin: 0; font-size: clamp(1.8rem, 3.1vw, 4.1rem); font-weight: 500; line-height: 1.16; letter-spacing: -.035em; }
+.contact-row h2 { max-width: none; margin: 0; font-size: clamp(1.7rem, 2.95vw, 3.85rem); font-weight: 500; line-height: 1.16; letter-spacing: -.035em; }
 .contact-row > .pill { flex: 0 0 auto; align-self: flex-end; }
 /* Os filhos entram com translate suave. Sem clipping, o deslocamento
    aumenta o scrollHeight e provoca um salto no limite final da pagina.
    overflow: clip limita apenas a pintura; mantem a animacao e nao cria
    uma nova area de rolagem. O footer (nao seus filhos) aciona a entrada. */
 .site-footer { overflow: clip; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 22px; padding-bottom: 35px; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.01em; color: var(--ink); }
-.site-footer p { margin: 0; }
+.site-footer p { margin: 0; font-size: inherit; }
+.site-footer .social-links, .site-footer .social-links a { font-size: inherit; font-weight: inherit; }
 /* Mesmo sublinhado animado do menu nos links do rodape. */
 .site-footer > a, .social-links a { position: relative; display: inline-block; padding-block: 8px; transition: color .3s ease; }
 .site-footer > a::after, .social-links a::after { content: ''; position: absolute; bottom: 3px; left: 0; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .42s var(--ease); }
@@ -348,12 +361,12 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 /* Inner pages */
 .inner-main { padding-top: clamp(92px,9.5vw,160px); padding-bottom: 150px; min-height: 72vh; }
 .listing-intro { margin-bottom: clamp(90px,9vw,145px); }
-.listing-intro h1 { margin: 24px 0 17px; font-size: clamp(2.25rem,3.9vw,4.5rem); font-weight: 500; letter-spacing: -.043em; line-height: 1.1; }
+.listing-intro h1 { margin: 24px 0 17px; font-size: clamp(2.15rem,3.7vw,4.25rem); font-weight: 500; letter-spacing: -.043em; line-height: 1.1; }
 .listing-intro > p:last-child { max-width: 900px; color: var(--muted); font-size: var(--type-ui); }
 .listing-tools { margin-bottom: 25px; }
 .detail-intro { display: grid; grid-template-columns: minmax(0,.92fr) minmax(0,1fr); align-items: start; gap: 42px; margin-bottom: 42px; }
-.detail-heading h1 { font-size: clamp(2.25rem,3.95vw,4.75rem); font-weight: 500; letter-spacing: -.042em; line-height: 1.11; margin: 8px 0 0; }
-.detail-summary { max-width: 100%; margin: 8px 0 0; font-size: clamp(1.35rem,1.57vw,1.85rem); font-weight: 500; line-height: 1.28; letter-spacing: -.028em; text-wrap: pretty; }
+.detail-heading h1 { font-size: clamp(2.2rem,3.75vw,4.5rem); font-weight: 500; letter-spacing: -.042em; line-height: 1.11; margin: 8px 0 0; }
+.detail-summary { max-width: 100%; margin: 8px 0 0; font-size: clamp(1.3rem,1.5vw,1.8rem); font-weight: 500; line-height: 1.28; letter-spacing: -.028em; text-wrap: pretty; }
 .detail-badge { color: var(--muted); font-size: var(--type-ui); }
 /* Case: imagens sempre em largura total e altura proporcional ao arquivo.
    A capa deixa de ter altura maxima, aspect-ratio fixo e object-fit:cover,
@@ -501,8 +514,8 @@ body.is-page-leaving::after { opacity: 1; }
   .site-header { z-index: 95; min-height: 66px; }
   .header-inner { min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; }
   .brand-lockup { flex: 0 1 auto; min-width: 0; gap: 14px; }
-  .brand { width: auto; height: auto; flex: 0 0 auto; font-size: 14px; }
-  .brand-role { font-size: 13px; flex: 0 1 auto; }
+  .brand { width: auto; height: auto; flex: 0 0 auto; font-size: var(--type-ui); }
+  .brand-role { font-size: var(--type-ui); flex: 0 1 auto; }
   .header-actions { margin-left: auto; flex: 0 1 auto; }
   .header-contact { display: none; }
   .menu-toggle { display: block; flex: 0 0 42px; z-index: 2; }
@@ -550,7 +563,7 @@ body.is-page-leaving::after { opacity: 1; }
   body.mobile-menu-open { overflow: hidden; }
   .hero { padding-top: 100px; padding-bottom: 135px; }
   .eyebrow { margin-bottom: 24px; font-size: 10px; }
-  .hero h1 { font-size: clamp(2.06rem, 6.45vw, 3.2rem); letter-spacing: -.045em; }
+  .hero h1 { font-size: clamp(2.03rem, 6.2vw, 3.1rem); letter-spacing: -.045em; }
   .hero-lead { font-size: 16px; max-width: 100%; }
   .hero-actions { flex-wrap: wrap; margin-top: 27px; }
   .pill { font-size: var(--type-ui); padding: 10px 16px; min-height: 40px; }
@@ -560,16 +573,16 @@ body.is-page-leaving::after { opacity: 1; }
   .cover-meta { left: 19px; bottom: 20px; right: 19px; }
   .project-title, .project-year { font-size: var(--type-ui); }
   .projects-grid--featured .project-card, .projects-grid--all .project-card { grid-column: auto; }
-  .statement { font-size: clamp(1.48rem, 4.6vw, 2.1rem); margin-bottom: 48px; }
+  .statement { font-size: clamp(1.45rem, 4.55vw, 2.05rem); margin-bottom: 48px; }
   .services-body { grid-template-columns: 1fr; gap: 30px; }
   .services-aside { min-height: 220px; padding: 24px; }
   .services-aside p { margin: auto 0; font-size: 29px; }
   .service-row { grid-template-columns: 38px minmax(0, 1fr); gap: 12px; padding: 24px 0; }
   .services-list { padding-left: 0; }
   .about-grid { grid-template-columns: 1fr; gap: 37px; }
-  .about-copy h2 { font-size: clamp(1.52rem,4.65vw,2.25rem); }
+  .about-copy h2 { font-size: clamp(1.5rem,4.55vw,2.2rem); }
   .about-photo { min-height: 390px; }
-  .contact-row h2 { font-size: clamp(1.62rem,6.0vw,2.65rem); }
+  .contact-row h2 { font-size: clamp(1.6rem,5.75vw,2.5rem); }
   /* Rodape empilhado para preservar a assinatura em telas estreitas. */
   .site-footer { grid-template-columns: 1fr; gap: 13px; justify-items: center; text-align: center; padding-bottom: 34px; }
   .site-footer > .footer-signature { grid-column: 1; justify-self: center; }
@@ -596,8 +609,8 @@ body.is-page-leaving::after { opacity: 1; }
   .project-title, .project-year { font-size: var(--type-ui); }
   .statement { font-size: 23px; }
   .about-photo { min-height: 325px; }
-  .brand { font-size: 13px; }
-  .brand-role { font-size: 12px; }
+  .brand { font-size: var(--type-ui); }
+  .brand-role { font-size: var(--type-ui); }
   .brand-lockup { gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -616,30 +629,21 @@ body.is-page-leaving::after { opacity: 1; }
    --------------------------------------------------------------- */
 /* Fundo preto real: sobre areas #000, a camada nao vira uma faixa cinza.
    O desfoque preserva imagens e conteudo que passam atras do cabecalho. */
-.site-header {
-  background: rgba(0,0,0,.22);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-}
-.site-header.is-scrolled {
-  background: rgba(0,0,0,.75);
-  -webkit-backdrop-filter: blur(25px);
-  backdrop-filter: blur(25px);
-}
-.site-header.is-menu-open { background: rgba(0,0,0,.96); }
+/* v2.0.4: opacidade do header ja definida no bloco principal acima.
+   Eliminadas as substituicoes antigas (.22/.75) que escureciam o blur. */
 
 /* v2.0.3 | CTA do cabecalho com a mesma roleta do botao secundario:
    contorno branco -> preenchimento branco de baixo para cima,
    e texto branco -> preto. Preserva as dimensoes compactas do header. */
 .site-header .header-contact.pill {
   --pill-hover-bg: #fff;
-  min-height: 38px;
-  padding: 9px 16px;
-  font-size: clamp(13px, .82vw, 15px);
-  font-weight: 600;
-  line-height: 1.2;
+  min-height: 42px;
+  padding: 9px 18px;
+  font-size: var(--type-ui);
+  font-weight: 500;
+  line-height: 1.24;
   border: 1px solid #fff;
-  border-radius: 10px;
+  border-radius: 9px;
   background: transparent;
   color: #fff;
   transform: none;
@@ -696,7 +700,7 @@ body.is-page-leaving::after { opacity: 1; }
     align-items: center;
   }
   .showcase-hero .hero-content { width: 100%; }
-  .showcase-hero.hero h1 { font-size: clamp(37px,3.02vw,66px); }
+  .showcase-hero.hero h1 { font-size: clamp(35px,2.9vw,63px); }
   .showcase-hero .hero-lead { max-width: min(92%,620px); }
   .showcase-projects.section.shell {
     display: block;

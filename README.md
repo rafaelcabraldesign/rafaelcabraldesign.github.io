@@ -1,8 +1,15 @@
-# Rafael Cabral Design — versão 2.0.3
+# Rafael Cabral Design — versão 2.0.4
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.3
+## Novidades da versão 2.0.4
+
+- **Header com blur perceptível:** transparente sobre preto (`rgba(0,0,0,.08)`), passando para preto com 24% de opacidade na rolagem; o menu aberto mantém 96% de opacidade para legibilidade.
+- **Escala tipográfica unificada:** menu, rodapé, botões e links compartilham `--type-ui`; texto corrido e títulos seguem uma hierarquia proporcional menor e mais consistente.
+- **Botão do header:** usa exatamente o mesmo tamanho de fonte e altura de 42 px dos outros botões, mantendo o hover de roleta e a borda branca.
+- **Seleção de texto:** fundo rosa escuro `#560421` com texto branco.
+
+## Alterações anteriores — v2.0.3
 
 - **CTA do cabeçalho:** contorno branco e fundo transparente no estado normal. No hover e no foco, o fundo branco sobe e o texto rola para cima, ficando preto, exatamente como no botão secundário “Entre em contato”. Mantidas as dimensões, os demais estilos e o destino WhatsApp.
 
@@ -27,13 +34,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0
+## Instalação a partir da v2.0.3
 
-1. Baixe `portfolio-rafael-cabral-v2.0.3-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.4-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfolio v2.0.3 — CTA contornado no cabecalho`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2003`.
+4. Confirme o commit `Portfolio v2.0.4 — escala tipografica e blur`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2004`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
