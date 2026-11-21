@@ -628,29 +628,30 @@ body.is-page-leaving::after { opacity: 1; }
 }
 .site-header.is-menu-open { background: rgba(0,0,0,.96); }
 
-/* O botao do header compartilha a mascara, a subida do fundo e a roleta
-   tipografica dos demais botoes, sem alterar seu tamanho compacto. */
+/* v2.0.3 | CTA do cabecalho com a mesma roleta do botao secundario:
+   contorno branco -> preenchimento branco de baixo para cima,
+   e texto branco -> preto. Preserva as dimensoes compactas do header. */
 .site-header .header-contact.pill {
-  --pill-hover-bg: var(--accent);
+  --pill-hover-bg: #fff;
   min-height: 38px;
   padding: 9px 16px;
   font-size: clamp(13px, .82vw, 15px);
   font-weight: 600;
   line-height: 1.2;
-  border: 1px solid #f5f5f6;
+  border: 1px solid #fff;
   border-radius: 10px;
-  background: #f5f5f6;
-  color: #0c0c10;
+  background: transparent;
+  color: #fff;
   transform: none;
 }
 .site-header .header-contact.pill::before {
-  background: var(--accent);
+  background: #fff;
 }
 .site-header .header-contact.pill:hover,
 .site-header .header-contact.pill:focus-visible {
-  color: #fff;
-  border-color: var(--accent);
-  background: #f5f5f6;
+  color: #000;
+  border-color: #fff;
+  background: transparent;
   transform: none;
 }
 

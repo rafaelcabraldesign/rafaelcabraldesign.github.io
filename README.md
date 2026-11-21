@@ -1,8 +1,12 @@
-# Rafael Cabral Design — versão 2.0.2
+# Rafael Cabral Design — versão 2.0.3
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.2
+## Novidades da versão 2.0.3
+
+- **CTA do cabeçalho:** contorno branco e fundo transparente no estado normal. No hover e no foco, o fundo branco sobe e o texto rola para cima, ficando preto, exatamente como no botão secundário “Entre em contato”. Mantidas as dimensões, os demais estilos e o destino WhatsApp.
+
+## Alterações anteriores — v2.0.2
 
 - **Cards selecionados maiores:** no desktop, cada capa utiliza metade da largura útil da tela, como na grade original de duas colunas, e a altura ocupa melhor a área vertical durante o scroll horizontal.
 - **Ver todos os projetos:** link posicionado exatamente 20 px abaixo da base dos cards, reproduzindo o respiro de 20 px entre “(Projetos selecionados)” e os cards.
@@ -25,11 +29,11 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 
 ## Instalação a partir da v2.0
 
-1. Baixe `portfolio-rafael-cabral-v2.0.2-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.3-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfolio v2.0.2 — tamanho e espacamento dos cards`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2002`.
+4. Confirme o commit `Portfolio v2.0.3 — CTA contornado no cabecalho`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2003`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
