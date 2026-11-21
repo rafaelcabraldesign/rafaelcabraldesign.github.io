@@ -1,8 +1,15 @@
-# Rafael Cabral Design — versão 2.0.6
+# Rafael Cabral Design — versão 2.0.7
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.6
+## Novidades da versão 2.0.7
+
+- **Links do cabeçalho:** Rafael Cabral, Projetos, Serviços e Sobre agora ficam rosa `#d60b52` no hover/foco, acompanhando o sublinhado animado. O botão "Vamos conversar" conserva a roleta de preenchimento branco.
+- **Rodapé:** `LinkedIn` aparece imediatamente à esquerda de `E-mail`, com o mesmo efeito de sublinhado e rosa no hover. O link abre `https://www.linkedin.com/in/rafaelcabraldesign/` em outra aba.
+- **Dados editáveis:** o perfil LinkedIn foi registrado em `assets/js/conteudo.js`, sem link duplicado. A alteração vale para as três páginas.
+- **Cache:** os HTMLs referenciam `styles.css?v=2007`, `site.js?v=2007` e `conteudo.js?v=2007`.
+
+## Alterações anteriores — v2.0.6
 
 - **Contorno de “Vamos conversar” no cabeçalho:** o estado normal agora usa `1px solid #94949a`, exatamente como o botão secundário “Entre em contato”. A borda anterior usava branco puro e parecia mais forte.
 - **Hover preservado:** o fundo branco continua subindo de baixo para cima, com texto preto após a roleta. Tamanhos, bordas arredondadas, navegação, projetos e animações permanecem inalterados.
@@ -47,13 +54,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.5
+## Instalação a partir da v2.0.6
 
-1. Baixe `portfolio-rafael-cabral-v2.0.6-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.7-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfolio v2.0.6 — contorno do botão do cabeçalho`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2006` e `site.js?v=2005`.
+4. Confirme o commit `Portfólio v2.0.7 — hover rosa e LinkedIn no rodapé`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2007`, `site.js?v=2007` e `conteudo.js?v=2007`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 

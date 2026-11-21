@@ -28,7 +28,7 @@ window.PORTFOLIO_CONTEUDO = {
     // Opcional: links completos (https://...) de suas redes. Vazios nao aparecem.
     instagram: "",
     behance: "",
-    linkedin: ""
+    linkedin: "https://www.linkedin.com/in/rafaelcabraldesign/"
   },
   projetos: [
     { nome: "CRISFIT", slug: "crisfit", imagem: "", categoria: "", ano: "2024", frase: "CRISFIT é uma marca de moda fitness que combina energia, estilo e liberdade de movimento, valorizando a individualidade e a diversidade de cada corpo.", servicos: "NAMING, IDENTIDADE VISUAL", segmento: "MODA FITNESS / VESTUÁRIO ESPORTIVO", texto: `CRISFIT nasceu da união entre o nome da cliente Cristiane e o universo da moda fitness. O projeto partiu da proposta de construir uma marca de personalidade forte, capaz de unir energia, estilo e diversidade em uma identidade visual contemporânea e reconhecível.

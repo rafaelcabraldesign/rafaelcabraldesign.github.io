@@ -285,6 +285,16 @@
     });
 
     document.querySelectorAll('[data-social-links]').forEach(container => {
+      // LinkedIn vem primeiro, imediatamente antes de E-mail.
+      const linkedin = typeof contact.linkedin === 'string' ? contact.linkedin.trim() : '';
+      if (/^https:\/\//i.test(linkedin)) {
+        const linkedinLink = el('a', '', 'LinkedIn');
+        linkedinLink.href = linkedin;
+        linkedinLink.target = '_blank';
+        linkedinLink.rel = 'noopener noreferrer';
+        linkedinLink.setAttribute('aria-label', 'LinkedIn de Rafael Cabral (nova aba)');
+        container.append(linkedinLink);
+      }
       if (email) {
         const emailLink = el('a', '', 'E-mail');
         emailLink.href = `mailto:${email}`;
@@ -292,6 +302,7 @@
         container.append(emailLink);
       }
       Object.entries(names).forEach(([key, label]) => {
+        if (key === 'linkedin') return; // Ja exibido antes de E-mail.
         const url = typeof contact[key] === 'string' ? contact[key].trim() : '';
         if (!/^https:\/\//i.test(url)) return;
         const link = el('a', '', label);
