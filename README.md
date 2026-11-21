@@ -1,8 +1,16 @@
-# Rafael Cabral Design — versão 2.0.12
+# Rafael Cabral Design — versão 2.0.13
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.12
+## Novidades da versão 2.0.13
+
+- **Título principal:** apresentação em primeira pessoa, com localização e áreas de atuação: “Sou designer gráfico em Uberlândia. Crio identidades visuais, sites e experiências digitais.”
+- **Subtítulo sem redundância:** destaca método de trabalho: “Do primeiro conceito à entrega, cada decisão é guiada por pesquisa, estratégia e atenção aos detalhes.”
+- **Tratamento editorial:** Uberlândia em itálico e sublinhado discreto; entrada palavra por palavra mantida, com intervalos de 50 ms entre as 12 palavras para evitar uma abertura longa.
+- **Metadados:** descrição da página e descrição para compartilhamento atualizadas.
+- **Arquivos:** `index.html` e `assets/css/styles.css`; versão do CSS `styles.css?v=2013` para evitar cache antigo. Nenhum case, conteúdo de projeto ou imagem foi alterado.
+
+## Alterações anteriores — v2.0.12
 
 - **Seção Sobre:** a fotografia ocupa uma coluna menor no desktop (de 41% para 35% da área de colunas), tem largura máxima de 800 px e altura reduzida. Em telas intermediárias, o layout é empilhado para preservar o enquadramento; no mobile, a imagem continua abaixo do texto com altura menor. O recorte e os cantos arredondados foram mantidos.
 - **Botão Explorar projetos:** o destino passou de `#projetos` para `projetos.html`. O atributo `data-scroll-to-projects` foi removido do botão para não acionar o deslocamento horizontal programático; a animação de saída entre páginas continua funcionando.
@@ -81,12 +89,12 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.11
+## Instalação a partir da v2.0.12
 
-1. Baixe `portfolio-rafael-cabral-v2.0.12-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.13-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/css/styles.css`, preservando os caminhos.
-4. Confirme o commit `Portfólio v2.0.12 — Sobre menor e CTA para projetos`.
+3. Em **Add file → Upload files**, envie `index.html`, `README.md` e `assets/css/styles.css`, preservando os caminhos.
+4. Confirme o commit `Portfólio v2.0.13 — apresentação pessoal e subtítulo`.
 5. Reabra a página inicial; caso o navegador apresente o estilo antigo, pressione **Ctrl + Shift + R**.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
