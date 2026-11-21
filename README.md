@@ -1,8 +1,13 @@
-# Rafael Cabral Design — versão 2.0.10
+# Rafael Cabral Design — versão 2.0.11
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.10
+## Novidades da versão 2.0.11
+
+- **Página de projetos:** a descrição editorial foi reescrita para comunicar o trabalho com identidades visuais e experiências digitais, substituindo o texto provisório sobre publicação progressiva das imagens.
+- **Escopo:** apenas o texto de introdução em `projetos.html` foi alterado; título, hierarquia tipográfica, fundo, cards, conteúdo e animações permanecem os mesmos.
+
+## Alterações anteriores — v2.0.10
 
 - **Cabeçalho em meio-termo:** opacidade preta ajustada de 75% para **45%** no topo e de 85% para **60%** durante a rolagem. O blur permanece inalterado; o menu mobile aberto mantém 96% de opacidade.
 - **CSS sem cache antigo:** as três páginas agora carregam `styles.css?v=2010`. Nenhum arquivo JavaScript ou imagem foi alterado.
@@ -69,13 +74,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.9
+## Instalação a partir da v2.0.10
 
-1. Baixe `portfolio-rafael-cabral-v2.0.10-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.11-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfólio v2.0.10 — opacidade intermediária do cabeçalho`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2010`, `site.js?v=2008` e `conteudo.js?v=2008`.
+3. Em **Add file → Upload files**, envie `projetos.html` e `README.md` para a raiz do repositório.
+4. Confirme o commit `Portfólio v2.0.11 — apresentação dos projetos`.
+5. Reabra `projetos.html` no site; atualize a página caso o navegador ainda apresente o texto anterior.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
