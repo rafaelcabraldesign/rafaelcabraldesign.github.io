@@ -1,8 +1,15 @@
-# Rafael Cabral Design — versão 2.0.4
+# Rafael Cabral Design — versão 2.0.5
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.4
+## Novidades da versão 2.0.5
+
+- **Botões de contorno sem pontos pretos:** ao concluir o preenchimento animado, o próprio botão assume a mesma cor da animação, eliminando as frestas escuras nos cantos. A roleta e o movimento de baixo para cima são mantidos.
+- **Nome no cabeçalho:** o sublinhado desenhado no hover usa o rosa da marca `#d60b52` e o nome permanece branco.
+- **Projetos selecionados:** reduzidos de seis para **quatro** na página inicial; o trilho horizontal calcula automaticamente o novo percurso. A galeria "Todos os projetos" continua com 15 cases.
+- **Cache:** `styles.css?v=2005` e `site.js?v=2005` nos três HTMLs.
+
+## Alterações anteriores — v2.0.4
 
 - **Header com blur perceptível:** transparente sobre preto (`rgba(0,0,0,.08)`), passando para preto com 24% de opacidade na rolagem; o menu aberto mantém 96% de opacidade para legibilidade.
 - **Escala tipográfica unificada:** menu, rodapé, botões e links compartilham `--type-ui`; texto corrido e títulos seguem uma hierarquia proporcional menor e mais consistente.
@@ -34,13 +41,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.3
+## Instalação a partir da v2.0.4
 
-1. Baixe `portfolio-rafael-cabral-v2.0.4-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.5-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
 3. Em **Add file → Upload files**, envie os arquivos extraídos para a raiz do repositório, preservando `assets/css/`.
-4. Confirme o commit `Portfolio v2.0.4 — escala tipografica e blur`.
-5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2004`.
+4. Confirme o commit `Portfolio v2.0.5 — botões e projetos selecionados`.
+5. Reabra o site; se o estilo antigo estiver em cache, pressione **Ctrl + Shift + R**. As páginas usam `styles.css?v=2005` e `site.js?v=2005`.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 

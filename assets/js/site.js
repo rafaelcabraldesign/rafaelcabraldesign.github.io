@@ -703,7 +703,7 @@
   }
 
   const featured = document.getElementById('featured-projects');
-  if (featured) renderCards(featured, projects.slice(0, 6));
+  if (featured) renderCards(featured, projects.slice(0, 4));
   const listing = document.getElementById('all-projects');
   if (listing) {
     renderCards(listing, projects);
