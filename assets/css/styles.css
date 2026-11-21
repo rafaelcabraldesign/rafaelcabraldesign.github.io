@@ -221,6 +221,8 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
 .section-top, .listing-tools { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 .section-top { margin-bottom: 22px; }
 .section-label { color: var(--text); font-size: var(--type-ui); font-weight: 500; line-height: 1.4; letter-spacing: -.015em; }
+/* Tags editoriais entre parenteses: mesmo cinza dos textos corridos. */
+.section-label--tag { color: var(--muted); }
 h2.section-label { margin: 0; }
 /* Links editoriais: a linha se desenha da esquerda para a direita SOMENTE no hover/focus. */
 .text-link { position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.012em; transition: color .3s ease; }

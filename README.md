@@ -1,8 +1,14 @@
-# Rafael Cabral Design — versão 2.0.13
+# Rafael Cabral Design — versão 2.0.14
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.13
+## Novidades da versão 2.0.14
+
+- As cinco tags editoriais entre parenteses (`Projetos selecionados`, `Serviços`, `Sobre`, `Contato` e `Portfólio`) agora usam `var(--muted)` (`#bfc0c9`), o mesmo cinza dos textos corridos.
+- O numero da listagem de projetos e os demais elementos com `.section-label` nao foram alterados.
+- `styles.css?v=2014` em todas as tres paginas para evitar cache antigo. Nenhuma alteracao nas animacoes, tamanhos ou conteudo dos projetos.
+
+## Alterações anteriores — v2.0.13
 
 - **Título principal:** apresentação em primeira pessoa, com localização e áreas de atuação: “Sou designer gráfico em Uberlândia. Crio identidades visuais, sites e experiências digitais.”
 - **Subtítulo sem redundância:** destaca método de trabalho: “Do primeiro conceito à entrega, cada decisão é guiada por pesquisa, estratégia e atenção aos detalhes.”
