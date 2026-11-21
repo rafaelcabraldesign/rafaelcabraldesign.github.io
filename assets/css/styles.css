@@ -300,8 +300,8 @@ h2.section-label { margin: 0; }
 .service-text p { max-width: none; margin: 0; color: var(--muted); font-weight: 500; font-size: var(--type-ui); line-height: 1.52; letter-spacing: -.012em; }
 .service-row:hover .service-number { color: var(--accent); }
 
-/* About */
-.about-grid { display: grid; grid-template-columns: minmax(0,1.18fr) minmax(0,.82fr); gap: clamp(45px, 5vw, 110px); align-items: center; }
+/* About: fotografia menor, sem alterar o estilo de enquadramento. */
+.about-grid { display: grid; grid-template-columns: minmax(0,1.30fr) minmax(0,.70fr); gap: clamp(45px, 5vw, 110px); align-items: center; }
 .about-copy .section-label { margin-bottom: 28px; }
 .about-copy h2 { max-width: none; margin-bottom: 24px; font-size: clamp(1.6rem, 2.25vw, 2.9rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.22; }
 .about-copy > p:not(.section-label) { max-width: min(760px, 95%); color: var(--muted); font-size: var(--type-ui); line-height: 1.58; }
@@ -311,7 +311,7 @@ h2.section-label { margin: 0; }
 .placeholder-frame.has-image .auto-section-image { opacity: 1; }
 .placeholder-frame.has-image .placeholder-note,
 .placeholder-frame.has-image .placeholder-index { opacity: 0; visibility: hidden; }
-.about-photo { min-height: 525px; }
+.about-photo { width: 100%; max-width: 800px; justify-self: end; min-height: clamp(270px, 21vw, 400px); }
 .placeholder-note { color: #bfc0c9; font-size: 13px; }
 .placeholder-index { position: absolute; bottom: 22px; left: 24px; font-size: 11px; color: #aeb0b9; letter-spacing: .08em; }
 
@@ -515,10 +515,12 @@ body.is-page-leaving::after { opacity: 1; }
   .services-aside { min-height: 440px; }
   .contact-row { align-items: start; flex-direction: column; }
   .contact-row > .pill { align-self: flex-start; }
-  .about-photo { min-height: 430px; }
+  .about-photo { min-height: 320px; }
 }
 @media (min-width: 761px) and (max-width: 1100px) {
   .related-projects .projects-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-photo { width: min(100%, 680px); min-height: 320px; }
 }
 @keyframes mobile-link-enter {
   from { opacity: 0; translate: 0 13px; }
@@ -597,7 +599,7 @@ body.is-page-leaving::after { opacity: 1; }
   .services-list { padding-left: 0; }
   .about-grid { grid-template-columns: 1fr; gap: 37px; }
   .about-copy h2 { font-size: clamp(1.5rem,4.55vw,2.2rem); }
-  .about-photo { min-height: 390px; }
+  .about-photo { min-height: 310px; }
   .contact-row h2 { font-size: clamp(1.6rem,5.75vw,2.5rem); }
   /* Rodape empilhado para preservar a assinatura em telas estreitas. */
   .site-footer { grid-template-columns: 1fr; gap: 13px; justify-items: center; text-align: center; padding-bottom: 34px; }
@@ -624,7 +626,7 @@ body.is-page-leaving::after { opacity: 1; }
   .text-link { font-size: var(--type-ui); }
   .project-title, .project-year { font-size: var(--type-ui); }
   .statement { font-size: 23px; }
-  .about-photo { min-height: 325px; }
+  .about-photo { min-height: 260px; }
   .brand { font-size: var(--type-ui); }
   .brand-role { font-size: var(--type-ui); }
   .brand-lockup { gap: 10px; }
