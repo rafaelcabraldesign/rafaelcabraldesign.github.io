@@ -1,8 +1,17 @@
-# Rafael Cabral Design — versão 2.0.17
+# Rafael Cabral Design — versão 2.1
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.17
+## Novidades da versão 2.1
+
+- **Símbolo no cabeçalho:** dimensão ajustada de `0.86em` para `1.07em` — valor intermediário entre os dois tamanhos anteriores (`0.86em` e `1.28em`), mantendo o SVG original e o hover rosa.
+- **Cases — grade editorial:** a introdução e o bloco de informações usam duas colunas de largura igual, com divisão centrada no eixo da página, e espaçamento entre colunas adaptativo de 56 a 96 px.
+- **Texto da direita:** removido o limite de largura de 960 px para ocupar integralmente a segunda coluna, respeitando a margem direita do site.
+- **Mobile:** as colunas continuam empilhadas; o comportamento sticky da lista no desktop e os demais estilos foram preservados.
+- **Cache:** as três páginas referenciam `styles.css?v=21`.
+- **Próximas versões:** incrementos simples como `2.2`, `2.3`, etc.
+
+## Histórico — versão 2.0.17
 
 - **Ícone do cabeçalho em escala tipográfica:** o símbolo `assets/img/icone.svg` agora mede `0.86em`, para acompanhar visualmente a altura das letras de “Rafael Cabral” em desktop e mobile.
 - **Sem alterações** na fonte, no peso, no espaçamento do cabeçalho, nas animações ou nas demais seções.
@@ -113,12 +122,12 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.15
+## Instalação a partir da v2.0.17
 
-1. Baixe `portfolio-rafael-cabral-v2.0.16-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.1-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/css/styles.css` para os mesmos caminhos.
-4. Confirme o commit `Portfólio v2.0.16 — ícone no cabeçalho`.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/css/styles.css` para os mesmos caminhos na raiz do repositório.
+4. Confirme o commit `Portfólio v2.1 — proporção do símbolo e layout dos cases`.
 5. Reabra o site e pressione **Ctrl + Shift + R** caso o CSS anterior ainda esteja em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
