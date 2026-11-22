@@ -84,10 +84,14 @@ p { line-height: 1.55; }
 }
 .header-inner { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 28px; position: relative; }
 .brand-lockup { display: flex; align-items: center; gap: clamp(17px, 2vw, 32px); min-width: 0; flex: 0 1 auto; white-space: nowrap; }
-.brand { display: inline-block; font-size: var(--type-ui); font-weight: 600; line-height: 1.3; letter-spacing: -.018em; color: #f7f7f9; padding: 10px 0; position: relative; transition: color .3s ease; }
-.brand::after { content: ''; position: absolute; left: 0; bottom: 6px; height: 1px; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
+/* v2.0.16: o simbolo original vive ao lado do nome e acompanha o hover rosa.
+   A mascara usa o SVG existente, sem mudar sua cor ou duplicar o arquivo. */
+.brand { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-ui); font-weight: 600; line-height: 1.3; letter-spacing: -.018em; color: #f7f7f9; padding: 10px 0; position: relative; transition: color .3s ease; }
+.brand-mark { display: block; flex: none; width: 1.28em; height: 1.28em; background: currentColor; -webkit-mask: url('../img/icone.svg') center / contain no-repeat; mask: url('../img/icone.svg') center / contain no-repeat; }
+.brand-name { display: inline-block; position: relative; }
+.brand-name::after { content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
 .brand:hover, .brand:focus-visible { color: var(--accent); }
-.brand:hover::after, .brand:focus-visible::after { transform: scaleX(1); }
+.brand:hover .brand-name::after, .brand:focus-visible .brand-name::after { transform: scaleX(1); }
 .brand-role { color: #bfc0c9; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.012em; line-height: 1.3; }
 .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: clamp(18px, 2vw, 38px); margin-left: auto; min-width: 0; }
 .primary-nav { display: flex; align-items: center; justify-content: flex-end; gap: clamp(20px, 2vw, 35px); }
@@ -223,6 +227,8 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
 .section-label { color: var(--text); font-size: var(--type-ui); font-weight: 500; line-height: 1.4; letter-spacing: -.015em; }
 /* Tags editoriais entre parenteses: mesmo cinza dos textos corridos. */
 .section-label--tag { color: var(--muted); }
+/* Especificidade explicita para a abertura da pagina Todos os projetos. */
+.listing-intro > .section-label.section-label--tag { color: var(--muted); }
 h2.section-label { margin: 0; }
 /* Links editoriais: a linha se desenha da esquerda para a direita SOMENTE no hover/focus. */
 .text-link { position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.012em; transition: color .3s ease; }

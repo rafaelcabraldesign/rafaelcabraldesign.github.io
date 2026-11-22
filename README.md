@@ -1,8 +1,20 @@
-# Rafael Cabral Design — versão 2.0.14
+# Rafael Cabral Design — versão 2.0.16
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.14
+## Novidades da versão 2.0.16
+
+- **Ícone ao lado do nome:** o símbolo original `assets/img/icone.svg` agora aparece imediatamente à esquerda de “Rafael Cabral” no cabeçalho das três páginas, proporcional à tipografia e alinhado verticalmente.
+- **Hover preservado:** o símbolo e o nome assumem o rosa `#d60b52`; o sublinhado animado continua restrito ao nome, sem passar por baixo do símbolo.
+- **Versionamento:** os três HTMLs usam `styles.css?v=2016` para atualizar os estilos sem interferir nas demais animações e funcionalidades.
+
+## Alterações anteriores — v2.0.15
+
+- **Correção específica da tag (Portfólio):** a página `projetos.html` aplica `#bfc0c9` diretamente à tag, para que ela permaneça cinza mesmo caso uma versão antiga do CSS ainda esteja em cache.
+- **CSS reforçado:** `.listing-intro > .section-label.section-label--tag` recebe a mesma cor via `var(--muted)`, sem alterar outras etiquetas ou textos.
+- **Cache:** as três páginas usam `styles.css?v=2015`; caso o GitHub Pages ainda mostre a versão anterior, atualize forçadamente a página depois do commit.
+
+## Alterações anteriores — v2.0.14
 
 - As cinco tags editoriais entre parenteses (`Projetos selecionados`, `Serviços`, `Sobre`, `Contato` e `Portfólio`) agora usam `var(--muted)` (`#bfc0c9`), o mesmo cinza dos textos corridos.
 - O numero da listagem de projetos e os demais elementos com `.section-label` nao foram alterados.
@@ -95,13 +107,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.12
+## Instalação a partir da v2.0.15
 
-1. Baixe `portfolio-rafael-cabral-v2.0.13-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.0.16-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `README.md` e `assets/css/styles.css`, preservando os caminhos.
-4. Confirme o commit `Portfólio v2.0.13 — apresentação pessoal e subtítulo`.
-5. Reabra a página inicial; caso o navegador apresente o estilo antigo, pressione **Ctrl + Shift + R**.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/css/styles.css` para os mesmos caminhos.
+4. Confirme o commit `Portfólio v2.0.16 — ícone no cabeçalho`.
+5. Reabra o site e pressione **Ctrl + Shift + R** caso o CSS anterior ainda esteja em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
