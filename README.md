@@ -1,10 +1,16 @@
-# Rafael Cabral Design — versão 2.0.16
+# Rafael Cabral Design — versão 2.0.17
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.0.16
+## Novidades da versão 2.0.17
 
-- **Ícone ao lado do nome:** o símbolo original `assets/img/icone.svg` agora aparece imediatamente à esquerda de “Rafael Cabral” no cabeçalho das três páginas, proporcional à tipografia e alinhado verticalmente.
+- **Ícone do cabeçalho em escala tipográfica:** o símbolo `assets/img/icone.svg` agora mede `0.86em`, para acompanhar visualmente a altura das letras de “Rafael Cabral” em desktop e mobile.
+- **Sem alterações** na fonte, no peso, no espaçamento do cabeçalho, nas animações ou nas demais seções.
+- **Cache:** as três páginas carregam `styles.css?v=2017`.
+
+## Alterações anteriores — v2.0.16
+
+- **Ícone ao lado do nome:** o símbolo original `assets/img/icone.svg` agora aparece imediatamente à esquerda de “Rafael Cabral” no cabeçalho das três páginas, alinhado verticalmente ao nome.
 - **Hover preservado:** o símbolo e o nome assumem o rosa `#d60b52`; o sublinhado animado continua restrito ao nome, sem passar por baixo do símbolo.
 - **Versionamento:** os três HTMLs usam `styles.css?v=2016` para atualizar os estilos sem interferir nas demais animações e funcionalidades.
 
