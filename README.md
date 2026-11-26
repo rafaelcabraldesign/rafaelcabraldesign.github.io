@@ -1,8 +1,16 @@
-# Rafael Cabral Design — versão 2.6
+# Rafael Cabral Design — versão 2.7
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.6
+## Novidades da versão 2.7
+
+- **Outros projetos:** até seis cards por case, mantendo a prioridade dos projetos preenchidos e excluindo o case aberto. A contagem acompanha o número de cards exibidos.
+- **Ver todos os projetos:** link para `projetos.html` abaixo da galeria de relacionados, alinhado à direita e com 20 px de espaçamento após os cards. Reutiliza a tipografia, a seta e o hover do link da página inicial.
+- **Galerias:** a página inicial continua com quatro destaques e a página Projetos mantém todos os trabalhos. O grid responsivo existente dos relacionados foi preservado.
+- **Cache:** as três páginas carregam `styles.css?v=27` e `site.js?v=27`; `conteudo.js?v=22` permanece inalterado.
+- **Próxima versão:** 2.8.
+
+## Histórico — versão 2.6
 
 - **Cursor:** seta normal sobre o conteúdo arrastável; `pointer` sobre links, botões e capas clicáveis, inclusive seus textos e imagens. Durante o arraste efetivo, o cursor volta temporariamente à seta e, ao soltar, recupera o comportamento convencional.
 - **Carregamento:** preserva `Carregando...` com inicial maiúscula nos cinco pontos de exibição, incluindo a correção manual feita após a versão 2.5.

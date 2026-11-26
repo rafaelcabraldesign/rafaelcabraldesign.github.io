@@ -270,8 +270,8 @@
     container.append(gallery);
     populateProjectGallery(project, gallery, heroSourcePromise);
 
-    // Relacionados: cases preenchidos primeiro, sem incluir o case atual.
-    const others = prioritizeProjectsWithContent(projects.filter(item => item.slug !== project.slug));
+    // Relacionados: ate seis cases, preenchidos primeiro, sem incluir o case atual.
+    const others = prioritizeProjectsWithContent(projects.filter(item => item.slug !== project.slug)).slice(0, 6);
     if (others.length) {
       const related = el('section', 'related-projects');
       related.setAttribute('aria-labelledby', 'related-title');
@@ -281,7 +281,14 @@
       relatedHeader.append(relatedTitle, el('span', 'related-counter', `01 — ${String(others.length).padStart(2,'0')}`));
       const relatedGrid = el('div', 'projects-grid projects-grid--related');
       renderCards(relatedGrid, others);
-      related.append(relatedHeader, relatedGrid);
+      const relatedFooter = el('div', 'related-footer');
+      const moreLink = el('a', 'text-link', 'Ver todos os projetos ');
+      moreLink.href = 'projetos.html';
+      const arrow = el('span', '', '↗');
+      arrow.setAttribute('aria-hidden', 'true');
+      moreLink.append(arrow);
+      relatedFooter.append(moreLink);
+      related.append(relatedHeader, relatedGrid, relatedFooter);
       container.append(related);
     }
 

@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.6
+ * RAFAEL CABRAL | Portfolio v2.7
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -444,6 +444,8 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
 .related-projects .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .related-projects .project-cover { aspect-ratio: 1.25; max-height: none; }
 .related-projects .project-title, .related-projects .project-year { font-size: var(--type-ui); }
+/* Mesmo respiro de 20px e estilo do link da pagina inicial. */
+.related-footer { display: flex; justify-content: flex-end; margin-top: 20px; }
 
 
 /* v1.4.23 — Entradas sem aparicao prematura: texto se torna visivel
