@@ -73,7 +73,7 @@
     img.alt = ''; // O nome do projeto ja e anunciado pelo proprio link.
     img.loading = 'lazy';
     img.decoding = 'async';
-    const placeholder = el('span', 'placeholder-center', 'carregando...');
+    const placeholder = el('span', 'placeholder-center', 'Carregando...');
     link.dataset.imageState = 'loading';
     link.append(img, placeholder);
     loadWithFallback(img, coverCandidates(project)).then(src => {
@@ -164,7 +164,7 @@
       const note = frame.querySelector('.placeholder-note');
       const missingNote = note?.dataset.imageMissing || note?.textContent || 'Imagem em breve';
       frame.dataset.imageState = 'loading';
-      if (note) note.textContent = 'carregando...';
+      if (note) note.textContent = 'Carregando...';
       frame.prepend(image);
       loadWithFallback(image, [source]).then(result => {
         frame.dataset.imageState = result ? 'loaded' : 'missing';
@@ -219,7 +219,7 @@
     intro.append(el('p', 'detail-summary', project.frase || 'Apresentação do projeto em preparação.'));
 
     const hero = el('div', 'detail-cover');
-    const heroPlaceholder = el('span', 'detail-placeholder', 'carregando...');
+    const heroPlaceholder = el('span', 'detail-placeholder', 'Carregando...');
     hero.dataset.imageState = 'loading';
     hero.append(heroPlaceholder);
     const img = el('img');
