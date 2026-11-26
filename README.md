@@ -1,8 +1,17 @@
-# Rafael Cabral Design — versão 2.3
+# Rafael Cabral Design — versão 2.4
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.3
+## Novidades da versão 2.4
+
+- **Página Projetos e Outros projetos:** os cases com `texto` ou `resumo` preenchido aparecem automaticamente antes dos cases em preparação. Dentro de cada grupo, mantém-se a ordem original de `assets/js/conteudo.js`.
+- **Seleção inicial:** mantém quatro cards, com CRISFIT e Down Five nas primeiras posições fixas e as demais vagas priorizando cases preenchidos, como na versão anterior.
+- **Outros projetos:** continua exibindo todos os demais trabalhos, excluindo apenas o case aberto. Os 15 projetos seguem disponíveis na galeria completa.
+- **Atualizações futuras:** basta preencher a descrição em `conteudo.js` para promover o case nas galerias. O upload isolado de imagens não determina a prioridade.
+- **Cache:** as três páginas carregam `site.js?v=24`. CSS (`v=23`) e dados (`v=22`) permanecem inalterados.
+- **Próxima versão:** 2.5.
+
+## Histórico — versão 2.3
 
 - **Grab no desktop:** na abertura da página inicial, segure o botão esquerdo do mouse sobre o título, espaço livre ou card e arraste para a esquerda (avançar) ou direita (voltar). O cursor muda de `grab` para `grabbing` e o progresso acompanha a posição do scroll vertical já existente.
 - **Navegação preservada:** um clique normal no card abre o case; um arraste de pelo menos 6 px não abre o link. Botões e demais links da abertura continuam clicáveis, sem iniciar um arraste. O movimento é limitado ao início e fim da seção; a roda do mouse continua permitindo avançar para Serviços.
@@ -138,12 +147,12 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.2
+## Instalação a partir da v2.3
 
-1. Baixe `portfolio-rafael-cabral-v2.3-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.4-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/css/styles.css` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
-4. Confirme o commit `Portfólio v2.3 — grab no showcase horizontal`.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
+4. Confirme o commit `Portfólio v2.4 — ordenação automática dos projetos`.
 5. Reabra o site e pressione **Ctrl + Shift + R** caso os scripts anteriores ainda estejam em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.

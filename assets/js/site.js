@@ -244,8 +244,8 @@
     container.append(gallery);
     populateProjectGallery(project, gallery, heroSourcePromise);
 
-    // Relacionados: todos os demais projetos, sem botoes de anterior/proximo.
-    const others = projects.filter(item => item.slug !== project.slug);
+    // Relacionados: cases preenchidos primeiro, sem incluir o case atual.
+    const others = prioritizeProjectsWithContent(projects.filter(item => item.slug !== project.slug));
     if (others.length) {
       const related = el('section', 'related-projects');
       related.setAttribute('aria-labelledby', 'related-title');
@@ -826,10 +826,22 @@
     });
   }
 
+  // Criterio unico para as tres galerias: descricao preenchida (texto ou resumo).
+  // Preserva a ordem original dentro de cada grupo e nao altera o array de origem.
+  const hasProjectContent = project => [project.texto, project.resumo]
+    .some(value => typeof value === 'string' && value.trim().length > 0);
+
+  function prioritizeProjectsWithContent(items) {
+    return [
+      ...items.filter(hasProjectContent),
+      ...items.filter(project => !hasProjectContent(project))
+    ];
+  }
+
   /* Mantem quatro destaques. Os fixos aparecem na ordem definida no
    * conteudo.js; depois, cases com descricao preenchida; por ultimo,
-   * placeholders na ordem original. Nao altera a galeria completa.
-   * O criterio de conteudo nao depende de baixar/testar imagens remotas.
+   * placeholders na ordem original. O criterio de conteudo nao depende
+   * de baixar/testar imagens remotas.
    */
   function selectFeaturedProjects() {
     const fixedSlugs = Array.isArray(data.destaquesFixos) ? data.destaquesFixos : [];
@@ -838,20 +850,14 @@
       .filter(Boolean);
     const fixedSet = new Set(fixed.map(project => project.slug));
     const remaining = projects.filter(project => !fixedSet.has(project.slug));
-    const hasDescription = project => [project.texto, project.resumo]
-      .some(value => typeof value === 'string' && value.trim().length > 0);
-    return [
-      ...fixed,
-      ...remaining.filter(hasDescription),
-      ...remaining.filter(project => !hasDescription(project))
-    ].slice(0, 4);
+    return [...fixed, ...prioritizeProjectsWithContent(remaining)].slice(0, 4);
   }
 
   const featured = document.getElementById('featured-projects');
   if (featured) renderCards(featured, selectFeaturedProjects());
   const listing = document.getElementById('all-projects');
   if (listing) {
-    renderCards(listing, projects);
+    renderCards(listing, prioritizeProjectsWithContent(projects));
     const count = document.getElementById('project-count');
     if (count) count.textContent = `${projects.length} projetos`;
   }
