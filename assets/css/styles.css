@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.3
+ * RAFAEL CABRAL | Portfolio v2.5
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -268,6 +268,8 @@ h2.section-label { margin: 0; }
 .project-cover.has-image .placeholder-center { opacity: 0; visibility: hidden; }
 .placeholder-center { position: absolute; z-index: 1; left: 20px; right: 20px; top: 50%; text-align: center; transform: translateY(-50%); color: #b1b1ba; font-size: 13px; font-weight: 500; letter-spacing: .02em; transition: opacity .3s ease; }
 .project-cover:hover .placeholder-center, .project-cover:focus-visible .placeholder-center { opacity: .2; }
+/* O aviso de carregamento permanece legivel mesmo sobre o card. */
+.project-cover[data-image-state="loading"] .placeholder-center { opacity: 1; }
 /* O titulo da capa aparece apenas no hover e no foco pelo teclado. */
 .cover-meta {
   position: absolute;
@@ -329,6 +331,7 @@ h2.section-label { margin: 0; }
 .placeholder-frame.has-image .placeholder-index { opacity: 0; visibility: hidden; }
 .about-photo { width: 100%; max-width: 800px; justify-self: end; min-height: clamp(270px, 21vw, 400px); }
 .placeholder-note { color: #bfc0c9; font-size: 13px; }
+html:not(.js-enabled) .placeholder-note[data-image-missing] { display: none; }
 .placeholder-index { position: absolute; bottom: 22px; left: 24px; font-size: 11px; color: #aeb0b9; letter-spacing: .08em; }
 
 /* Contact / footer */
@@ -797,12 +800,12 @@ body.is-page-leaving::after { opacity: 1; }
   html:not(.js-enabled) .showcase-more { display: none; }
 }
 
-/* v2.3 | Grab desktop sincronizado com o scroll do showcase.
+/* v2.5 | Arraste desktop com cursor normal, sem grab/grabbing.
    Links/botoes de acao mantem o cursor convencional; cards aceitam
-   tanto clique quanto arraste. O cursor e a selecao voltam ao normal
-   ao soltar o mouse, inclusive fora da secao. */
+   tanto clique quanto arraste. A selecao volta ao normal ao soltar o mouse. */
 .showcase-sticky.is-grab-ready,
-.showcase-sticky.is-grab-ready .project-cover { cursor: grab; }
+.showcase-sticky.is-grab-ready .project-cover { cursor: default; }
+.showcase-sticky.is-grab-ready :is(.hero-content, .project-cover) * { cursor: inherit; }
 .showcase-sticky.is-grab-ready :is(a:not(.project-cover), button) { cursor: pointer; }
 .showcase-sticky.is-grab-pressed,
 .showcase-sticky.is-grab-pressed * {
@@ -811,4 +814,4 @@ body.is-page-leaving::after { opacity: 1; }
 }
 html.is-showcase-dragging { scroll-behavior: auto; }
 html.is-showcase-dragging,
-html.is-showcase-dragging * { cursor: grabbing !important; }
+html.is-showcase-dragging * { cursor: default !important; }

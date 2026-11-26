@@ -43,7 +43,14 @@
         image.removeEventListener('load', onLoad);
         image.removeEventListener('error', onError);
       };
-      const onLoad = () => { clean(); resolve(image.getAttribute('src')); };
+      const onLoad = async () => {
+        const source = image.getAttribute('src');
+        clean();
+        // Espera a decodificacao, quando suportada, antes de revelar a imagem.
+        try { if (typeof image.decode === 'function') await image.decode(); }
+        catch (_) { /* O evento load continua sendo o fallback do navegador. */ }
+        resolve(source);
+      };
       const onError = () => attempt();
       const attempt = () => {
         if (cursor >= sources.length) { clean(); resolve(null); return; }
@@ -66,10 +73,16 @@
     img.alt = ''; // O nome do projeto ja e anunciado pelo proprio link.
     img.loading = 'lazy';
     img.decoding = 'async';
-    link.append(img, el('span', 'placeholder-center', 'Imagem em breve'));
+    const placeholder = el('span', 'placeholder-center', 'carregando...');
+    link.dataset.imageState = 'loading';
+    link.append(img, placeholder);
     loadWithFallback(img, coverCandidates(project)).then(src => {
+      link.dataset.imageState = src ? 'loaded' : 'missing';
       if (src) link.classList.add('has-image');
-      else img.remove();
+      else {
+        img.remove();
+        placeholder.textContent = 'Imagem em breve';
+      }
     });
 
     // Nome e ano dividem a mesma linha. Anos nao cadastrados nao aparecem.
@@ -148,13 +161,21 @@
       image.alt = frame.dataset.autoAlt || 'Imagem de apoio';
       image.loading = 'lazy';
       image.decoding = 'async';
-      image.addEventListener('load', () => {
-        frame.classList.add('has-image');
-        frame.setAttribute('aria-label', image.alt);
-      }, { once: true });
-      image.addEventListener('error', () => image.remove(), { once: true });
+      const note = frame.querySelector('.placeholder-note');
+      const missingNote = note?.dataset.imageMissing || note?.textContent || 'Imagem em breve';
+      frame.dataset.imageState = 'loading';
+      if (note) note.textContent = 'carregando...';
       frame.prepend(image);
-      image.src = source;
+      loadWithFallback(image, [source]).then(result => {
+        frame.dataset.imageState = result ? 'loaded' : 'missing';
+        if (result) {
+          frame.classList.add('has-image');
+          frame.setAttribute('aria-label', image.alt);
+        } else {
+          image.remove();
+          if (note) note.textContent = missingNote;
+        }
+      });
     });
   }
 
@@ -198,18 +219,23 @@
     intro.append(el('p', 'detail-summary', project.frase || 'Apresentação do projeto em preparação.'));
 
     const hero = el('div', 'detail-cover');
-    const heroPlaceholder = el('span', 'detail-placeholder', 'Imagem do projeto em breve');
+    const heroPlaceholder = el('span', 'detail-placeholder', 'carregando...');
+    hero.dataset.imageState = 'loading';
     hero.append(heroPlaceholder);
     const img = el('img');
     img.alt = `Primeira imagem do projeto ${project.nome}`;
     img.decoding = 'async';
-    img.style.visibility = 'hidden';
+    img.hidden = true;
     hero.append(img);
     const heroSourcePromise = loadWithFallback(img, galleryCandidates(project, 1)).then(src => {
+      hero.dataset.imageState = src ? 'loaded' : 'missing';
       if (src) {
         heroPlaceholder.remove();
-        img.style.visibility = 'visible';
-      } else img.remove();
+        img.hidden = false;
+      } else {
+        img.remove();
+        heroPlaceholder.textContent = 'Imagem do projeto em breve';
+      }
       return src;
     });
 

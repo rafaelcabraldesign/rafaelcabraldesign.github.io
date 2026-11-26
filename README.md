@@ -1,8 +1,15 @@
-# Rafael Cabral Design — versão 2.4
+# Rafael Cabral Design — versão 2.5
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.4
+## Novidades da versão 2.5
+
+- **Arraste na página inicial:** mantém a navegação horizontal por mouse e o scroll sincronizado, mas utiliza a seta normal no conteúdo arrastável, inclusive durante o gesto. Links e botões de ação mantêm o cursor de clique convencional.
+- **Imagens:** capas, primeira imagem de cada case e fotos de Sobre e Serviços mostram `carregando...` durante a busca e carregamento. A indicação de imagem em breve aparece somente após falharem os caminhos disponíveis. Ao carregar, a imagem substitui o aviso. A galeria numerada continua exibindo somente imagens encontradas, sem criar quadros vazios.
+- **Cache:** as três páginas carregam `styles.css?v=25` e `site.js?v=25`; `conteudo.js?v=22` permanece inalterado.
+- **Próxima versão:** 2.6.
+
+## Histórico — versão 2.4
 
 - **Página Projetos e Outros projetos:** os cases com `texto` ou `resumo` preenchido aparecem automaticamente antes dos cases em preparação. Dentro de cada grupo, mantém-se a ordem original de `assets/js/conteudo.js`.
 - **Seleção inicial:** mantém quatro cards, com CRISFIT e Down Five nas primeiras posições fixas e as demais vagas priorizando cases preenchidos, como na versão anterior.
@@ -147,12 +154,12 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.3
+## Instalação a partir da v2.4
 
-1. Baixe `portfolio-rafael-cabral-v2.4-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.5-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
-4. Confirme o commit `Portfólio v2.4 — ordenação automática dos projetos`.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/css/styles.css` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
+4. Confirme o commit `Portfólio v2.5 — cursor e carregamento das imagens`.
 5. Reabra o site e pressione **Ctrl + Shift + R** caso os scripts anteriores ainda estejam em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
