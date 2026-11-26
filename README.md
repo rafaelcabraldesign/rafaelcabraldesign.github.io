@@ -1,8 +1,15 @@
-# Rafael Cabral Design — versão 2.5
+# Rafael Cabral Design — versão 2.6
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.5
+## Novidades da versão 2.6
+
+- **Cursor:** seta normal sobre o conteúdo arrastável; `pointer` sobre links, botões e capas clicáveis, inclusive seus textos e imagens. Durante o arraste efetivo, o cursor volta temporariamente à seta e, ao soltar, recupera o comportamento convencional.
+- **Carregamento:** preserva `Carregando...` com inicial maiúscula nos cinco pontos de exibição, incluindo a correção manual feita após a versão 2.5.
+- **Cache:** as três páginas carregam `styles.css?v=26` e `site.js?v=26`; `conteudo.js?v=22` permanece inalterado.
+- **Próxima versão:** 2.7.
+
+## Histórico — versão 2.5
 
 - **Arraste na página inicial:** mantém a navegação horizontal por mouse e o scroll sincronizado, mas utiliza a seta normal no conteúdo arrastável, inclusive durante o gesto. Links e botões de ação mantêm o cursor de clique convencional.
 - **Imagens:** capas, primeira imagem de cada case e fotos de Sobre e Serviços mostram `carregando...` durante a busca e carregamento. A indicação de imagem em breve aparece somente após falharem os caminhos disponíveis. Ao carregar, a imagem substitui o aviso. A galeria numerada continua exibindo somente imagens encontradas, sem criar quadros vazios.

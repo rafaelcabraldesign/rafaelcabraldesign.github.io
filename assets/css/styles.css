@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.5
+ * RAFAEL CABRAL | Portfolio v2.6
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -35,6 +35,7 @@ body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
+a[href], button:not(:disabled) { cursor: pointer; }
 p, h1, h2, h3 { margin-top: 0; }
 p { line-height: 1.55; }
 ::selection { background: #560421; color: #fff; }
@@ -800,13 +801,9 @@ body.is-page-leaving::after { opacity: 1; }
   html:not(.js-enabled) .showcase-more { display: none; }
 }
 
-/* v2.5 | Arraste desktop com cursor normal, sem grab/grabbing.
-   Links/botoes de acao mantem o cursor convencional; cards aceitam
-   tanto clique quanto arraste. A selecao volta ao normal ao soltar o mouse. */
-.showcase-sticky.is-grab-ready,
-.showcase-sticky.is-grab-ready .project-cover { cursor: default; }
-.showcase-sticky.is-grab-ready :is(.hero-content, .project-cover) * { cursor: inherit; }
-.showcase-sticky.is-grab-ready :is(a:not(.project-cover), button) { cursor: pointer; }
+/* v2.6 | Seta nas areas arrastaveis; cursor pointer em links, botoes
+   e capas clicaveis. Durante o arraste efetivo, a seta permanece visivel. */
+.showcase-sticky.is-grab-ready { cursor: default; }
 .showcase-sticky.is-grab-pressed,
 .showcase-sticky.is-grab-pressed * {
   -webkit-user-select: none;
