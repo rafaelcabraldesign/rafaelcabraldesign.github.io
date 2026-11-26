@@ -3,7 +3,9 @@
  *
  * Edite apenas os campos entre aspas para atualizar o site.
  * Campos vazios nao aparecem publicamente. Nunca publique dados sigilosos.
- * Campos extras por projeto: frase, servicos, segmento e texto.
+ * Campos extras por projeto: frase, servicos, segmento (ou industria) e texto.
+ * Destaques: os slugs em destaquesFixos aparecem primeiro; os demais
+ * sao priorizados quando sua descricao (texto ou resumo) estiver preenchida.
  *
  * IMAGENS AUTOMATICAS (sem editar este arquivo):
  * - Capa do projeto: assets/img/projetos/<slug>.webp
@@ -30,6 +32,7 @@ window.PORTFOLIO_CONTEUDO = {
     behance: "",
     linkedin: "https://www.linkedin.com/in/rafaelcabraldesign/"
   },
+  destaquesFixos: ["crisfit", "down-five"],
   projetos: [
     { nome: "CRISFIT", slug: "crisfit", imagem: "", categoria: "", ano: "2024", frase: "CRISFIT é uma marca de moda fitness que combina energia, estilo e liberdade de movimento, valorizando a individualidade e a diversidade de cada corpo.", servicos: "NAMING, IDENTIDADE VISUAL", segmento: "MODA FITNESS / VESTUÁRIO ESPORTIVO", texto: `CRISFIT nasceu da união entre o nome da cliente Cristiane e o universo da moda fitness. O projeto partiu da proposta de construir uma marca de personalidade forte, capaz de unir energia, estilo e diversidade em uma identidade visual contemporânea e reconhecível.
 
@@ -52,7 +55,15 @@ O resultado é um sistema visual expressivo e adaptável, explorado em aplicaç�
     { nome: "Ita Corretora de Seguros", slug: "ita-corretora-de-seguros", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Eagle Investment", slug: "eagle-investment", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Agrofixa", slug: "agrofixa", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
-    { nome: "Down Five", slug: "down-five", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] },
+    { nome: "Down Five", slug: "down-five", imagem: "", categoria: "", ano: "2023", frase: "Down Five é uma equipe de e-sports que combina a intensidade da competição com irreverência e uma identidade visual inspirada na cultura gamer e no streetwear.", servicos: "Identidade Visual, Design de Mascote", industria: "E-sports", texto: `O projeto da Down Five teve como objetivo desenvolver uma identidade visual que traduzisse a intensidade do universo competitivo dos e-sports, combinando personalidade, irreverência e presença visual. A proposta buscou estabelecer uma linguagem capaz de representar a equipe dentro e fora do ambiente gamer.
+
+O logotipo foi desenvolvido a partir da integração das iniciais DW e do número 5 em uma composição geométrica que remete a um escudo. Seus traços angulares, proporções verticais e estrutura compacta conferem força à assinatura, favorecendo seu reconhecimento em diferentes escalas e aplicações.
+
+A paleta cromática combina rosa vibrante, preto, branco e tons de prata, estabelecendo uma identidade de alto contraste que rompe com as convenções visuais do segmento. Grafismos inspirados em chamas contrapõem a rigidez geométrica do logotipo, acrescentando energia, movimento e dinamismo à composição.
+
+Para ampliar a personalidade da marca, foi criado Dudu, um shih-tzu de chupeta com expressão provocativa e estética inspirada na cultura gamer e streetwear. O contraste entre sua aparência carismática e sua atitude competitiva introduz humor e irreverência à identidade, tornando o personagem um elemento central na comunicação da equipe.
+
+O sistema visual foi pensado para se desdobrar em uniformes, vestuário casual, acessórios, merchandising e comunicação digital. A combinação entre geometria, ilustração e expressividade estabelece um universo visual próprio, que conecta competitividade, entretenimento e cultura gamer.`, resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Lara Land", slug: "lara-land", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] }
   ]
 };

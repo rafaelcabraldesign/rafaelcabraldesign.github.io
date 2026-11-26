@@ -217,7 +217,7 @@
     const specs = el('dl', 'detail-specs');
     [
       createSpecRow('SERVIÇOS', project.servicos),
-      createSpecRow('SEGMENTO', project.segmento || project.categoria),
+      createSpecRow(project.industria ? 'INDÚSTRIA' : 'SEGMENTO', project.industria || project.segmento || project.categoria),
       createSpecRow('ANO', project.ano)
     ].filter(Boolean).forEach(row => specs.append(row));
 
@@ -713,8 +713,29 @@
     });
   }
 
+  /* Mantem quatro destaques. Os fixos aparecem na ordem definida no
+   * conteudo.js; depois, cases com descricao preenchida; por ultimo,
+   * placeholders na ordem original. Nao altera a galeria completa.
+   * O criterio de conteudo nao depende de baixar/testar imagens remotas.
+   */
+  function selectFeaturedProjects() {
+    const fixedSlugs = Array.isArray(data.destaquesFixos) ? data.destaquesFixos : [];
+    const fixed = [...new Set(fixedSlugs)]
+      .map(slug => projects.find(project => project.slug === slug))
+      .filter(Boolean);
+    const fixedSet = new Set(fixed.map(project => project.slug));
+    const remaining = projects.filter(project => !fixedSet.has(project.slug));
+    const hasDescription = project => [project.texto, project.resumo]
+      .some(value => typeof value === 'string' && value.trim().length > 0);
+    return [
+      ...fixed,
+      ...remaining.filter(hasDescription),
+      ...remaining.filter(project => !hasDescription(project))
+    ].slice(0, 4);
+  }
+
   const featured = document.getElementById('featured-projects');
-  if (featured) renderCards(featured, projects.slice(0, 4));
+  if (featured) renderCards(featured, selectFeaturedProjects());
   const listing = document.getElementById('all-projects');
   if (listing) {
     renderCards(listing, projects);

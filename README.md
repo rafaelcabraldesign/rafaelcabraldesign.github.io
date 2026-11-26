@@ -1,8 +1,16 @@
-# Rafael Cabral Design — versão 2.1
+# Rafael Cabral Design — versão 2.2
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.1
+## Novidades da versão 2.2
+
+- **Down Five:** resumo de abertura, serviços (Identidade Visual, Design de Mascote), indústria (E-sports), ano (2023) e descrição completa, preservada em cinco parágrafos.
+- **Projetos selecionados:** CRISFIT e Down Five fixos nas duas primeiras posições. As duas vagas restantes priorizam automaticamente os cases que tenham `texto` ou `resumo` preenchido em `assets/js/conteudo.js`. Enquanto faltarem cases preenchidos, os placeholders completam os quatro cards. Havendo mais de dois cases elegíveis além dos fixos, a ordem original da lista define a prioridade. A galeria completa mantém os 15 projetos na ordem anterior.
+- **Imagens:** basta enviar `down-five.webp` e as imagens `down-five-01.webp`, `down-five-02.webp` etc. para `assets/img/projetos/down-five/`. A capa permanece exclusiva dos cards; a apresentação individual começa na imagem numerada 01. O upload das imagens por si só não altera a prioridade dos destaques.
+- **Cache:** os três HTMLs carregam `conteudo.js?v=22` e `site.js?v=22`; o CSS permanece na versão 21, sem alteração visual.
+- **Próxima versão:** 2.3.
+
+## Histórico — versão 2.1
 
 - **Símbolo no cabeçalho:** dimensão ajustada de `0.86em` para `1.07em` — valor intermediário entre os dois tamanhos anteriores (`0.86em` e `1.28em`), mantendo o SVG original e o hover rosa.
 - **Cases — grade editorial:** a introdução e o bloco de informações usam duas colunas de largura igual, com divisão centrada no eixo da página, e espaçamento entre colunas adaptativo de 56 a 96 px.
@@ -122,13 +130,13 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.0.17
+## Instalação a partir da v2.1
 
-1. Baixe `portfolio-rafael-cabral-v2.1-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.2-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md` e `assets/css/styles.css` para os mesmos caminhos na raiz do repositório.
-4. Confirme o commit `Portfólio v2.1 — proporção do símbolo e layout dos cases`.
-5. Reabra o site e pressione **Ctrl + Shift + R** caso o CSS anterior ainda esteja em cache.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/js/conteudo.js` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
+4. Confirme o commit `Portfólio v2.2 — Down Five e destaques automáticos`.
+5. Reabra o site e pressione **Ctrl + Shift + R** caso os scripts anteriores ainda estejam em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
 
