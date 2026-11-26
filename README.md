@@ -1,8 +1,16 @@
-# Rafael Cabral Design — versão 2.2
+# Rafael Cabral Design — versão 2.3
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.2
+## Novidades da versão 2.3
+
+- **Grab no desktop:** na abertura da página inicial, segure o botão esquerdo do mouse sobre o título, espaço livre ou card e arraste para a esquerda (avançar) ou direita (voltar). O cursor muda de `grab` para `grabbing` e o progresso acompanha a posição do scroll vertical já existente.
+- **Navegação preservada:** um clique normal no card abre o case; um arraste de pelo menos 6 px não abre o link. Botões e demais links da abertura continuam clicáveis, sem iniciar um arraste. O movimento é limitado ao início e fim da seção; a roda do mouse continua permitindo avançar para Serviços.
+- **Responsividade:** grab apenas enquanto a seção horizontal estiver ativa e presa ao topo em desktop com mouse. Mobile, toque e preferência por movimento reduzido conservam o comportamento anterior. Soltar o mouse, cancelar o gesto, mudar de aba ou redimensionar encerra o arraste.
+- **Cache:** as três páginas usam `styles.css?v=23` e `site.js?v=23`; `conteudo.js?v=22` permanece inalterado. Os quatro destaques, Down Five e demais dados permanecem intactos.
+- **Próxima versão:** 2.4.
+
+## Histórico — versão 2.2
 
 - **Down Five:** resumo de abertura, serviços (Identidade Visual, Design de Mascote), indústria (E-sports), ano (2023) e descrição completa, preservada em cinco parágrafos.
 - **Projetos selecionados:** CRISFIT e Down Five fixos nas duas primeiras posições. As duas vagas restantes priorizam automaticamente os cases que tenham `texto` ou `resumo` preenchido em `assets/js/conteudo.js`. Enquanto faltarem cases preenchidos, os placeholders completam os quatro cards. Havendo mais de dois cases elegíveis além dos fixos, a ordem original da lista define a prioridade. A galeria completa mantém os 15 projetos na ordem anterior.
@@ -130,12 +138,12 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.1
+## Instalação a partir da v2.2
 
-1. Baixe `portfolio-rafael-cabral-v2.2-atualizacao.zip` e extraia-o.
+1. Baixe `portfolio-rafael-cabral-v2.3-atualizacao.zip` e extraia-o.
 2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/js/conteudo.js` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
-4. Confirme o commit `Portfólio v2.2 — Down Five e destaques automáticos`.
+3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/css/styles.css` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
+4. Confirme o commit `Portfólio v2.3 — grab no showcase horizontal`.
 5. Reabra o site e pressione **Ctrl + Shift + R** caso os scripts anteriores ainda estejam em cache.
 
 **Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.

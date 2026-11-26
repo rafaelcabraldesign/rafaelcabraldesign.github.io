@@ -633,14 +633,25 @@
     let measureScheduled = false;
     let active = false;
     let progress = 0;
+    let drag = null;
+    let dragFrame = 0;
+    let ignoreClickUntil = 0;
+    const dragThreshold = 6;
+    const mouseQuery = window.matchMedia('(any-pointer: fine)');
+    const root = document.documentElement;
 
     const getHeaderHeight = () => header?.getBoundingClientRect().height || 74;
     const refreshPosition = () => {
       if (!active) return;
       // A secao comeca imediatamente abaixo do cabecalho sticky.
-      const sectionTop = section.getBoundingClientRect().top;
-      progress = Math.max(0, Math.min(distance, getHeaderHeight() - sectionTop));
+      const rect = section.getBoundingClientRect();
+      const headerHeight = getHeaderHeight();
+      progress = Math.max(0, Math.min(distance, headerHeight - rect.top));
       track.style.setProperty('--showcase-x', `${-progress}px`);
+      // O grab so fica disponivel enquanto o showcase estiver preso ao topo.
+      const pinned = rect.top <= headerHeight + 2 &&
+        rect.bottom >= headerHeight + sticky.clientHeight - 2;
+      sticky.classList.toggle('is-grab-ready', mouseQuery.matches && distance > 0 && pinned);
     };
     const onScroll = () => {
       if (!active || scheduled) return;
@@ -653,6 +664,8 @@
     const measure = () => {
       active = query.matches;
       if (!active) {
+        finishDrag();
+        sticky.classList.remove('is-grab-ready');
         section.style.removeProperty('height');
         track.style.removeProperty('--showcase-x');
         sticky.style.removeProperty('--showcase-link-top');
@@ -684,12 +697,112 @@
       });
     };
 
+    // Grab com mouse: o scroll vertical continua sendo a unica fonte de
+    // progresso. Arrastar para a esquerda avanca; para a direita, retorna.
+    // Nao capturamos a roda nem alteramos o scroll de toque/mobile.
+    function applyDragPosition() {
+      dragFrame = 0;
+      if (!drag?.moved || !active) return;
+      const next = Math.max(0, Math.min(distance, drag.startProgress + drag.startX - drag.lastX));
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      const targetY = Math.max(0, sectionTop - getHeaderHeight() + next);
+      window.scrollTo({ top: targetY, left: 0, behavior: 'instant' });
+      refreshPosition();
+    }
+
+    function finishDrag() {
+      if (!drag) return;
+      const current = drag;
+      drag = null;
+      if (dragFrame) window.cancelAnimationFrame(dragFrame);
+      dragFrame = 0;
+      sticky.classList.remove('is-grab-pressed');
+      root.classList.remove('is-showcase-dragging');
+      // Suprime somente o clique sintetizado no fim do gesto, nao cliques
+      // intencionais seguintes, nem navegacao via teclado.
+      if (current.moved || current.displaced) ignoreClickUntil = performance.now() + 500;
+      if (sticky.hasPointerCapture?.(current.id)) {
+        try { sticky.releasePointerCapture(current.id); } catch (_) {}
+      }
+    }
+
+    sticky.addEventListener('pointerdown', event => {
+      // Um novo clique real sempre pode abrir o projeto ou um botao.
+      if (event.pointerType === 'mouse' && event.button === 0) ignoreClickUntil = 0;
+      if (!active || !sticky.classList.contains('is-grab-ready') || drag ||
+          event.pointerType !== 'mouse' || event.button !== 0 || !event.isPrimary ||
+          event.ctrlKey || event.metaKey || event.altKey || event.shiftKey ||
+          document.body.classList.contains('is-page-leaving')) return;
+      if (event.target.closest('a:not(.project-cover), button, input, select, textarea, [contenteditable="true"]')) return;
+      refreshPosition();
+      if (!sticky.classList.contains('is-grab-ready')) return;
+      drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY,
+        lastX: event.clientX, startProgress: progress, moved: false, displaced: false };
+      sticky.classList.add('is-grab-pressed');
+    });
+    // Impede o ghost de arrastar imagens/links do navegador, mas mantem cliques.
+    sticky.addEventListener('dragstart', event => {
+      if (drag) event.preventDefault();
+    });
+    window.addEventListener('pointermove', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      if (!(event.buttons & 1)) { finishDrag(); return; }
+      const dx = event.clientX - drag.startX;
+      const dy = event.clientY - drag.startY;
+      if (Math.hypot(dx, dy) >= dragThreshold) drag.displaced = true;
+      if (!drag.moved && Math.abs(dx) < dragThreshold) return;
+      if (!drag.moved) {
+        drag.moved = true;
+        root.classList.add('is-showcase-dragging');
+        try { sticky.setPointerCapture(event.pointerId); } catch (_) {}
+        window.getSelection()?.removeAllRanges();
+      }
+      if (event.cancelable) event.preventDefault();
+      drag.lastX = event.clientX;
+      if (!dragFrame) dragFrame = window.requestAnimationFrame(applyDragPosition);
+    }, { passive: false });
+    window.addEventListener('pointerup', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      if (drag.moved && active) {
+        drag.lastX = event.clientX;
+        if (dragFrame) window.cancelAnimationFrame(dragFrame);
+        applyDragPosition();
+      }
+      finishDrag();
+    });
+    window.addEventListener('pointercancel', event => {
+      if (drag?.id === event.pointerId) finishDrag();
+    });
+    sticky.addEventListener('lostpointercapture', event => {
+      if (drag?.id === event.pointerId) finishDrag();
+    });
+    window.addEventListener('blur', finishDrag);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) finishDrag();
+    });
+    window.addEventListener('wheel', finishDrag, { passive: true });
+    window.addEventListener('resize', finishDrag, { passive: true });
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape') finishDrag();
+    });
+    sticky.addEventListener('click', event => {
+      if (event.detail !== 0 && performance.now() < ignoreClickUntil) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        ignoreClickUntil = 0;
+      }
+    }, true);
+
     // Inicia apos renderizar cards; recomputa quando dimensoes/fontes mudam.
     measure();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', requestMeasure, { passive: true });
     window.addEventListener('pageshow', requestMeasure);
     if (query.addEventListener) query.addEventListener('change', requestMeasure);
+    if (mouseQuery.addEventListener) mouseQuery.addEventListener('change', () => {
+      if (!mouseQuery.matches) finishDrag();
+      requestMeasure();
+    });
     if (document.fonts?.ready) document.fonts.ready.then(requestMeasure);
     if (window.ResizeObserver) {
       const observer = new ResizeObserver(requestMeasure);

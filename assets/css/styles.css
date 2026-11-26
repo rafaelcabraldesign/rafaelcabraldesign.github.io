@@ -5,7 +5,7 @@
  * Fallbacks permanecem disponiveis se a fonte remota nao carregar.
  */
 /*
- * RAFAEL CABRAL | Portfolio v2.0.4
+ * RAFAEL CABRAL | Portfolio v2.3
  * Direcao: editorial, minimalista, predominantemente preta.
  * Paleta escura com branco e cinzas claros, acento rosa da identidade.
  */
@@ -796,3 +796,19 @@ body.is-page-leaving::after { opacity: 1; }
   html:not(.js-enabled) .showcase-projects .section-top .text-link { display: inline-flex; }
   html:not(.js-enabled) .showcase-more { display: none; }
 }
+
+/* v2.3 | Grab desktop sincronizado com o scroll do showcase.
+   Links/botoes de acao mantem o cursor convencional; cards aceitam
+   tanto clique quanto arraste. O cursor e a selecao voltam ao normal
+   ao soltar o mouse, inclusive fora da secao. */
+.showcase-sticky.is-grab-ready,
+.showcase-sticky.is-grab-ready .project-cover { cursor: grab; }
+.showcase-sticky.is-grab-ready :is(a:not(.project-cover), button) { cursor: pointer; }
+.showcase-sticky.is-grab-pressed,
+.showcase-sticky.is-grab-pressed * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+html.is-showcase-dragging { scroll-behavior: auto; }
+html.is-showcase-dragging,
+html.is-showcase-dragging * { cursor: grabbing !important; }
