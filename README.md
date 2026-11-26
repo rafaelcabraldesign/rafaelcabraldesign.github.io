@@ -1,8 +1,17 @@
-# Rafael Cabral Design — versão 2.7
+# Rafael Cabral Design — versão 2.8
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.7
+## Novidades da versão 2.8 (otimizada)
+
+- **Índice automático de imagens:** o GitHub Actions executa `scripts/build_pages.py` em cada publicação da branch padrão. O script identifica os WebP realmente presentes e suas dimensões, incorpora o inventário aos três HTMLs publicados e envia o site ao GitHub Pages. Não há commits automáticos, chamadas à API do GitHub pelo navegador, serviços externos, nem cadastro manual de imagens.
+- **Numeração livre:** os arquivos numerados são ordenados pelo número, mesmo com lacunas (por exemplo, 01, 02, 04, 08, 100). Não existe mais o limite de 40 no fluxo indexado. `-01.webp` continua na abertura e `-02.webp` em diante após a descrição. A capa sem número continua exclusiva dos cards, com fallback para a imagem 01.
+- **Carregamento progressivo:** as imagens da galeria recebem `loading="lazy"`, dimensões intrínsecas para reservar o espaço e `decoding="async"`. Não há sondagens de arquivos inexistentes no modo indexado. A primeira imagem do case tem prioridade alta; as demais são solicitadas conforme a proximidade da área visível, a critério do navegador. Capas, Sobre e Serviços consultam o mesmo índice.
+- **Compatibilidade:** a pasta individual tem prioridade sobre a estrutura plana antiga. Se o site ainda for publicado diretamente da branch, sem executar o build, o carregador de contingência aceita lacunas até 40 e mantém a busca em lotes de quatro (sem a otimização). Ative o GitHub Actions conforme abaixo para eliminar as sondagens.
+- **Visual e conteúdo:** preservados, incluindo a seção Outros projetos com até seis cards, os quatro destaques, o arraste, os cursores e a mensagem `Carregando...`. Os HTMLs usam `?v=28-opt` para evitar cache da versão 2.7 ou do primeiro pacote 2.8.
+- **Próxima versão:** 2.9.
+
+## Histórico — versão 2.7
 
 - **Outros projetos:** até seis cards por case, mantendo a prioridade dos projetos preenchidos e excluindo o case aberto. A contagem acompanha o número de cards exibidos.
 - **Ver todos os projetos:** link para `projetos.html` abaixo da galeria de relacionados, alinhado à direita e com 20 px de espaçamento após os cards. Reutiliza a tipografia, a seta e o hover do link da página inicial.
@@ -169,15 +178,21 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.4
+## Instalação a partir da v2.7 — configuração única
 
-1. Baixe `portfolio-rafael-cabral-v2.5-atualizacao.zip` e extraia-o.
-2. Entre no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`.
-3. Em **Add file → Upload files**, envie `index.html`, `projeto.html`, `projetos.html`, `README.md`, `assets/css/styles.css` e `assets/js/site.js` para os mesmos caminhos na raiz do repositório.
-4. Confirme o commit `Portfólio v2.5 — cursor e carregamento das imagens`.
-5. Reabra o site e pressione **Ctrl + Shift + R** caso os scripts anteriores ainda estejam em cache.
+1. Extraia `portfolio-rafael-cabral-v2.8-otimizada-atualizacao.zip`. Envie todos os arquivos do ZIP para os respectivos caminhos no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`, na branch padrão. Não substitua a pasta `assets` inteira nem apague os WebP já enviados.
+2. Confira se o arquivo `.github/workflows/portfolio-pages.yml` e o script `scripts/build_pages.py` estão na raiz do repositório, nas respectivas pastas. Se a interface de upload omitir a pasta `.github`, use **Add file → Create new file**, digite `.github/workflows/portfolio-pages.yml`, cole o conteúdo do arquivo fornecido e confirme o commit.
+3. Abra **Settings → Pages → Build and deployment → Source** e escolha **GitHub Actions** (no lugar de Deploy from a branch). O workflow já está incluído; não crie outro modelo de publicação. Se existir outro workflow que publique Pages, mantenha apenas o novo publicador ativo.
+4. Abra a aba **Actions → Publicar portfolio → Run workflow**, selecione a branch padrão e clique em **Run workflow**. Se a execução anterior tiver falhado antes da mudança de Source, uma nova execução resolve a configuração. Aguarde os jobs `build` e `deploy` ficarem verdes. Caso haja aprovação pendente no ambiente `github-pages`, revise e aprove a implantação.
+5. Abra o site e confira as imagens do Down Five e CRISFIT. Após a publicação, a página `projeto.html?projeto=down-five` deve mostrar o arquivo `-08.webp` depois de `-04.webp` se esses forem os arquivos presentes. O índice pode ser conferido no código-fonte do HTML pelo elemento `portfolio-image-index` (deve conter `files`, não `null`).
 
-**Não apague a pasta `assets` existente.** O ZIP de atualização substitui só os arquivos de mesmo nome e caminho. As imagens `.webp` já enviadas por você ao GitHub são preservadas.
+**Da próxima vez:** envie as imagens e alterações normalmente na branch padrão. Cada commit dispara o workflow, que monta e publica o site com o índice atualizado. Não é necessário editar JSON, criar uma lista de imagens ou usar a aba Actions manualmente após a configuração inicial. Não publique `_site` nem edite o índice no HTML-fonte: ele é gerado somente no artefato de publicação.
+
+Para pré-visualização local sem sondagens, execute `python3 scripts/build_pages.py --output _site` e sirva a pasta `_site` (por exemplo, `python3 -m http.server 8000 --directory _site`). Use um diretório de saída novo a cada build ou remova a saída anterior antes de regenerar.
+
+**Não apague a pasta `assets` existente.** O ZIP de atualização substitui somente os arquivos de mesmo nome e caminho. O ZIP completo contém os arquivos-base, não os WebP dos cases que já estão no GitHub.
+
+Documentação oficial: https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 
 ## Organização do site
 
@@ -202,7 +217,7 @@ assets/img/
         └── crisfit-03.webp      # terceira imagem, etc.
 ```
 
-As imagens internas carregam de `-01.webp` em diante, até 40 arquivos consecutivos. Se faltar uma imagem, a sequência se encerra. A convenção antiga, com arquivos diretamente em `assets/img/projetos/`, também é suportada.
+As imagens internas são ordenadas numericamente pelo índice de publicação, sem exigir números consecutivos nem limitar a 40. Exemplo: 01, 02, 04, 08. A imagem 01 continua na abertura; as restantes aparecem após a descrição. A convenção antiga, com arquivos diretamente em `assets/img/projetos/`, também é suportada. Utilize nomes e extensão `.webp` em minúsculas.
 
 ## Compatibilidade e manutenção
 

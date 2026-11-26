@@ -13,7 +13,7 @@
  * - Sobre: assets/img/sobre.webp
  * - Servicos: assets/img/servicos.webp
  *
- * Os numeros dos cases devem ser sequenciais, sem lacunas.
+ * Os numeros podem ter lacunas: o GitHub Actions gera o indice em ordem numerica.
  * Se nao existir uma imagem, o placeholder continua aparecendo.
  * Os campos imagem e galeria abaixo sao opcionais e funcionam como
  * substituicoes manuais APENAS se voce quiser mudar esta convencao.

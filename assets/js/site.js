@@ -17,24 +17,81 @@
   };
 
   const projectLink = project => `projeto.html?projeto=${encodeURIComponent(project.slug)}`;
-  // Duas estruturas compativeis: pasta individual (preferencial) e pasta plana (legado).
-  // Ex.: projetos/crisfit/crisfit-01.webp ou projetos/crisfit-01.webp.
-  // Como o GitHub Pages nao lista diretorios, tentamos caminhos previsiveis.
+  // O build do GitHub Actions inclui o inventario real no HTML. Sem uma
+  // requisicao extra, o navegador sabe quais arquivos existem e suas dimensoes.
+  // Se o HTML ainda nao passou pelo build, o fallback antigo continua utilizavel.
+  let imageIndex = null;
+  try {
+    const index = JSON.parse(document.getElementById('portfolio-image-index')?.textContent || 'null');
+    if (index?.version === 1 && index.files && typeof index.files === 'object' && !Array.isArray(index.files)) {
+      imageIndex = new Map(Object.entries(index.files));
+    }
+  } catch (_) { /* HTML sem indice valido: usar fallback. */ }
+  if (!imageIndex) console.warn('Portfolio: indice de imagens ausente. Publique pelo workflow GitHub Actions para ativar a otimizacao.');
+
   const projectFolder = project => `assets/img/projetos/${project.slug}`;
-  const coverCandidates = project => [...new Set([
-    typeof project.imagem === 'string' ? project.imagem.trim() : '',
-    `${projectFolder(project)}/${project.slug}.webp`,
-    `assets/img/projetos/${project.slug}.webp`,
-    `${projectFolder(project)}/${project.slug}-01.webp`,
-    `assets/img/projetos/${project.slug}-01.webp`
-  ].filter(Boolean))];
+  const flatFolder = 'assets/img/projetos';
+  const knownSources = sources => imageIndex ? sources.filter(path => imageIndex.has(path)) : sources;
+  // Campos manuais externos (ou outros formatos) continuam permitidos.
+  const manualAvailable = path => !imageIndex || !/^assets\/img\/.*\.webp$/.test(path) || imageIndex.has(path);
+  const imageDimensions = path => imageIndex?.get(path);
+  const applyImageDimensions = (image, source) => {
+    const size = imageDimensions(source);
+    if (Array.isArray(size) && size[0] > 0 && size[1] > 0) {
+      image.width = size[0];
+      image.height = size[1];
+      image.style.aspectRatio = `auto ${size[0]} / ${size[1]}`;
+    } else {
+      image.removeAttribute('width');
+      image.removeAttribute('height');
+      image.style.removeProperty('aspect-ratio');
+    }
+  };
   const galleryCandidates = (project, number) => {
     const suffix = String(number).padStart(2, '0');
-    return [
+    return knownSources([
       `${projectFolder(project)}/${project.slug}-${suffix}.webp`,
-      `assets/img/projetos/${project.slug}-${suffix}.webp`
-    ];
+      `${flatFolder}/${project.slug}-${suffix}.webp`
+    ]);
   };
+  // Numero crescente, sem teto artificial; subpasta individual tem prioridade
+  // sobre o caminho plano legado. Variantes do mesmo numero nao se repetem.
+  function indexedGallery(project) {
+    if (!imageIndex) return [];
+    const entries = new Map();
+    for (const folder of [projectFolder(project), flatFolder]) {
+      const prefix = `${folder}/${project.slug}-`;
+      for (const path of imageIndex.keys()) {
+        if (!path.startsWith(prefix)) continue;
+        const match = /^(\d+)\.webp$/.exec(path.slice(prefix.length));
+        if (!match) continue;
+        const number = Number(match[1]);
+        if (!Number.isSafeInteger(number) || number < 1) continue;
+        if (!entries.has(number)) entries.set(number, []);
+        entries.get(number).push(path);
+      }
+    }
+    // Preferir nomes canonicos (-01, -02, ...) dentro de cada pasta.
+    for (const [number, paths] of entries) {
+      paths.sort((a, b) => {
+        const rank = path => (path.startsWith(`${projectFolder(project)}/`) ? 0 : 2)
+          + (path.endsWith(`-${String(number).padStart(2, '0')}.webp`) ? 0 : 1);
+        return rank(a) - rank(b) || a.localeCompare(b);
+      });
+    }
+    return [...entries].sort(([a], [b]) => a - b).map(([number, paths]) => ({number, paths}));
+  }
+  const heroCandidates = project => imageIndex
+    ? (indexedGallery(project).find(entry => entry.number === 1)?.paths || [])
+    : galleryCandidates(project, 1);
+  const coverCandidates = project => [...new Set([
+    ...(typeof project.imagem === 'string' && project.imagem.trim() && manualAvailable(project.imagem.trim()) ? [project.imagem.trim()] : []),
+    ...knownSources([
+      `${projectFolder(project)}/${project.slug}.webp`,
+      `${flatFolder}/${project.slug}.webp`
+    ]),
+    ...heroCandidates(project)
+  ])];
   // Carrega a primeira imagem existente. Se nenhuma existir, mantem o placeholder.
   function loadWithFallback(image, sources) {
     return new Promise(resolve => {
@@ -54,7 +111,9 @@
       const onError = () => attempt();
       const attempt = () => {
         if (cursor >= sources.length) { clean(); resolve(null); return; }
-        image.src = sources[cursor++];
+        const source = sources[cursor++];
+        applyImageDimensions(image, source);
+        image.src = source;
       };
       image.addEventListener('load', onLoad);
       image.addEventListener('error', onError);
@@ -115,38 +174,77 @@
     return section;
   }
 
-  /* A capa sem numero (slug.webp) e exclusiva dos cards/grades.
-   * Na pagina individual, slug-01.webp e a imagem principal;
-   * as imagens da galeria comecam em slug-02.webp e seguem ate slug-40.webp.
-   * Mantemos as pastas individuais e os caminhos antigos sem subpasta.
-   * Se o usuario definir uma galeria manual, evitamos repeticao da imagem principal.
+  /* As imagens indexadas entram no DOM em ordem numerica, com dimensoes
+   * conhecidas antes do download. O navegador carrega apenas as proximas
+   * da area visivel; nao ha pre-download com new Image() no fluxo normal.
    */
-  async function populateProjectGallery(project, gallery, heroSourcePromise = Promise.resolve(null)) {
-    const manual = Array.isArray(project.galeria) ? project.galeria.filter(Boolean) : [];
-    const sources = manual.length ? manual : null;
-    const heroSource = await heroSourcePromise;
-    const maxImages = 40;
-    // O arquivo -01 sempre ocupa a abertura do case. A galeria automatica
-    // comeca no -02, independentemente da existencia de slug.webp.
-    const firstGalleryNumber = sources ? 1 : 2;
-    const count = sources ? sources.length : maxImages - 1;
-    for (let index = 0; index < count; index++) {
-      const number = index + firstGalleryNumber;
-      const paths = sources ? [sources[index]] : galleryCandidates(project, number);
-      const loaded = new Image();
-      loaded.decoding = 'async';
-      const result = await loadWithFallback(loaded, paths);
-      // Na convencao automatica, a primeira lacuna termina a sequencia.
-      if (!result) { if (sources) continue; else break; }
-      // Galerias manuais podem conter a mesma imagem da abertura; nao duplicar.
-      if (heroSource && new URL(result, document.baseURI).href === new URL(heroSource, document.baseURI).href) continue;
-      loaded.alt = `${project.nome} — aplicação visual ${number}`;
-      loaded.loading = 'lazy';
-      gallery.append(loaded);
-      gallery.hidden = false;
-      document.dispatchEvent(new CustomEvent('portfolio:reveal-added', {
-        detail: { elements: [loaded] }
+  function appendLazyGalleryImage(project, gallery, number, paths) {
+    if (!paths.length) return;
+    const frame = el('div', 'detail-gallery-frame');
+    const image = el('img');
+    image.alt = `${project.nome} — aplicação visual ${number}`;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    applyImageDimensions(image, paths[0]);
+    if (!imageDimensions(paths[0])) frame.classList.add('unknown-image-size');
+    const note = el('span', 'gallery-loading-note', 'Carregando...');
+    frame.dataset.imageState = 'loading';
+    frame.append(image, note);
+    gallery.append(frame);
+    gallery.hidden = false;
+    document.dispatchEvent(new CustomEvent('portfolio:reveal-added', {
+      detail: { elements: [frame] }
+    }));
+    loadWithFallback(image, paths).then(result => {
+      if (result) {
+        frame.dataset.imageState = 'loaded';
+        frame.classList.remove('unknown-image-size');
+        note.remove();
+      } else {
+        frame.remove();
+        gallery.hidden = !gallery.children.length;
+      }
+    });
+  }
+
+  async function populateProjectGallery(project, gallery, heroSourcePromise) {
+    const manual = Array.isArray(project.galeria) ? project.galeria.filter(path => typeof path === 'string' && path.trim()) : [];
+    if (manual.length) {
+      const heroSource = await heroSourcePromise;
+      const seen = new Set(heroSource ? [new URL(heroSource, document.baseURI).href] : []);
+      manual.forEach((source, index) => {
+        if (!manualAvailable(source)) return;
+        const url = new URL(source, document.baseURI).href;
+        if (seen.has(url)) return;
+        seen.add(url);
+        appendLazyGalleryImage(project, gallery, index + 1, [source]);
+      });
+      return;
+    }
+    if (imageIndex) {
+      indexedGallery(project).filter(entry => entry.number > 1).forEach(({number, paths}) => {
+        appendLazyGalleryImage(project, gallery, number, paths);
+      });
+      return;
+    }
+    // Modo de contingencia: somente se Pages ainda nao estiver usando o
+    // workflow. Aceita lacunas ate 40, em lotes de quatro, mas faz sondagens.
+    // O build indexado elimina completamente este caminho.
+    for (let start = 2; start <= 40; start += 4) {
+      const batch = Array.from({length: Math.min(4, 41 - start)}, (_, i) => start + i);
+      const loaded = await Promise.all(batch.map(async number => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.alt = `${project.nome} — aplicação visual ${number}`;
+        const result = await loadWithFallback(image, galleryCandidates(project, number));
+        return result ? image : null;
       }));
+      const images = loaded.filter(Boolean);
+      if (images.length) {
+        gallery.append(...images);
+        gallery.hidden = false;
+        document.dispatchEvent(new CustomEvent('portfolio:reveal-added', {detail: {elements: images}}));
+      }
     }
   }
 
@@ -166,7 +264,7 @@
       frame.dataset.imageState = 'loading';
       if (note) note.textContent = 'Carregando...';
       frame.prepend(image);
-      loadWithFallback(image, [source]).then(result => {
+      loadWithFallback(image, knownSources([source])).then(result => {
         frame.dataset.imageState = result ? 'loaded' : 'missing';
         if (result) {
           frame.classList.add('has-image');
@@ -227,7 +325,14 @@
     img.decoding = 'async';
     img.hidden = true;
     hero.append(img);
-    const heroSourcePromise = loadWithFallback(img, galleryCandidates(project, 1)).then(src => {
+    const heroPaths = heroCandidates(project);
+    const heroSize = imageDimensions(heroPaths[0]);
+    if (heroSize) {
+      heroPlaceholder.style.aspectRatio = `${heroSize[0]} / ${heroSize[1]}`;
+      heroPlaceholder.style.minHeight = '0';
+    }
+    img.fetchPriority = 'high';
+    const heroSourcePromise = loadWithFallback(img, heroPaths).then(src => {
       hero.dataset.imageState = src ? 'loaded' : 'missing';
       if (src) {
         heroPlaceholder.remove();
@@ -260,7 +365,7 @@
 
     container.append(intro, hero, meta);
 
-    // O navegador nao consegue listar arquivos do GitHub Pages.
+    // O inventario e gerado durante a publicacao pelo GitHub Actions.
     // A primeira imagem (-01.webp) fica acima da descricao do case.
     // A galeria comeca em -02.webp, sem repetir a abertura nem incluir slug.webp.
     // Nao mostramos uma galeria vazia quando ainda nao ha arquivos.

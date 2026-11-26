@@ -436,6 +436,13 @@ html.js-enabled .site-footer > .footer-signature.is-complete { visibility: visib
    da largura e sua proporcao original (inclusive as imagens verticais). */
 .detail-gallery { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; margin-bottom: 110px; }
 .detail-gallery img { display: block; width: 100%; height: auto; max-height: none; object-fit: contain; aspect-ratio: auto; border-radius: var(--round); align-self: start; }
+/* A proporcao intrinseca do indice reserva o espaco antes do download. */
+.detail-gallery-frame { position: relative; min-width: 0; border-radius: var(--round); overflow: hidden; }
+.detail-gallery-frame[data-image-state="loading"] { background: linear-gradient(135deg,#202025,#111114 55%,#28282d); }
+.detail-gallery-frame[data-image-state="loading"] img { opacity: 0; }
+.detail-gallery-frame[data-image-state="loading"].unknown-image-size { min-height: 180px; aspect-ratio: 2 / 1; }
+.gallery-loading-note { position: absolute; inset: 0; display: grid; place-items: center; font-size: 14px; color: var(--subtle); pointer-events: none; }
+
 /* Outros projetos: uma galeria editorial ao fim de cada case. */
 .related-projects { border-top: 1px solid var(--line); margin-top: clamp(40px, 6vw, 115px); padding-top: clamp(22px, 3vw, 48px); }
 .related-header { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
