@@ -1,8 +1,19 @@
-# Rafael Cabral Design — versão 2.11
+# Rafael Cabral Design — versão 2.12
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.11
+## Novidades da versão 2.12
+
+- **Título principal:** desfoque de `10px` a `0px` durante a entrada palavra por palavra. Permanecem os 720 ms de duração, o atraso inicial de 45 ms, o intervalo de 50 ms por palavra, o deslocamento de `.44em`, a curva `cubic-bezier(.4,0,.3,1)` e o fade existentes.
+- **Acessibilidade:** o modo de movimento reduzido exibe o título imediatamente, sem desfoque ou animação. Nenhum filtro é aplicado aos demais elementos.
+- **Publicação:** CSS com `?v=212`; scripts inalterados (`?v=211`). O GitHub Actions existente continua gerando as páginas e os índices normalmente.
+- **Próxima versão:** 2.13.
+
+## Atualizar a partir da v2.11
+
+Extraia `portfolio-rafael-cabral-v2.12-atualizacao.zip` e envie os cinco arquivos em um único commit, preservando seus caminhos. Não é necessário editar o JavaScript, o workflow, os JSON dos projetos ou as imagens. Confira a conclusão da publicação na aba Actions e teste a entrada do título na home.
+
+## Novidades da versão 2.11 (histórico)
 
 - **Símbolo em rotação:** o ícone do cabeçalho gira continuamente, com uma volta a cada 8 segundos, mantendo o tamanho e o hover originais. A preferência de movimento reduzido desativa a rotação.
 - **URLs limpas:** cada JSON gera automaticamente uma página `/<slug>/index.html` no site publicado, acessível em `https://rafaelcabraldesign.github.io/<slug>/` (o endereço sem a barra final pode ser redirecionado pelo GitHub Pages). Os cards de todas as galerias apontam para essas páginas. O endereço legado `projeto.html?projeto=<slug>` encaminha visitantes ao novo endereço.
