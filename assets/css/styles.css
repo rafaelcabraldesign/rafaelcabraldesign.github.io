@@ -106,7 +106,6 @@ p { line-height: 1.55; }
 .primary-nav a[aria-current="page"]:hover, .primary-nav a[aria-current="page"]:focus-visible { color: var(--accent); }
 .mobile-only-link { display: none !important; }
 .header-contact { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 42px; padding: 9px 18px; background: #f2f2f4; color: #101014; border: 1px solid #f2f2f4; border-radius: 9px; font-size: var(--type-ui); font-weight: 500; letter-spacing: -.01em; line-height: 1.2; white-space: nowrap; transition: background-color .32s ease, border-color .32s ease, color .32s ease, transform .32s ease; }
-.header-contact:hover, .header-contact:focus-visible { background: #e0e0e4; border-color: #e0e0e4; color: #000; transform: translateY(-1px); }
 .menu-toggle { display: none; border: 0; padding: 0; background: transparent; cursor: pointer; color: #fff; position: relative; width: 42px; height: 42px; flex: 0 0 42px; }
 .menu-toggle span { position: absolute; top: 50%; left: 50%; width: 22px; height: 2px; display: block; background: currentColor; border-radius: 2px; transform-origin: center; transition: transform .38s cubic-bezier(.22,1,.36,1), background-color .25s ease; }
 .menu-toggle span:first-child { transform: translate(-50%,-50%) translateY(-4px); }
@@ -173,12 +172,17 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
 .hero-lead { max-width: min(840px, 84vw); margin: 0; font-size: var(--type-lead); font-weight: 500; letter-spacing: -.015em; line-height: 1.46; color: var(--muted); }
 .hero-actions { display: flex; gap: 10px; align-items: center; margin-top: 34px; }
 
-/* Botao "roleta": o fundo sobe, e o texto secundario chega de baixo dentro de mascara. */
+/* v2.13: preenchimento circular pelo ponto de entrada/saida do cursor.
+   Uma unica mascara externa inclui a borda; o texto fica na mesma posicao. */
 .pill {
   --pill-hover-bg: var(--accent);
+  --pill-hover-color: #fff;
+  --pill-rest-bg: #f5f5f6;
+  --pill-rest-color: #0c0c10;
+  --pill-bleed: 0px;
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
   min-height: 42px;
   display: inline-flex;
   justify-content: center;
@@ -188,41 +192,50 @@ html.motion-ready .hero-title.is-word-animated .hero-word {
   font-size: var(--type-ui);
   font-weight: 500;
   line-height: 1.24;
-  transition: transform .48s var(--ease), box-shadow .48s ease, color .48s ease;
+  background: transparent;
+  color: var(--pill-rest-color);
+  transition: box-shadow .48s ease;
 }
-.pill::before {
-  content: '';
+.pill:hover, .pill:focus-visible { box-shadow: 0 10px 24px rgba(0,0,20,.09); }
+.pill-mask { display: block; height: 1.24em; overflow: hidden; opacity: 0; }
+.pill-label { display: block; flex: none; white-space: nowrap; line-height: 1.24em; }
+.pill-dark { --pill-rest-color: #0c0c10; --pill-rest-bg: #f5f5f6; }
+.pill-light {
+  --pill-rest-bg: transparent;
+  --pill-rest-color: #f5f5f6;
+  --pill-hover-bg: #f1f1f4;
+  --pill-hover-color: #0c0c10;
+  --pill-bleed: -1px;
+  border: 1px solid transparent;
+}
+.pill-surface {
+  position: absolute;
+  inset: var(--pill-bleed);
+  clip-path: inset(0 round 9px);
+  isolation: isolate;
+  pointer-events: none;
+}
+.pill-face, .pill-fill {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  display: grid;
+  place-items: center;
+  line-height: 1.24em;
+  white-space: nowrap;
+}
+.pill-face { background: var(--pill-rest-bg); color: var(--pill-rest-color); }
+.pill-light .pill-face { border: 1px solid #94949a; border-radius: 9px; }
+.pill-fill {
   background: var(--pill-hover-bg);
-  transform: translate3d(0, 102%, 0);
-  transition: transform .76s cubic-bezier(.22,1,.36,1);
-  border-radius: inherit;
+  color: var(--pill-hover-color);
+  clip-path: circle(0px at 50% 50%);
 }
-.pill:hover::before, .pill:focus-visible::before { transform: translate3d(0,0,0); }
-.pill:hover, .pill:focus-visible { box-shadow: 0 10px 24px rgba(0,0,20,.09); }
-.pill-mask { display: block; height: 1.24em; overflow: hidden; }
-.pill-track { display: flex; flex-direction: column; position:relative; top:0; transform:none; transition: top .72s cubic-bezier(.22,1,.36,1); }
-.pill-label { display: block; flex: none; white-space: nowrap; line-height: 1.24em; }
-.pill:hover .pill-track, .pill:focus-visible .pill-track { top:-1.24em; }
-.pill-dark { color: #0c0c10; background: #f5f5f6; --pill-hover-bg: var(--accent); }
-.pill-dark:hover, .pill-dark:focus-visible { color: #fff; }
-/* Apos o preenchimento subir, o fundo do proprio botao recebe a mesma cor.
-   Isso elimina pequenas frestas escuras nos cantos arredondados sem antecipar
-   o preenchimento nem alterar a duracao da animacao de roleta. */
-.pill-light {
-  background: transparent;
-  color: #f5f5f6;
-  border: 1px solid #94949a;
-  --pill-hover-bg: #f1f1f4;
-  transition: background-color 0s, transform .48s var(--ease), box-shadow .48s ease, color .48s ease;
-}
-.pill-light:hover, .pill-light:focus-visible {
-  color: #0c0c10;
-  border-color: #f1f1f4;
-  background-color: var(--pill-hover-bg);
-  transition: background-color 0s .76s, transform .48s var(--ease), box-shadow .48s ease, color .48s ease;
+/* Sem JS/WAAPI, os links continuam visiveis e o hover/foco funciona. */
+.pill:not(.pill-motion):is(:hover, :focus-visible) .pill-fill { clip-path: none; }
+@media (forced-colors: active) {
+  .pill-mask { opacity: 1; }
+  .pill-surface { display: none; }
+  .pill { border: 1px solid ButtonText; color: ButtonText; background: ButtonFace; }
 }
 /* Project cards: dinamicos, nome dentro da propria capa e cantos arredondados. */
 .section { padding-bottom: clamp(140px, 15vw, 215px); }
@@ -687,33 +700,25 @@ body.is-page-leaving::after { opacity: 1; }
 /* v2.0.4: opacidade do header ja definida no bloco principal acima.
    Eliminadas as substituicoes antigas (.22/.75) que escureciam o blur. */
 
-/* v2.0.3 | CTA do cabecalho com a mesma roleta do botao secundario:
-   contorno branco -> preenchimento branco de baixo para cima,
-   e texto branco -> preto. Preserva as dimensoes compactas do header. */
+/* v2.13: mesmo preenchimento circular no CTA do cabecalho. */
 .site-header .header-contact.pill {
   --pill-hover-bg: #fff;
+  --pill-hover-color: #000;
+  --pill-rest-color: #fff;
   min-height: 42px;
   padding: 9px 18px;
   font-size: var(--type-ui);
   font-weight: 500;
   line-height: 1.24;
-  /* v2.0.6: contorno com o mesmo cinza da .pill-light. */
-  border: 1px solid #94949a;
+  border: 1px solid transparent;
   border-radius: 9px;
   background: transparent;
-  color: #fff;
+  color: var(--pill-rest-color);
   transform: none;
+  transition: box-shadow .48s ease;
 }
-.site-header .header-contact.pill::before {
-  background: #fff;
-}
-.site-header .header-contact.pill:hover,
-.site-header .header-contact.pill:focus-visible {
-  color: #000;
-  border-color: #fff;
-  background-color: var(--pill-hover-bg);
-  transform: none;
-  transition: background-color 0s .76s, transform .48s var(--ease), box-shadow .48s ease, color .48s ease;
+@media (forced-colors: active) {
+  .site-header .header-contact.pill { border-color: ButtonText; color: ButtonText; background: ButtonFace; }
 }
 
 /* Comportamento padrao: secao vertical, adequada a mobile, tablets,

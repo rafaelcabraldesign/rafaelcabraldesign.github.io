@@ -1,8 +1,21 @@
-# Rafael Cabral Design — versão 2.12
+# Rafael Cabral Design — versão 2.13
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.12
+## Novidades da versão 2.13
+
+- **Botões:** substituição exclusiva da roleta pelo preenchimento circular iniciado no ponto de entrada do cursor e retraído em direção ao ponto de saída (560 ms na entrada e 460 ms na saída).
+- **Cantos:** a superfície inteira, incluindo o contorno de 1 px, é recortada por uma única máscara de 9 px. O recorte circular é removido ao concluir o preenchimento para evitar frestas escuras.
+- **Texto:** permanece imóvel; sua cor acompanha a região preenchida. Textos, Nexa, pesos, dimensões, cores, bordas, links e responsividade da v2.12 permanecem preservados.
+- **Acessibilidade:** foco por teclado, movimento reduzido, cores forçadas e fallback visual sem JavaScript. Nenhuma biblioteca adicional.
+- **Publicação:** CSS `?v=213` e novo script independente `/assets/js/pill-hover.js?v=213`. Os scripts `site.js` e `conteudo.js`, o workflow, os JSON, as imagens e a animação do título não foram modificados.
+- **Próxima versão:** 2.14.
+
+## Atualizar a partir da v2.12
+
+Extraia `portfolio-rafael-cabral-v2.13-atualizacao.zip` e envie os seis arquivos em um único commit, preservando os caminhos. Substitua os cinco arquivos existentes e acrescente `assets/js/pill-hover.js`. Não exclua os demais arquivos do repositório. Acompanhe a publicação na aba Actions e teste os botões na home, em Projetos e em uma página individual, inclusive a entrada/saída por todos os lados e o foco por teclado.
+
+## Novidades da versão 2.12 (histórico)
 
 - **Título principal:** desfoque de `10px` a `0px` durante a entrada palavra por palavra. Permanecem os 720 ms de duração, o atraso inicial de 45 ms, o intervalo de 50 ms por palavra, o deslocamento de `.44em`, a curva `cubic-bezier(.4,0,.3,1)` e o fade existentes.
 - **Acessibilidade:** o modo de movimento reduzido exibe o título imediatamente, sem desfoque ou animação. Nenhum filtro é aplicado aos demais elementos.
