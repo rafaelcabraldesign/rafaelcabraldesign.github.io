@@ -120,9 +120,20 @@
       attempt();
     });
   }
+  // A entrada do bloco inteiro depende da imagem pronta, nao apenas do viewport.
+  // O atributo preserva o espaco no layout sem exibir um quadro de carregamento.
+  function markMediaPending(element) {
+    element.setAttribute('data-media-pending', '');
+  }
+  function finishMedia(element) {
+    element.removeAttribute('data-media-pending');
+    document.dispatchEvent(new CustomEvent('portfolio:media-ready', {
+      detail: { element }
+    }));
+  }
   const names = { instagram: 'Instagram', behance: 'Behance', linkedin: 'LinkedIn' };
 
-  function cover(project, index) {
+  function cover(project, card) {
     const link = el('a', 'project-cover');
     link.href = projectLink(project);
     link.setAttribute('aria-label', `Ver projeto ${project.nome}`);
@@ -132,16 +143,16 @@
     img.alt = ''; // O nome do projeto ja e anunciado pelo proprio link.
     img.loading = 'lazy';
     img.decoding = 'async';
-    const placeholder = el('span', 'placeholder-center', 'Carregando...');
     link.dataset.imageState = 'loading';
-    link.append(img, placeholder);
+    link.append(img);
     loadWithFallback(img, coverCandidates(project)).then(src => {
       link.dataset.imageState = src ? 'loaded' : 'missing';
       if (src) link.classList.add('has-image');
       else {
         img.remove();
-        placeholder.textContent = 'Imagem em breve';
+        link.append(el('span', 'placeholder-center', 'Imagem em breve'));
       }
+      finishMedia(card);
     });
 
     // Nome e ano dividem a mesma linha. Anos nao cadastrados nao aparecem.
@@ -158,9 +169,9 @@
   function renderCards(container, items) {
     const fragment = document.createDocumentFragment();
     items.forEach(project => {
-      const index = projects.indexOf(project);
       const card = el('article', 'project-card');
-      card.append(cover(project, index));
+      markMediaPending(card);
+      card.append(cover(project, card));
       fragment.append(card);
     });
     container.replaceChildren(fragment);
@@ -187,9 +198,9 @@
     image.decoding = 'async';
     applyImageDimensions(image, paths[0]);
     if (!imageDimensions(paths[0])) frame.classList.add('unknown-image-size');
-    const note = el('span', 'gallery-loading-note', 'Carregando...');
+    markMediaPending(frame);
     frame.dataset.imageState = 'loading';
-    frame.append(image, note);
+    frame.append(image);
     gallery.append(frame);
     gallery.hidden = false;
     document.dispatchEvent(new CustomEvent('portfolio:reveal-added', {
@@ -199,7 +210,7 @@
       if (result) {
         frame.dataset.imageState = 'loaded';
         frame.classList.remove('unknown-image-size');
-        note.remove();
+        finishMedia(frame);
       } else {
         frame.remove();
         gallery.hidden = !gallery.children.length;
@@ -261,8 +272,8 @@
       image.decoding = 'async';
       const note = frame.querySelector('.placeholder-note');
       const missingNote = note?.dataset.imageMissing || note?.textContent || 'Imagem em breve';
+      markMediaPending(frame);
       frame.dataset.imageState = 'loading';
-      if (note) note.textContent = 'Carregando...';
       frame.prepend(image);
       loadWithFallback(image, knownSources([source])).then(result => {
         frame.dataset.imageState = result ? 'loaded' : 'missing';
@@ -273,6 +284,7 @@
           image.remove();
           if (note) note.textContent = missingNote;
         }
+        finishMedia(frame);
       });
     });
   }
@@ -317,7 +329,8 @@
     intro.append(el('p', 'detail-summary', project.frase || 'Apresentação do projeto em preparação.'));
 
     const hero = el('div', 'detail-cover');
-    const heroPlaceholder = el('span', 'detail-placeholder', 'Carregando...');
+    const heroPlaceholder = el('span', 'detail-placeholder');
+    markMediaPending(hero);
     hero.dataset.imageState = 'loading';
     hero.append(heroPlaceholder);
     const img = el('img');
@@ -341,6 +354,7 @@
         img.remove();
         heroPlaceholder.textContent = 'Imagem do projeto em breve';
       }
+      finishMedia(hero);
       return src;
     });
 
@@ -557,7 +571,7 @@
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(({ target, isIntersecting }) => {
-        if (!isIntersecting) return;
+        if (!isIntersecting || target.hasAttribute('data-media-pending')) return;
         observer.unobserve(target);
         target.dataset.entrance = 'playing';
         target.classList.add('is-revealed');
@@ -578,14 +592,22 @@
       element.style.setProperty('--reveal-duration', `${isCard ? 820 : isHero ? 780 : 760}ms`);
       element.dataset.entrance = 'pending';
       element.addEventListener('animationend', event => {
-        if (['reveal-enter'].includes(event.animationName)) element.dataset.entrance = 'complete';
+        if (event.target === element && event.animationName === 'reveal-enter') element.dataset.entrance = 'complete';
       });
-      observer.observe(element);
+      // A imagem lazy continua carregando pela geometria reservada no DOM.
+      // So observamos a entrada quando o arquivo estiver pronto (ou ausente).
+      if (!element.hasAttribute('data-media-pending')) observer.observe(element);
     };
     nodes.forEach(observeReveal);
-    // As imagens numeradas entram no DOM apos o primeiro carregamento.
+    // As imagens numeradas podem entrar no DOM antes de iniciar o download.
     document.addEventListener('portfolio:reveal-added', event => {
       (event.detail?.elements || []).forEach(observeReveal);
+    });
+    document.addEventListener('portfolio:media-ready', event => {
+      const element = event.detail?.element;
+      if (!element?.isConnected) return;
+      if (element.dataset.entrance === 'pending') observer.observe(element);
+      else observeReveal(element);
     });
     // O rodape precisa de um unico gatilho de entrada para nao gerar
     // rolagem adicional: filhos transformados nao sao observados separados.

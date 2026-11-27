@@ -1,8 +1,20 @@
-# Rafael Cabral Design — versão 2.9
+# Rafael Cabral Design — versão 2.10
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.9
+## Novidades da versão 2.10
+
+- **Entrada após o carregamento:** capas, primeira imagem e imagens internas dos cases, Sobre e Serviços ficam invisíveis enquanto a imagem carrega e é decodificada. A animação original inicia quando o bloco pronto entra na área visível; não há quadro com `Carregando...` nem fade adicional da imagem.
+- **Layout preservado:** o espaço é reservado pelas proporções dos cards e pelas dimensões do índice. O lazy loading nativo permanece ativo nas imagens não prioritárias. Em modo de movimento reduzido, a imagem aparece sem animação quando estiver pronta.
+- **Ausência de imagem:** os cards e as imagens de abertura/apoio sem arquivo utilizável continuam exibindo o aviso de imagem em breve. Uma imagem interna que falhar é retirada da galeria.
+- **Conteúdo e publicação:** os JSON individuais, a ordem cronológica e o workflow existente permanecem inalterados. CSS e scripts usam `?v=210` para evitar cache.
+- **Próxima versão:** 2.11.
+
+## Atualizar a partir da v2.9
+
+Extraia `portfolio-rafael-cabral-v2.10-atualizacao.zip` e envie os seis arquivos incluídos em um commit, preservando os caminhos. Não altere `.github`, `scripts`, `conteudo` ou os WebP já publicados. Confira a execução de Publicar portfolio na aba Actions.
+
+## Novidades da versão 2.9 (histórico)
 
 - **Um arquivo por projeto:** os 15 cases agora ficam em `conteudo/projetos/`, em JSON. Nome, resumo de abertura, serviços, indústria, ano e parágrafos do texto são independentes de JavaScript.
 - **Ordem automática e cronológica:** na home, na página Projetos e em Outros projetos, os cases com resumo ou texto preenchido aparecem primeiro, na ordem do primeiro commit da branch padrão que introduziu conteúdo em cada arquivo. Alterações posteriores não mudam sua posição. CRISFIT e Down Five foram migrados nessa ordem. Os placeholders completam as galerias na ordem de cadastro; o upload de imagens, por si só, não altera a ordem. Se vários cases receberem conteúdo no mesmo commit, a ordem de cadastro resolve o empate (novos arquivos não listados são ordenados pelo slug).
@@ -112,7 +124,7 @@ O conteúdo dos cases agora é gerado no build. Não abra os HTMLs-fonte diretam
 
 ## Histórico de versões
 
-As notas abaixo descrevem o comportamento em cada versão anterior. Quando houver diferenças, prevalecem as instruções da versão 2.9 acima.
+As notas abaixo descrevem o comportamento em cada versão anterior. Quando houver diferenças, prevalecem as instruções da versão 2.10 acima.
 
 ## Histórico — versão 2.8 (otimizada)
 
