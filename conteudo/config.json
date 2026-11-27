@@ -1,0 +1,28 @@
+{
+  "contato": {
+    "email": "rafaelcdesign@outlook.com",
+    "whatsapp": "5534997167187",
+    "mensagemWhatsApp": "Olá, Rafael! Gostaria de conversar sobre um projeto.",
+    "instagram": "",
+    "behance": "",
+    "linkedin": "https://www.linkedin.com/in/rafaelcabraldesign/"
+  },
+  "ordemCadastro": [
+    "crisfit",
+    "down-five",
+    "neto-motors",
+    "juliana-vitorino",
+    "salto-energia",
+    "uber-brindes",
+    "mariana-morais",
+    "ina-game-studio",
+    "poioo-kids",
+    "artes-do-meu-brasil",
+    "funil-exponencial",
+    "ita-corretora-de-seguros",
+    "eagle-investment",
+    "agrofixa",
+    "lara-land"
+  ],
+  "destaquesManuais": []
+}

@@ -1,8 +1,120 @@
-# Rafael Cabral Design — versão 2.8
+# Rafael Cabral Design — versão 2.9
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.8 (otimizada)
+## Novidades da versão 2.9
+
+- **Um arquivo por projeto:** os 15 cases agora ficam em `conteudo/projetos/`, em JSON. Nome, resumo de abertura, serviços, indústria, ano e parágrafos do texto são independentes de JavaScript.
+- **Ordem automática e cronológica:** na home, na página Projetos e em Outros projetos, os cases com resumo ou texto preenchido aparecem primeiro, na ordem do primeiro commit da branch padrão que introduziu conteúdo em cada arquivo. Alterações posteriores não mudam sua posição. CRISFIT e Down Five foram migrados nessa ordem. Os placeholders completam as galerias na ordem de cadastro; o upload de imagens, por si só, não altera a ordem. Se vários cases receberem conteúdo no mesmo commit, a ordem de cadastro resolve o empate (novos arquivos não listados são ordenados pelo slug).
+- **Home:** os quatro primeiros cases da ordem automática. `destaquesManuais` começa vazio e permite selecionar quatro cases concluídos quando desejar. A curadoria manual afeta apenas a home.
+- **Outros projetos:** até seis cards, excluindo o projeto aberto, seguindo a mesma ordem cronológica.
+- **Automação existente:** `scripts/build_pages.py` gera o índice de conteúdo e o índice de imagens nos HTMLs publicados. Se o checkout do Actions for raso, o script busca a ancestralidade do Git com filtro `blob:none`, sem baixar antecipadamente os arquivos históricos de imagem. Não há novas requisições de conteúdo por projeto no navegador, commits automáticos nem alterações de permissões ou workflow.
+- **Visual preservado:** CSS, imagens, arraste horizontal, animações, mensagens de carregamento e navegação permanecem inalterados. As páginas carregam os scripts com `?v=29`.
+- **Migração:** CRISFIT mantém a descrição de cinco parágrafos; Down Five usa a versão atual de quatro parágrafos fornecida pelo proprietário. O rótulo SEGMENTO de CRISFIT foi mantido via `rotuloIndustria`.
+- **Próxima versão:** 2.10.
+
+## Atualizar a partir da v2.8 otimizada
+
+1. Extraia `portfolio-rafael-cabral-v2.9-atualizacao.zip`. Envie todos os arquivos e pastas do ZIP **no mesmo commit**, para a raiz da branch `main` do repositório. Preserve a estrutura das pastas e todos os WebP já enviados.
+2. Confirme o sucesso de `Publicar portfolio` na aba Actions. **Não é necessário reenviar nem editar a pasta `.github`**: o workflow da v2.8 já executa `scripts/build_pages.py`, que foi atualizado.
+3. Confira a home, a página Projetos e os cases CRISFIT e Down Five. O código-fonte publicado terá os elementos `portfolio-image-index` e `portfolio-content-index` com dados JSON (não `null`).
+
+O ZIP completo reúne os arquivos-base, não os WebP de cases ou as fotos enviados separadamente ao repositório. Prefira o ZIP de atualização. Não apague `assets`, `scripts`, `conteudo` nem `.github`.
+
+## Como editar o conteúdo de um case
+
+Abra `conteudo/projetos/` no GitHub, selecione o JSON do projeto e use o ícone de lápis (Edit this file). Edite apenas o conteúdo desejado e faça o commit na branch padrão.
+
+Exemplo de estrutura para um projeto ainda sem conteúdo:
+
+```json
+{
+  "nome": "Neto Motors",
+  "resumo": "",
+  "servicos": "",
+  "industria": "",
+  "ano": "",
+  "texto": [],
+  "imagem": "",
+  "galeria": []
+}
+```
+
+- `resumo`: texto breve ao lado do título.
+- `servicos`, `industria`, `ano`: ficha técnica. Mantenha o ano entre aspas.
+- `texto`: um item entre aspas por parágrafo, separados por vírgulas. Por exemplo, `"texto": ["Primeiro parágrafo.", "Segundo parágrafo."]`. Aspas internas devem ser escapadas como `\"`. Não coloque vírgula após o último item.
+- `imagem` e `galeria`: opcionais. Deixe vazios para usar a convenção automática de imagens.
+- `rotuloIndustria`: opcional. O valor `"SEGMENTO"` preserva esse rótulo onde desejado; os demais usam INDÚSTRIA quando a indústria estiver preenchida.
+
+**A ordenação usa o primeiro commit com `resumo` ou `texto` não vazio**, não o ano do projeto, a data do arquivo, a posição no JSON ou o último commit de edição. Se o conteúdo for removido, o case volta aos placeholders; se for restaurado, recupera a posição de sua primeira publicação. Preserve o histórico da branch padrão. A ordem não é regravada nos arquivos pelo build.
+
+### Incluir um novo projeto
+
+Crie um arquivo `conteudo/projetos/nome-do-projeto.json` com a estrutura acima (o nome do arquivo, sem `.json`, vira o slug do case). Use letras minúsculas sem acentos, números e hífens. Não precisa alterar JavaScript ou registrar o novo arquivo em outra lista. A galeria detecta o JSON e a pasta de imagens correspondente automaticamente. `ordemCadastro` em `conteudo/config.json` só define a ordem dos placeholders e desempates no mesmo commit; novos slugs não listados entram no final dos placeholders em ordem alfabética.
+
+### Escolher os quatro destaques quando terminar os cases
+
+Em `conteudo/config.json`, mantenha por enquanto:
+
+```json
+"destaquesManuais": []
+```
+
+Quando quiser fazer a curadoria, substitua a lista vazia por quatro slugs de projetos preenchidos, na ordem desejada. Exemplo de sintaxe (somente depois de preencher todos os selecionados):
+
+```json
+"destaquesManuais": ["down-five", "crisfit", "neto-motors", "lara-land"]
+```
+
+As páginas Projetos e Outros projetos continuam cronológicas. Para voltar à seleção automática, use `[]`. A validação do build exige uma lista vazia ou quatro slugs distintos com conteúdo; uma configuração inválida impede a publicação e preserva o site anterior.
+
+## Organização do site
+
+```text
+conteudo/
+├── config.json                 # contato, ordem de cadastro e destaques manuais
+└── projetos/
+    ├── crisfit.json
+    ├── down-five.json
+    ├── neto-motors.json
+    └── ...                     # um JSON por case
+assets/
+├── css/styles.css              # estilos e animações
+├── js/conteudo.js              # leitor do índice publicado, não editar cases aqui
+├── js/site.js                  # renderização e navegação
+└── img/projetos/               # imagens existentes, manter estrutura
+scripts/build_pages.py           # gera os índices e os HTMLs publicados
+.github/workflows/portfolio-pages.yml # publicação existente
+index.html
+projetos.html
+projeto.html
+```
+
+## Imagens automáticas (regra da v2.8 preservada)
+
+```text
+assets/img/
+├── sobre.webp
+├── servicos.webp
+└── projetos/
+    └── down-five/
+        ├── down-five.webp       # capa dos cards
+        ├── down-five-01.webp    # primeira imagem, acima da descrição
+        ├── down-five-04.webp    # galeria, após a descrição
+        └── down-five-08.webp    # lacunas são permitidas, sem teto de numeração
+```
+
+Mantenha extensão `.webp` e nomes minúsculos. O GitHub Actions gera o índice com os arquivos existentes e suas dimensões, e o navegador carrega as imagens progressivamente. Nenhum cadastro manual de imagens é necessário. A estrutura plana antiga também continua compatível.
+
+## Pré-visualização local
+
+O conteúdo dos cases agora é gerado no build. Não abra os HTMLs-fonte diretamente para visualizar a galeria: execute `python3 scripts/build_pages.py --output _site` e depois `python3 -m http.server 8000 --directory _site`. Use um diretório de saída novo a cada build ou remova a saída anterior. Sem um repositório Git com histórico completo, a prévia usa a ordem de cadastro; a publicação no Actions usa a ordem cronológica real. Não envie `_site` para o GitHub. O site publicado permanece no GitHub Pages com o workflow já configurado.
+
+## Histórico de versões
+
+As notas abaixo descrevem o comportamento em cada versão anterior. Quando houver diferenças, prevalecem as instruções da versão 2.9 acima.
+
+## Histórico — versão 2.8 (otimizada)
 
 - **Índice automático de imagens:** o GitHub Actions executa `scripts/build_pages.py` em cada publicação da branch padrão. O script identifica os WebP realmente presentes e suas dimensões, incorpora o inventário aos três HTMLs publicados e envia o site ao GitHub Pages. Não há commits automáticos, chamadas à API do GitHub pelo navegador, serviços externos, nem cadastro manual de imagens.
 - **Numeração livre:** os arquivos numerados são ordenados pelo número, mesmo com lacunas (por exemplo, 01, 02, 04, 08, 100). Não existe mais o limite de 40 no fluxo indexado. `-01.webp` continua na abertura e `-02.webp` em diante após a descrição. A capa sem número continua exclusiva dos cards, com fallback para a imagem 01.
@@ -178,59 +290,3 @@ Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem in
 - **Menu mobile** com duas barras que se transformam suavemente em X; painel escuro com links centralizados abaixo do cabeçalho.
 - Conteúdos e imagens de todos os 15 projetos, assinatura SVG animada, seções e navegação existentes preservados.
 
-## Instalação a partir da v2.7 — configuração única
-
-1. Extraia `portfolio-rafael-cabral-v2.8-otimizada-atualizacao.zip`. Envie todos os arquivos do ZIP para os respectivos caminhos no repositório `rafaelcabraldesign/rafaelcabraldesign.github.io`, na branch padrão. Não substitua a pasta `assets` inteira nem apague os WebP já enviados.
-2. Confira se o arquivo `.github/workflows/portfolio-pages.yml` e o script `scripts/build_pages.py` estão na raiz do repositório, nas respectivas pastas. Se a interface de upload omitir a pasta `.github`, use **Add file → Create new file**, digite `.github/workflows/portfolio-pages.yml`, cole o conteúdo do arquivo fornecido e confirme o commit.
-3. Abra **Settings → Pages → Build and deployment → Source** e escolha **GitHub Actions** (no lugar de Deploy from a branch). O workflow já está incluído; não crie outro modelo de publicação. Se existir outro workflow que publique Pages, mantenha apenas o novo publicador ativo.
-4. Abra a aba **Actions → Publicar portfolio → Run workflow**, selecione a branch padrão e clique em **Run workflow**. Se a execução anterior tiver falhado antes da mudança de Source, uma nova execução resolve a configuração. Aguarde os jobs `build` e `deploy` ficarem verdes. Caso haja aprovação pendente no ambiente `github-pages`, revise e aprove a implantação.
-5. Abra o site e confira as imagens do Down Five e CRISFIT. Após a publicação, a página `projeto.html?projeto=down-five` deve mostrar o arquivo `-08.webp` depois de `-04.webp` se esses forem os arquivos presentes. O índice pode ser conferido no código-fonte do HTML pelo elemento `portfolio-image-index` (deve conter `files`, não `null`).
-
-**Da próxima vez:** envie as imagens e alterações normalmente na branch padrão. Cada commit dispara o workflow, que monta e publica o site com o índice atualizado. Não é necessário editar JSON, criar uma lista de imagens ou usar a aba Actions manualmente após a configuração inicial. Não publique `_site` nem edite o índice no HTML-fonte: ele é gerado somente no artefato de publicação.
-
-Para pré-visualização local sem sondagens, execute `python3 scripts/build_pages.py --output _site` e sirva a pasta `_site` (por exemplo, `python3 -m http.server 8000 --directory _site`). Use um diretório de saída novo a cada build ou remova a saída anterior antes de regenerar.
-
-**Não apague a pasta `assets` existente.** O ZIP de atualização substitui somente os arquivos de mesmo nome e caminho. O ZIP completo contém os arquivos-base, não os WebP dos cases que já estão no GitHub.
-
-Documentação oficial: https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-
-## Organização do site
-
-- `index.html`: abertura e projetos selecionados em trilho horizontal (desktop), Serviços, Sobre e Contato.
-- `projetos.html`: galeria dos projetos.
-- `projeto.html?projeto=crisfit`: página individual do case CRISFIT (o mesmo modelo é utilizado nos demais).
-- `assets/css/styles.css`: design system, tema, animações e responsividade.
-- `assets/js/conteudo.js`: textos e informações dos 15 projetos e links de contato.
-- `assets/js/site.js`: renderização dos cards, dos cases e das galerias, além de animações e navegação.
-
-### Imagens automáticas
-
-```text
-assets/img/
-├── sobre.webp                   # opcional
-├── servicos.webp                # opcional
-└── projetos/
-    └── crisfit/
-        ├── crisfit.webp         # apenas capa nos cards
-        ├── crisfit-01.webp      # primeira imagem da página individual
-        ├── crisfit-02.webp      # segunda imagem do case
-        └── crisfit-03.webp      # terceira imagem, etc.
-```
-
-As imagens internas são ordenadas numericamente pelo índice de publicação, sem exigir números consecutivos nem limitar a 40. Exemplo: 01, 02, 04, 08. A imagem 01 continua na abertura; as restantes aparecem após a descrição. A convenção antiga, com arquivos diretamente em `assets/img/projetos/`, também é suportada. Utilize nomes e extensão `.webp` em minúsculas.
-
-## Compatibilidade e manutenção
-
-- Fonte Nexa carregada pelo kit Adobe Fonts `https://use.typekit.net/pwt1xky.css`.
-- Conteúdos e links (inclusive o WhatsApp com mensagem predefinida) permanecem configurados no JavaScript e no HTML.
-- O favicon continua em `assets/img/favicon.svg`; o nome substitui a antiga foto circular **somente no cabeçalho**. Os arquivos de avatar anteriores podem permanecer guardados sem serem usados.
-- Respeita `prefers-reduced-motion` para usuários que reduzem animações.
-- Testar após publicar: menu mobile, links WhatsApp, cases com imagens reais e rolagem das galerias.
-
-O ZIP completo reúne apenas os arquivos-base do projeto. Ele não inclui arquivos enviados separadamente ao seu GitHub, como imagens reais de cases ou fotografias da seção Sobre.
-
-## Comportamento do showcase horizontal
-
-A seção inicial utiliza `data-horizontal-showcase` e um trilho controlado em `assets/js/site.js` por uma função `setupHorizontalShowcase()`. O valor de deslocamento é calculado a partir da largura real dos cards carregados. A seção fica fixa abaixo do header até que todos os projetos selecionados sejam percorridos, então libera a rolagem vertical para Serviços. A altura é recalculada ao redimensionar e ao carregar fontes.
-
-Para testar, abra o site num desktop de pelo menos 900 px de largura e 620 px de altura, role até o final da faixa de projetos e confira a passagem para Serviços. No celular e com preferência por movimento reduzido, tudo continua empilhado e vertical.

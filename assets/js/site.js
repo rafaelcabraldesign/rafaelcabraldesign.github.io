@@ -1,4 +1,4 @@
-/* Funcionalidades do site. Os conteudos editaveis estao em conteudo.js. */
+/* Funcionalidades do site. Os conteudos editaveis estao em conteudo/projetos/. */
 (() => {
   'use strict';
 
@@ -964,9 +964,9 @@
     });
   }
 
-  // Criterio unico para as tres galerias: descricao preenchida (texto ou resumo).
-  // Preserva a ordem original dentro de cada grupo e nao altera o array de origem.
-  const hasProjectContent = project => [project.texto, project.resumo]
+  // O build ordena os cases pela primeira publicacao de conteudo, com os
+  // preenchidos antes dos placeholders. Filtrar nao altera essa ordem.
+  const hasProjectContent = project => [project.texto, project.frase]
     .some(value => typeof value === 'string' && value.trim().length > 0);
 
   function prioritizeProjectsWithContent(items) {
@@ -976,19 +976,16 @@
     ];
   }
 
-  /* Mantem quatro destaques. Os fixos aparecem na ordem definida no
-   * conteudo.js; depois, cases com descricao preenchida; por ultimo,
-   * placeholders na ordem original. O criterio de conteudo nao depende
-   * de baixar/testar imagens remotas.
-   */
+  // Em modo automatico, as tres galerias seguem exatamente a mesma ordem.
+  // A futura curadoria manual e exclusiva da home; lista vazia = automatico.
   function selectFeaturedProjects() {
-    const fixedSlugs = Array.isArray(data.destaquesFixos) ? data.destaquesFixos : [];
-    const fixed = [...new Set(fixedSlugs)]
-      .map(slug => projects.find(project => project.slug === slug))
+    const ordered = prioritizeProjectsWithContent(projects);
+    const manualSlugs = Array.isArray(data.destaquesManuais) ? data.destaquesManuais : [];
+    const manual = [...new Set(manualSlugs)]
+      .map(slug => ordered.find(project => project.slug === slug && hasProjectContent(project)))
       .filter(Boolean);
-    const fixedSet = new Set(fixed.map(project => project.slug));
-    const remaining = projects.filter(project => !fixedSet.has(project.slug));
-    return [...fixed, ...prioritizeProjectsWithContent(remaining)].slice(0, 4);
+    if (manual.length === 4) return manual;
+    return ordered.slice(0, 4);
   }
 
   const featured = document.getElementById('featured-projects');
