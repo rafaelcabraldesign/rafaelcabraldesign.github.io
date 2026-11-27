@@ -1,8 +1,20 @@
-# Rafael Cabral Design — versão 2.10
+# Rafael Cabral Design — versão 2.11
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.10
+## Novidades da versão 2.11
+
+- **Símbolo em rotação:** o ícone do cabeçalho gira continuamente, com uma volta a cada 8 segundos, mantendo o tamanho e o hover originais. A preferência de movimento reduzido desativa a rotação.
+- **URLs limpas:** cada JSON gera automaticamente uma página `/<slug>/index.html` no site publicado, acessível em `https://rafaelcabraldesign.github.io/<slug>/` (o endereço sem a barra final pode ser redirecionado pelo GitHub Pages). Os cards de todas as galerias apontam para essas páginas. O endereço legado `projeto.html?projeto=<slug>` encaminha visitantes ao novo endereço.
+- **Compartilhamento:** as páginas geradas têm título `Rafael Cabral - Nome do projeto`, descrição com o resumo do JSON, URL canônica e metadados Open Graph e Twitter, disponíveis no HTML inicial sem depender de JavaScript. Sem resumo, usa-se o primeiro parágrafo ou um aviso de preparação. Não foi acrescentada uma miniatura de compartilhamento. Cases preenchidos têm URL indexável; placeholders e o template legado permanecem com `noindex, follow`. A aparência final e o cache da prévia dependem do aplicativo (inclusive WhatsApp).
+- **Publicação:** o workflow existente continua executando `scripts/build_pages.py`; nenhum novo arquivo oculto ou mudança de configuração é necessária. A estrutura de conteúdo individual, a ordem cronológica, os destaques e o lazy loading são preservados. As referências de CSS e JS usam `?v=211`.
+- **Próxima versão:** 2.12.
+
+## Atualizar a partir da v2.10
+
+Extraia `portfolio-rafael-cabral-v2.11-atualizacao.zip` e envie os sete arquivos incluídos em um único commit, preservando os caminhos. Não altere `.github`, `conteudo` ou os WebP já publicados. O script gera as novas páginas dentro do artefato publicado, não é preciso criar pastas de projetos na raiz do repositório. Confira a execução de Publicar portfolio na aba Actions. Após o sucesso, teste `/down-five/`, `/crisfit/`, o endereço legado, os links dos cards e a prévia do WhatsApp com a nova URL.
+
+## Novidades da versão 2.10 (histórico)
 
 - **Entrada após o carregamento:** capas, primeira imagem e imagens internas dos cases, Sobre e Serviços ficam invisíveis enquanto a imagem carrega e é decodificada. A animação original inicia quando o bloco pronto entra na área visível; não há quadro com `Carregando...` nem fade adicional da imagem.
 - **Layout preservado:** o espaço é reservado pelas proporções dos cards e pelas dimensões do índice. O lazy loading nativo permanece ativo nas imagens não prioritárias. Em modo de movimento reduzido, a imagem aparece sem animação quando estiver pronta.

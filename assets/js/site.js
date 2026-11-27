@@ -16,7 +16,11 @@
     return node;
   };
 
-  const projectLink = project => `projeto.html?projeto=${encodeURIComponent(project.slug)}`;
+  // A raiz e calculada a partir do proprio script, inclusive em /slug/.
+  // Nao usamos <base>, para preservar links de ancora e mascaras SVG locais.
+  const siteRoot = new URL('../../', document.currentScript.src);
+  const siteURL = path => new URL(path, siteRoot).href;
+  const projectLink = project => siteURL(`${encodeURIComponent(project.slug)}/`);
   // O build do GitHub Actions inclui o inventario real no HTML. Sem uma
   // requisicao extra, o navegador sabe quais arquivos existem e suas dimensoes.
   // Se o HTML ainda nao passou pelo build, o fallback antigo continua utilizavel.
@@ -113,7 +117,7 @@
         if (cursor >= sources.length) { clean(); resolve(null); return; }
         const source = sources[cursor++];
         applyImageDimensions(image, source);
-        image.src = source;
+        image.src = siteURL(source);
       };
       image.addEventListener('load', onLoad);
       image.addEventListener('error', onError);
@@ -222,10 +226,10 @@
     const manual = Array.isArray(project.galeria) ? project.galeria.filter(path => typeof path === 'string' && path.trim()) : [];
     if (manual.length) {
       const heroSource = await heroSourcePromise;
-      const seen = new Set(heroSource ? [new URL(heroSource, document.baseURI).href] : []);
+      const seen = new Set(heroSource ? [siteURL(heroSource)] : []);
       manual.forEach((source, index) => {
         if (!manualAvailable(source)) return;
-        const url = new URL(source, document.baseURI).href;
+        const url = siteURL(source);
         if (seen.has(url)) return;
         seen.add(url);
         appendLazyGalleryImage(project, gallery, index + 1, [source]);
@@ -308,19 +312,25 @@
 
   function renderProjectDetail(container) {
     const params = new URLSearchParams(location.search);
-    const slug = params.get('projeto');
+    const staticSlug = container.dataset.projectSlug;
+    const slug = staticSlug || params.get('projeto');
     const index = projects.findIndex(p => p.slug === slug);
     if (index < 0) {
       container.append(el('h1', '', 'Projeto não encontrado.'));
       const back = el('a', 'text-link', 'Ver todos os projetos ↗');
-      back.href = 'projetos.html';
+      back.href = siteURL('projetos.html');
       container.append(back);
       document.title = 'Projeto não encontrado — Rafael Cabral';
       return;
     }
 
     const project = projects[index];
-    document.title = `${project.nome} — Rafael Cabral`;
+    // Links legados continuam abrindo o case, agora no endereco canonico.
+    if (!staticSlug && data.rotasEstaticas && location.protocol !== 'file:') {
+      location.replace(projectLink(project) + location.hash);
+      return;
+    }
+    document.title = `Rafael Cabral - ${project.nome}`;
 
     const intro = el('div', 'detail-intro');
     const headingGroup = el('div', 'detail-heading');
@@ -402,7 +412,7 @@
       renderCards(relatedGrid, others);
       const relatedFooter = el('div', 'related-footer');
       const moreLink = el('a', 'text-link', 'Ver todos os projetos ');
-      moreLink.href = 'projetos.html';
+      moreLink.href = siteURL('projetos.html');
       const arrow = el('span', '', '↗');
       arrow.setAttribute('aria-hidden', 'true');
       moreLink.append(arrow);

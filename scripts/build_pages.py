@@ -5,6 +5,7 @@ No third-party dependencies, API calls from the browser, or generated commits.
 The GitHub Actions checkout supplies Git history for chronological ordering.
 """
 import argparse
+from html import escape
 import json
 import os
 import re
@@ -216,7 +217,7 @@ def make_content(root):
     if manual and (len(manual) != 4 or len(set(manual)) != 4 or not set(manual) <= completed):
         raise ValueError('destaquesManuais must be empty or contain four distinct completed project slugs')
     print('Project order: ' + ', '.join(p['slug'] for p in projects))
-    return {'contato': contact, 'projetos': projects, 'destaquesManuais': manual}
+    return {'contato': contact, 'projetos': projects, 'destaquesManuais': manual, 'rotasEstaticas': True}
 
 
 def embed_json(html, marker, value, page):
@@ -225,6 +226,55 @@ def embed_json(html, marker, value, page):
     # Protect the JSON script element against HTML-like characters in content.
     payload = json.dumps(value, ensure_ascii=True, separators=(',', ':')).replace('<', '\\u003c')
     return html.replace(marker, marker.replace('>null<', f'>{payload}<'))
+
+# The portfolio is a GitHub Pages user site at the root of this origin.
+SITE_ORIGIN = 'https://rafaelcabraldesign.github.io'
+
+
+def project_page(template, project):
+    """Produce a shareable page with metadata available before JavaScript."""
+    slug = project['slug']
+    name = project['nome']
+    title = f'Rafael Cabral - {name}'
+    summary = project['frase'] or (project['texto'].split('\n\n', 1)[0] if project['texto'] else '')
+    if not summary:
+        summary = f'Projeto {name} no portfólio de Rafael Cabral. Apresentação em preparação.'
+    summary = ' '.join(summary.split())
+    url = f'{SITE_ORIGIN}/{slug}/'
+    # Escape every value for use in the head; the JSON has independent escaping.
+    meta = [f'<title>{escape(title)}</title>',
+            f'<meta name="description" content="{escape(summary, quote=True)}">',
+            f'<link rel="canonical" href="{url}">',
+            '<meta property="og:type" content="website">',
+            '<meta property="og:locale" content="pt_BR">',
+            '<meta property="og:site_name" content="Rafael Cabral Design">',
+            f'<meta property="og:title" content="{escape(title, quote=True)}">',
+            f'<meta property="og:description" content="{escape(summary, quote=True)}">',
+            f'<meta property="og:url" content="{url}">',
+            '<meta name="twitter:card" content="summary">',
+            f'<meta name="twitter:title" content="{escape(title, quote=True)}">',
+            f'<meta name="twitter:description" content="{escape(summary, quote=True)}">']
+    old_title = '<title>Projeto — Rafael Cabral</title>'
+    detail = 'id="project-detail"'
+    if template.count(old_title) != 1 or template.count(detail) != 1:
+        raise ValueError('Unexpected project template structure')
+    # Keep placeholders and the legacy template out of search results, while
+    # completed cases have their own indexable canonical URL.
+    if project['frase'] or project['texto']:
+        template = template.replace('  <meta name="robots" content="noindex, follow">\n', '', 1)
+    # Rewrite the template's relative navigation/assets for its new directory.
+    # Fragment-only hrefs (skip link, footer) remain local to this exact page.
+    def root_relative(match):
+        attribute, path = match.groups()
+        if path == './':
+            path = '../'
+        elif path.startswith(('assets/', 'index.html', 'projetos.html')):
+            path = '../' + path
+        return f'{attribute}="{path}"'
+    template = re.sub(r'\b(href|src)="([^"]*)"', root_relative, template)
+    template = template.replace(old_title, '\n  '.join(meta))
+    return template.replace(detail, f'{detail} data-project-slug="{slug}"')
+
 
 def build(root, output):
     root, output = root.resolve(), output.resolve()
@@ -236,15 +286,29 @@ def build(root, output):
     content = make_content(root)
     output.mkdir(parents=True)
     shutil.copytree(root / 'assets', output / 'assets')
+    project_template = None
     for page in PAGES:
         html = (root / page).read_text(encoding='utf-8')
         html = embed_json(html, MARKER, index, page)
         html = embed_json(html, CONTENT_MARKER, content, page)
         (output / page).write_text(html, encoding='utf-8')
+        if page == 'projeto.html':
+            project_template = (root / page).read_text(encoding='utf-8')
+    for project in content['projetos']:
+        slug = project['slug']
+        destination = output / slug
+        if destination.exists() or slug in {'assets', 'scripts', 'conteudo'}:
+            raise ValueError(f'Project slug conflicts with a reserved site path: {slug}')
+        page = f'{slug}/index.html'
+        html = project_page(project_template, project)
+        html = embed_json(html, MARKER, index, page)
+        html = embed_json(html, CONTENT_MARKER, content, page)
+        destination.mkdir()
+        (destination / 'index.html').write_text(html, encoding='utf-8')
     for name in ('.nojekyll', 'CNAME', 'robots.txt', 'sitemap.xml', '404.html'):
         if (root / name).is_file():
             shutil.copy2(root / name, output / name)
-    print(f'Indexed {len(index["files"])} WebP files; built {len(PAGES)} pages in {output}')
+    print(f'Indexed {len(index["files"])} WebP files; built {len(PAGES) + len(content["projetos"])} pages in {output}')
 
 
 if __name__ == '__main__':
