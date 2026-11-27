@@ -1,8 +1,19 @@
-# Rafael Cabral Design — versão 2.13
+# Rafael Cabral Design — versão 2.14
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.13
+## Novidades da versão 2.14
+
+- **Título principal:** remoção exclusiva do desfoque na entrada palavra por palavra. Permanecem os 720 ms de duração, o atraso inicial de 45 ms, o intervalo de 50 ms por palavra, o deslocamento de `.44em`, a curva `cubic-bezier(.4,0,.3,1)` e o fade existentes.
+- **Preservação:** o hover circular dos botões, o desfoque do cabeçalho, as demais animações, o layout, a tipografia, os textos e a preferência por movimento reduzido continuam inalterados.
+- **Publicação:** CSS `?v=214` nas três páginas-base para evitar cache antigo. Os scripts permanecem nas versões anteriores. Nenhuma alteração no workflow, JSON ou imagens.
+- **Próxima versão:** 2.15.
+
+## Atualizar a partir da v2.13
+
+Extraia `portfolio-rafael-cabral-v2.14-atualizacao.zip` e envie os cinco arquivos incluídos em um único commit, preservando seus caminhos. Este pacote incremental pressupõe que a v2.13, incluindo `assets/js/pill-hover.js`, já foi aplicada. Se ainda não foi, aplique a v2.13 primeiro. Não exclua os demais arquivos do repositório. Confira a execução de Publicar portfolio na aba Actions e a animação do título na home publicada.
+
+## Novidades da versão 2.13 (histórico)
 
 - **Botões:** substituição exclusiva da roleta pelo preenchimento circular iniciado no ponto de entrada do cursor e retraído em direção ao ponto de saída (560 ms na entrada e 460 ms na saída).
 - **Cantos:** a superfície inteira, incluindo o contorno de 1 px, é recortada por uma única máscara de 9 px. O recorte circular é removido ao concluir o preenchimento para evitar frestas escuras.
