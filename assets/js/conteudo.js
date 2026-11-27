@@ -61,9 +61,7 @@ O logotipo foi desenvolvido a partir da integração das iniciais DW e do númer
 
 A paleta cromática combina rosa vibrante, preto, branco e tons de prata, estabelecendo uma identidade de alto contraste que rompe com as convenções visuais do segmento. Grafismos inspirados em chamas contrapõem a rigidez geométrica do logotipo, acrescentando energia, movimento e dinamismo à composição.
 
-Para ampliar a personalidade da marca, foi criado Dudu, um shih-tzu de chupeta com expressão provocativa e estética inspirada na cultura gamer e streetwear. O contraste entre sua aparência carismática e sua atitude competitiva introduz humor e irreverência à identidade, tornando o personagem um elemento central na comunicação da equipe.
-
-O sistema visual foi pensado para se desdobrar em uniformes, vestuário casual, acessórios, merchandising e comunicação digital. A combinação entre geometria, ilustração e expressividade estabelece um universo visual próprio, que conecta competitividade, entretenimento e cultura gamer.`, resumo: "", contexto: "", solucao: "", galeria: [] },
+Para ampliar a personalidade da marca, foi criado Dudu, um shih-tzu de chupeta com expressão provocativa e estética inspirada na cultura gamer e streetwear. O contraste entre sua aparência carismática e sua atitude competitiva introduz humor e irreverência à identidade, tornando o personagem um elemento central na comunicação da equipe.`, resumo: "", contexto: "", solucao: "", galeria: [] },
     { nome: "Lara Land", slug: "lara-land", imagem: "", categoria: "", ano: "", resumo: "", contexto: "", solucao: "", galeria: [] }
   ]
 };
