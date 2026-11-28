@@ -1,8 +1,21 @@
-# Rafael Cabral Design — versão 2.14
+# Rafael Cabral Design — versão 2.15
 
 Portfólio estático em HTML, CSS e JavaScript hospedado no GitHub Pages, sem infraestrutura paga.
 
-## Novidades da versão 2.14
+## Novidades da versão 2.15
+
+- **Entrada em escada:** os cards das três listas (Projetos selecionados, Todos os projetos e Outros projetos) iniciam na ordem em que estão dispostos, da esquerda para a direita e de cima para baixo, inclusive no trilho horizontal.
+- **Ritmo:** intervalo mínimo de 95 ms entre inícios, preservando 820 ms de duração, deslocamento de 38 px, fade e curva de aceleração original. A ordem e o conteúdo dos cases não mudam.
+- **Carregamento:** um card posterior visível aguarda os anteriores visíveis que ainda não terminaram de carregar/decodificar. Placeholders seguem a mesma fila. Cards fora do viewport não bloqueiam a entrada ao saltar ou restaurar a rolagem. Lazy loading e reserva de espaço são preservados.
+- **Implementação:** `assets/js/card-entrance.js` controla exclusivamente o início visual dos cards, em conjunto com o evento `portfolio:media-ready` existente em `site.js`. O CSS limita o controle ao novo módulo; sem ele, o comportamento anterior permanece como fallback. As demais animações e os scripts existentes permanecem intactos. Movimento reduzido não usa a fila; o foco visível por teclado prioriza o card focado.
+- **Publicação:** CSS e novo script `?v=215` nas três páginas-base. Nenhuma alteração no workflow, JSON, imagens ou arquivos JavaScript existentes.
+- **Próxima versão:** 2.16.
+
+## Atualizar a partir da v2.14
+
+Extraia `portfolio-rafael-cabral-v2.15-atualizacao.zip` e envie os seis arquivos incluídos em um único commit, preservando seus caminhos. Substitua os cinco arquivos existentes e acrescente `assets/js/card-entrance.js`. Este pacote pressupõe que as versões 2.13 e 2.14 já estejam aplicadas. Não exclua os demais arquivos do repositório. Confira a execução de Publicar portfolio na aba Actions e teste a entrada dos cards nas três listas, inclusive com cache desativado, rolagem rápida e em telas menores.
+
+## Novidades da versão 2.14 (histórico)
 
 - **Título principal:** remoção exclusiva do desfoque na entrada palavra por palavra. Permanecem os 720 ms de duração, o atraso inicial de 45 ms, o intervalo de 50 ms por palavra, o deslocamento de `.44em`, a curva `cubic-bezier(.4,0,.3,1)` e o fade existentes.
 - **Preservação:** o hover circular dos botões, o desfoque do cabeçalho, as demais animações, o layout, a tipografia, os textos e a preferência por movimento reduzido continuam inalterados.
